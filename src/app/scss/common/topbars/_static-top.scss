@@ -1,0 +1,27 @@
+@use '../../helpers/variables';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: .8rem 1.5rem .3rem 2rem;
+  border-bottom: 1px solid variables.$light;
+
+  .title {
+    display: flex;
+    gap: .3rem;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      margin-top: -0.3125rem;
+    }
+  }
+
+  .user {
+    .data {
+      .role {
+        font-size: .7rem;
+      }
+    }
+  }
+}

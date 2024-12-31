@@ -15,29 +15,23 @@
 @use 'layout/inputs';
 
 //==================================================================
+// 3. COMMON
+//==================================================================
+@use 'common/sidebars/static';
+@use 'common/sidebars/dynamic';
+@use 'common/main-content';
+@use 'common/topbars/static-top';
+
+//==================================================================
 // 3. COMPONENTS
 //==================================================================
 @use 'components/header';
-@use 'components/header-menu';
-@use 'components/header-cta';
 @use 'components/footer';
-@use 'components/footer-menu';
 
 //==================================================================
 // 3.1 BLOCKS
 //==================================================================
-//@use 'blocks/hero';
-//@use 'blocks/icon-grid';
-//@use 'blocks/tabs';
-//@use 'blocks/stack-tabs';
-//@use 'blocks/meet-our-team';
-//@use 'blocks/slider';
-//@use 'blocks/hero-internal';
-//@use 'blocks/content-steps';
-//@use 'blocks/video-block';
-//@use 'blocks/multi-column-cta';
-//@use 'blocks/divider';
-//@use 'blocks/faq';
+
 
 //==================================================================
 // 4. TEMPLATES

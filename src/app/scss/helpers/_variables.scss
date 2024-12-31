@@ -36,9 +36,12 @@ $info: #3178c6;
 $info-light: #5a9adf;
 $info-dark: #245a92;
 
-$warning:#e8b023;
+$warning: #e8b023;
 $warning-light: #f3c957;
 $warning-dark: #b5881a;
+
+$lighter: #f5f5f5;
+$light: #e0e0e0;
 
 $white: #FFFFFF;
 $black: #000000;
@@ -81,63 +84,70 @@ $colorList: (
         warning: $warning,
         warning-light: $warning-light,
         warning-dark: $warning-dark,
+        white: $white,
+        black: $black,
+        grey-10: $grey-10,
+        grey-20: $grey-20,
+        grey-30: $grey-30,
+        grey-40: $grey-40,
+        grey-50: $grey-50,
+        grey-60: $grey-60,
+        grey-70: $grey-70,
+        grey-80: $grey-80,
+        grey-90: $grey-90,
 );
 
 //==================================================================
 // TYPOGRAPHY VARIABLES
 //==================================================================
-$body-font: Outfit, sans-serif;
-$heading-font: "Roboto Serif", sans-serif;
+$body-font: "Open Sans", sans-serif;
+$heading-font: "League Spartan", sans-serif;
 $base-font-size: 16px;
+$small-font-size: .75rem;
 $heading-config: (
         h1: (
                 mobile: (
                         font-size: 2.5rem,
                         font-weight: 600,
                         color: $primary,
-                        line-height: 3rem,
+                        margin: initial,
                 ),
-                desktop: (
-                        font-size: 3.125rem,
-                        line-height: 3.75rem,
-                        color: $primary,
-                )
+                desktop: ()
         ),
         h2: (
                 mobile: (
-                        font-size: 2.125rem,
-                        font-weight: 600,
-                        line-height: 2.55rem,
+                        font-size: 2rem,
                         color: $primary,
                 ),
-                desktop: (
-                        font-size: 2.125rem,
-                        color: $primary,
-                )
+                desktop: ()
         ),
         h3: (
                 mobile: (
-                        font-size: 1.45rem,
-                        line-height: 1.8rem,
-                        font-weight: 500,
+                        font-size: 1.75rem,
                         color: $primary,
                 ),
-                desktop: (
-                        font-size: 1.45rem,
-                        color: $primary,
-                )
+                desktop: ()
         ),
         h4: (
                 mobile: (
-                        font-size: 1.375rem,
-                        line-height: 1.65rem,
-                        font-weight: 600,
-                        color: $tertiary,
-                        font-family: $body-font
+                        font-size: 1.5rem,
+                        color: $text,
                 ),
-                desktop: (
-                        font-size: 1.375rem,
-                )
+                desktop: ()
+        ),
+        h5: (
+                mobile: (
+                        font-size: 1.25rem,
+                        color: $text,
+                ),
+                desktop: ()
+        ),
+        h6: (
+                mobile: (
+                        font-size: 1rem,
+                        color: $text,
+                ),
+                desktop: ()
         )
 );
 
@@ -157,25 +167,16 @@ $transition: 0.3s ease-in-out;
 //==================================================================
 // BORDER
 //==================================================================
-$border-radius: 0.3125rem;
+$border-radius: 0.5rem;
 
 :root {
-  --color-primary: #134740;
-  --color-secondary: #BAD46E;
-  --color-terciary: #C6421E;
-  --color-white: #FFFFFF;
-  --color-black: #000000;
-  --color-grey-10: #E6E6E6;
-  --color-grey-20: #CCCCCC;
-  --color-grey-30: #B3B3B3;
-  --color-grey-40: #999999;
-  --color-grey-50: #808080;
-  --color-grey-60: #666666;
-  --color-grey-70: #4D4D4D;
-  --color-grey-80: #333333;
-  --color-grey-90: #1A1A1A;
-  --color-error: #C6421E;
-  --body-font-color: var(--color-black, #000000);
-  --body-font: Outfit, sans-serif;
-  --heading-font: "Roboto Serif", sans-serif;
+  --base-font-size: #{$base-font-size};
+  --small-font-size: #{$small-font-size};
+  --body-font-color: #{$body-font-color};
+  --body-font: #{$body-font};
+  --heading-font: #{$heading-font};
+
+  @each $colorKey, $color in $colorList {
+    --color-#{'' + $colorKey}: $color;
+  }
 }

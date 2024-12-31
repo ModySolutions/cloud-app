@@ -1,0 +1,8 @@
+<div class="content">
+    {% include '@app/common/topbars/static.twig' with {post: post} %}
+    <main>
+        {% block content %}
+            {{ post.content }}
+        {% endblock %}
+    </main>
+</div>

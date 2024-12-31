@@ -1,0 +1,36 @@
+@use '../../helpers/variables';
+
+aside {
+  &.sidebar {
+    &.main {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 1.5rem 0.75rem;
+      box-sizing: border-box;
+      height: 100vh;
+      border-right: 1px solid variables.$light;
+
+      nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        gap: .75rem;
+
+        .link {
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: .3rem;
+
+          span {
+            font-size: .75rem;
+          }
+        }
+      }
+    }
+  }
+}

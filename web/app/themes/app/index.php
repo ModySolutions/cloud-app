@@ -2,4 +2,4 @@
 
 use Timber\Timber;
 $context = Timber::context();
-Timber::render('views/pages/index.twig', $context);
+Timber::render('@app/pages/index.twig', $context);

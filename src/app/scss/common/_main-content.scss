@@ -1,0 +1,13 @@
+@use '../helpers/variables';
+.content {
+  background-color: variables.$white;
+  margin-top: 1.5rem;
+  margin-right: 1.5rem;
+  height: 100vh;
+  border-radius: calc(2 * #{variables.$border-radius});
+
+  main {
+    height: 100%;
+    overflow-y: auto;
+  }
+}

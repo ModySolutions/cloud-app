@@ -11,12 +11,10 @@
     align-items: center;
     justify-content: center;
     font-size: 1rem;
-    font-weight: 600;
     color: variables.$white;
     line-height: 1.5rem;
     padding: 0.625rem 1.25rem;
     background-color: variables.$primary;
-    border: 2px solid var(--button--border-color);
     border-radius: variables.$border-radius;
     transition: background-color .3s ease;
     cursor: pointer;
@@ -32,8 +30,17 @@
         }
     }
 
+    &.btn-wide {
+        width: 100%;
+    }
+
     &:hover, &:focus {
         background-color: color.adjust(variables.$primary, $lightness: 10%);
+    }
+
+    > svg {
+        fill: variables.$white;
+        margin-right: .2rem;
     }
 }
 button, .btn {
