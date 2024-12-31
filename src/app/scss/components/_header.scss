@@ -1,0 +1,59 @@
+@use "../helpers/media-queries";
+
+.header {
+    & {
+        padding: 1rem 0;
+    }
+
+    &__logo {
+        width: 10rem;
+        > img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    &__inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &__left {
+            width: 50%;
+
+            @include media-queries.for-tablet-up {
+                width: 20%;
+            }
+        }
+
+        &__right {
+            width: 50%;
+            display: flex;
+            justify-content: flex-end;
+
+            .menu-container {
+                display: none;
+                padding: 0;
+                margin: 0;
+
+                &.open {
+                    display: block;
+                }
+            }
+
+            @include media-queries.for-tablet-up {
+                display: flex;
+                width: 80%;
+
+                .menu-container {
+                    display: flex;
+                    width: 100%;
+                }
+            }
+        }
+    }
+    &__logo {
+        font-weight: 900;
+        text-decoration: none;
+    }
+}

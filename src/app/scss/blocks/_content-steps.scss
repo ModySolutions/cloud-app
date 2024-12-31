@@ -1,0 +1,114 @@
+@use "../helpers/media-queries";
+@use "../helpers/variables";
+
+.content-steps{
+	background-color: variables.$white;
+	padding: 4rem 0;
+	--hero-background-image: none;
+
+	background-image: var(--hero-background-image);
+	min-height: 41.5rem;
+	background-position: 25% 80%;
+	background-repeat: no-repeat;
+	background-size: 19rem;
+
+		@include media-queries.for-tablet-down {
+			background-image: none;
+		}
+
+	.container{
+		display: flex;
+		flex-direction: column;
+
+		@include media-queries.for-tablet-up {
+			flex-direction: row;
+		}
+	}
+
+		&__content {
+			display: flex;
+			gap: 1rem;
+			flex-direction: column;
+
+			@include media-queries.for-tablet-up {
+				width: 50%;
+				padding-right: 4rem;
+			}
+		}
+
+	&__super_title {
+		flex-wrap: pretty;
+		color: #EC6B48;
+		font-size: 22px;
+		font-weight: 600;
+	}
+
+		&__heading {
+			font-family: variables.$heading-font;
+			color: variables.$primary;
+			font-size: 34px;
+		}
+
+
+		&__calls_to_action {
+			display: flex;
+			flex-wrap: wrap;
+		}
+
+
+	&__item {
+		display: flex;
+		flex-direction: row;
+		gap: 1.25rem;
+		padding: 1.875rem 1.25rem;
+		text-align: left;
+		justify-content: start;
+
+		&::before {
+			content: ' ';
+			position: absolute;
+			width: 0.125rem;
+			height: 50%;
+			background-color: var(--icon-grid-accent-color, variables.$tertiary);
+			top: 125px;
+			left: 52px;
+			z-index: -1;
+		}
+
+
+		@include media-queries.for-tablet-up {
+			justify-content: space-between;
+			border-bottom: 0;
+			position: relative;
+			padding: 1.25rem;
+
+			&::before {
+				top: 100px;
+			}
+
+		}
+
+		&_picture {
+			width: 5.3125rem;
+		}
+
+		&_call_to_action {
+			color: variables.$primary;
+			font-weight: 600;
+			padding-top: 1rem;
+
+			&::after {
+				content: url("data:image/svg+xml,%3Csvg%20width%3D%228%22%20height%3D%2212%22%20viewBox%3D%220%200%208%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M7.33813%205.65264C7.55395%205.8445%207.55395%206.15551%207.33813%206.34738L1.7039%2011.3561C1.48808%2011.548%201.13823%2011.548%200.922411%2011.3561L0.661865%2011.1245C0.446045%2010.9327%200.446045%2010.6216%200.661865%2010.4297L5.64481%206.00001L0.661865%201.57025C0.446045%201.37839%200.446045%201.06738%200.661864%200.875516L0.92241%200.643895C1.13823%200.452035%201.48808%200.452035%201.7039%200.643895L7.33813%205.65264Z%22%20fill%3D%22%23EC6B48%22%2F%3E%0A%3C%2Fsvg%3E%0A");
+			}
+		}
+	}
+
+	&__sides{
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__item_title{
+		padding-top: 1.2rem;
+	}
+}

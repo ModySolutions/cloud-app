@@ -1,0 +1,103 @@
+@use "../helpers/media-queries";
+
+.stack_tabs {
+  --stack-tabs-background-image: none;
+  --stack-tabs-background-color: var(--color-primary);
+  --stack-tabs-super-title-color: var(--color-secondary);
+  --stack-tabs-title-color: var(--color-white);
+  --stack-tabs-sub-title-color: var(--color-white);
+  --stack-tabs-accent-color: var(--color-secondary);
+  --stack-tabs-active-color: var(--color-terciary);
+
+  background-image: var(--stack-tabs-background-image);
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-color: var(--stack-tabs-background-color);
+  padding: 3.125rem 0;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: var(--stack-tabs-title-color);
+  }
+
+  &__super_title {
+    color: var(--stack-tabs-super-title-color);
+
+    strong {
+      color: var(--color-terciary);
+    }
+  }
+
+  &__title {
+    color: var(--stack-tabs-title-color);
+
+    @include media-queries.for-tablet-up {
+      width: 60%;
+      margin: 1.125rem 0;
+    }
+  }
+
+  &__subtitle {
+    color: var(--stack-tabs-sub-title-color);
+
+    @include media-queries.for-tablet-up {
+      width: 60%;
+      margin: 1.125rem 0;
+    }
+  }
+
+  &__container {
+    @include media-queries.for-tablet-up {
+      display: flex;
+    }
+  }
+
+  &__images {
+    @include media-queries.for-tablet-up {
+      width: 50%;
+      padding: 1rem;
+    }
+  }
+
+  &__tabs {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 1.25rem 0;
+    gap: 3.125rem;
+
+    @include media-queries.for-tablet-up {
+      width: 50%;
+      padding: 1.25rem;
+    }
+  }
+
+  &__tab {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    border-left: 0.125rem solid var(--stack-tabs-accent-color);
+
+    &.active {
+      border-color: var(--stack-tabs-active-color);
+    }
+  }
+
+  &__item_title {
+    padding: 0 .5rem;
+    color: var(--stack-tabs-title-color);
+    width: 70%;
+
+    @include media-queries.for-tablet-up {
+      width: auto;
+    }
+  }
+
+  &__item_content {
+    padding: 0 .5rem;
+  }
+}

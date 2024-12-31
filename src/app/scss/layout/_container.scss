@@ -1,0 +1,22 @@
+//==================================================================
+// CONTAINER
+//==================================================================
+$container-width: 70.25rem;
+$container-lg-width: 76.125rem;
+$container-padding: 1rem;
+
+@mixin set-container($width: $container-width, $padding: $container-padding) {
+    max-width: calc(#{$width} + (#{$padding} * 2));
+    padding-left: $padding;
+    padding-right: $padding;
+}
+
+.container {
+    width: 100%;
+    @include set-container;
+    margin-left: auto;
+    margin-right: auto;
+    &-lg {
+        @include set-container($container-lg-width)
+    }
+}

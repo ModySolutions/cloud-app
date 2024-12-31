@@ -1,0 +1,39 @@
+{
+  "name": "cwirthy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "wp-scripts build --webpack-src-dir=src/app --output-path=web/app/themes/app/dist --config config/webpack.config.js",
+    "dev": "wp-scripts start --webpack-src-dir=src/app --output-path=web/app/themes/app/dist --config config/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/mediamechanics/c-wirthy-wordpress.git"
+  },
+  "author": "Mody Solutions",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://bitbucket.org/mediamechanics/c-wirthy-wordpress/issues"
+  },
+  "homepage": "https://bitbucket.org/mediamechanics/c-wirthy-wordpress#readme",
+  "dependencies": {
+    "@wordpress/components": "^28.1.0",
+    "@wordpress/i18n": "^5.1.0",
+    "aos": "^2.3.4",
+    "css-loader": "^7.1.2",
+    "sass-loader": "^16.0.4",
+    "scss-loader": "^0.0.1",
+    "style-loader": "^4.0.0",
+    "swiper": "^11.1.4"
+  },
+  "devDependencies": {
+    "@wordpress/block-editor": "^13.1.0",
+    "@wordpress/blocks": "^13.1.0",
+    "@wordpress/icons": "^10.1.0",
+    "@wordpress/scripts": "^27.8.0",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-manifest-plugin": "^5.0.0"
+  }
+}

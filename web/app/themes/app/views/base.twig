@@ -1,0 +1,50 @@
+{% include 'views/head.twig' %}
+
+<body class="{{ body_class }}">
+
+	{% if GTM_KEY %}
+		<!-- Google Tag Manager (noscript) -->
+		<noscript>
+		<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-{{ GTM_KEY }}" height="0"
+		width="0"
+		style="display:none;visibility:hidden"></iframe>
+		</noscript>
+		<!-- End Google Tag Manager (noscript) -->
+	{% endif %}
+
+	{% include 'views/components/header.twig' %}
+
+	{% block content %}
+			{{ post.content }}
+	{% endblock %}
+
+	{% include 'views/components/footer.twig' %}
+
+	{{ function('wp_footer') }}
+
+    <script>
+        WebFontConfig = {
+            google: { families: ['Outfit', 'Roboto+Serif'] }
+        };
+
+        (function(d) {
+            var wf = d.createElement('script'), s = d.scripts[0];
+            wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+            wf.async = true;
+            s.parentNode.insertBefore(wf, s);
+        })(document);
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@12.1.0/dist/lazyload.min.js" async="async"></script>
+    <script>
+        window.lazyLoadOptions = {
+            elements_selector: '.lazy',
+        };
+        window.addEventListener('LazyLoad::Initialized', function (event_lazy) {
+            window.lazyLoadInstance = event_lazy.detail.instance;
+        }, false);
+
+        window.admin_ajax = "{{ 'admin-ajax.php' | admin_url }}";
+    </script>
+</body>
+</html>

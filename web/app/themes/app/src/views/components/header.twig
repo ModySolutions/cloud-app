@@ -1,0 +1,26 @@
+<header class="header">
+	<div class="container">
+		<div class="header__inner">
+			<div class="header__inner__left">
+				<a href="/" class="header__logo">
+					{% if options.logo %}
+						<img src="{{ options.logo.sizes.large }}" alt="Homepage {{ site.name }}" class="header__logo__img">
+					{% else %}
+						{{ site.name }}
+					{% endif %}
+				</a>
+			</div>
+			<nav class="header__inner__right">
+				<svg class="sr-only" id="menu-toggle" width="42" height="30" viewBox="0 0 42 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect width="42" height="6" rx="3" fill="#134740"/>
+					<rect y="12" width="42" height="6" rx="3" fill="#134740"/>
+					<path d="M0 27C0 25.3431 1.34315 24 3 24H39C40.6569 24 42 25.3431 42 27C42 28.6569 40.6569 30 39 30H3C1.34315 30 0 28.6569 0 27Z" fill="#134740"/>
+				</svg>
+				<div class="menu-container">
+					{% include 'views/partials/menu.twig' with { 'menu': header_menu, 'class': 'header-menu' } %}
+					{% include 'views/partials/header-call-to-action.twig' with { 'call_to_action': options.call_to_action, 'call_to_action_two': options.call_to_action_two } %}
+				</div>
+			</nav>
+		</div>
+	</div>
+</header>

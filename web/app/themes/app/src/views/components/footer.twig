@@ -1,0 +1,21 @@
+<footer class="footer">
+	<div class="container">
+		<div class="footer__inner">
+			<a href="/" class="footer__inner__logo">
+				{% if options.footer_logo %}
+					<img src="{{ options.footer_logo.sizes.large }}" alt="Homepage {{ site.name }}" class="header__logo__img">
+				{% else %}
+					{{ site.name }}
+				{% endif %}
+			</a>
+			{% include 'views/partials/menu.twig' with { 'menu': footer_top_menu, 'class': 'footer-top-menu' } %}
+			{% if options.social_networks %}
+				{% include 'views/partials/social.twig' with { 'networks': options.social_networks, 'class': 'footer-social' } %}
+			{% endif %}
+			<div class="footer_copy_and_menu">
+				<div class="footer__copyright">&copy; {{ "now"|date('Y') }} {{ site.name }}</div>
+				{% include 'views/partials/menu.twig' with { 'menu': footer_bottom_menu, 'class': 'footer-bottom-menu' } %}
+			</div>
+		</div>
+	</div>
+</footer>

@@ -1,0 +1,30 @@
+@use "../helpers/media-queries";
+
+.header--call_to_action {
+  padding-top: 1rem;
+  display: flex;
+  position: fixed;
+  width: 100%;
+  bottom: 1rem;
+  left: 0;
+  z-index: 2;
+
+  @include media-queries.for-tablet-up {
+    padding-top: 0;
+    position: static;
+    left: initial;
+    bottom: initial;
+    width: 60%;
+  }
+
+  .container {
+    display: flex;
+    gap: 1rem;
+  }
+
+  @include media-queries.for-tablet-up {
+    .container {
+      gap: 1.25rem;
+    }
+  }
+}

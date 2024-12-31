@@ -1,0 +1,43 @@
+&__google-reviews {
+  --slider-justify-content: center;
+  &-container {
+    &-slide {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      border-right: 0.1875rem solid var(--color-terciary);
+      margin-bottom: 3rem;
+      padding: .7rem;
+
+      &.third {
+        border-right: 0;
+      }
+
+      .stars {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 1rem;
+      }
+
+      .client_info {
+        display: flex;
+        gap: 1rem;
+
+        .picture {
+          width: 25%;
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+
+        .data {
+          width: 75%;
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,181 @@
+//==================================================================
+// COLOR VARIABLES
+//=================================================================
+
+$primary: #005f6b;
+$primary-light: #4a919a;
+$primary-dark: #003f49;
+
+$secondary: #7a4f94;
+$secondary-light: #a97bb8;
+$secondary-dark: #512e64;
+
+$text: #333333;
+$text-light: #666666;
+$text-inverse: #ffffff;
+
+$background: #f5f5f5;
+$background-light: #ffffff;
+$background-dark: #e0e0e0;
+
+$accent: #e57c32;
+$accent-light: #f2a76d;
+$accent-dark: #c45d14;
+
+$tertiary: $accent;
+
+$success: #1a7d3e;
+$success-light: #4ba762;
+$success-dark: #0f5228;
+
+$danger: #c53030;
+$danger-light: #e04a4a;
+$danger-dark: #992424;
+
+$info: #3178c6;
+$info-light: #5a9adf;
+$info-dark: #245a92;
+
+$warning:#e8b023;
+$warning-light: #f3c957;
+$warning-dark: #b5881a;
+
+$white: #FFFFFF;
+$black: #000000;
+$grey-10: #e6e6e6;
+$grey-20: #cccccc;
+$grey-30: #b3b3b3;
+$grey-40: #999999;
+$grey-50: #808080;
+$grey-60: #666666;
+$grey-70: #4d4d4d;
+$grey-80: #333333;
+$grey-90: #1a1a1a;
+
+$error-color: $danger;
+
+$body-font-color: $text;
+
+$colorList: (
+        primary: $primary,
+        primary-light: $primary-light,
+        primary-dark: $primary-dark,
+        secondary: $secondary,
+        secondary-light: $secondary-light,
+        secondary-dark: $secondary-dark,
+        accent: $accent,
+        accent-light: $accent-light,
+        accent-dark: $accent-dark,
+        text: $text,
+        text-light: $text-light,
+        text-inverse: $text-inverse,
+        success: $success,
+        success-light: $success-light,
+        success-dark: $success-dark,
+        danger: $danger,
+        danger-light: $danger-light,
+        danger-dark: $danger-dark,
+        info: $info,
+        info-light: $info-light,
+        info-dark: $info-dark,
+        warning: $warning,
+        warning-light: $warning-light,
+        warning-dark: $warning-dark,
+);
+
+//==================================================================
+// TYPOGRAPHY VARIABLES
+//==================================================================
+$body-font: Outfit, sans-serif;
+$heading-font: "Roboto Serif", sans-serif;
+$base-font-size: 16px;
+$heading-config: (
+        h1: (
+                mobile: (
+                        font-size: 2.5rem,
+                        font-weight: 600,
+                        color: $primary,
+                        line-height: 3rem,
+                ),
+                desktop: (
+                        font-size: 3.125rem,
+                        line-height: 3.75rem,
+                        color: $primary,
+                )
+        ),
+        h2: (
+                mobile: (
+                        font-size: 2.125rem,
+                        font-weight: 600,
+                        line-height: 2.55rem,
+                        color: $primary,
+                ),
+                desktop: (
+                        font-size: 2.125rem,
+                        color: $primary,
+                )
+        ),
+        h3: (
+                mobile: (
+                        font-size: 1.45rem,
+                        line-height: 1.8rem,
+                        font-weight: 500,
+                        color: $primary,
+                ),
+                desktop: (
+                        font-size: 1.45rem,
+                        color: $primary,
+                )
+        ),
+        h4: (
+                mobile: (
+                        font-size: 1.375rem,
+                        line-height: 1.65rem,
+                        font-weight: 600,
+                        color: $tertiary,
+                        font-family: $body-font
+                ),
+                desktop: (
+                        font-size: 1.375rem,
+                )
+        )
+);
+
+//==================================================================
+// BREAKPOINT VARIABLES
+//==================================================================
+$phone-breakpoint: 30rem;
+$tablet-breakpoint: 48rem;
+$laptop-breakpoint: 60rem;
+$desktop-breakpoint: 68.5625rem;
+
+//==================================================================
+// TRANSITION VARIABLES
+//==================================================================
+$transition: 0.3s ease-in-out;
+
+//==================================================================
+// BORDER
+//==================================================================
+$border-radius: 0.3125rem;
+
+:root {
+  --color-primary: #134740;
+  --color-secondary: #BAD46E;
+  --color-terciary: #C6421E;
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-grey-10: #E6E6E6;
+  --color-grey-20: #CCCCCC;
+  --color-grey-30: #B3B3B3;
+  --color-grey-40: #999999;
+  --color-grey-50: #808080;
+  --color-grey-60: #666666;
+  --color-grey-70: #4D4D4D;
+  --color-grey-80: #333333;
+  --color-grey-90: #1A1A1A;
+  --color-error: #C6421E;
+  --body-font-color: var(--color-black, #000000);
+  --body-font: Outfit, sans-serif;
+  --heading-font: "Roboto Serif", sans-serif;
+}

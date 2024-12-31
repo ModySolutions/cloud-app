@@ -1,0 +1,14 @@
+.divider {
+  --divider-color: var(--color-primary);
+  --divider-line-size: 3px;
+  --divider-margin-top: 2rem;
+  --divider-margin-bottom: 2rem;
+
+  margin-top: var(--divider-margin-top);
+  margin-bottom: var(--divider-margin-bottom);
+
+  &__horizontal_rule {
+    color: var(--divider-color);
+    border-bottom: var(--divider-line-size) solid var(--divider-color);
+  }
+}

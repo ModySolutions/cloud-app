@@ -1,0 +1,50 @@
+@use "../helpers/media-queries";
+
+.meet_our_team {
+  --meet_our_team-super-title-color: var(--color-terciary);
+  --meet_our_team-title-color: var(--color-primary);
+  --meet_our_team-description-color: var(--color-black);
+
+  background-color: var(--color-white);
+  display: flex;
+  gap: 2.5rem;
+  flex: 1;
+  padding: 3.125rem 0;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+
+    @include media-queries.for-tablet-up {
+      flex-direction: row;
+      gap: 4.6875rem;
+    }
+
+    &_left {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+
+      @include media-queries.for-tablet-up {
+        width: 70%;
+      }
+    }
+  }
+
+  &__calls_to_action {
+    display: flex;
+    justify-content: start;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  &__pictures {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+
+    @include media-queries.for-tablet-up {
+      align-items: center;
+    }
+  }
+}
