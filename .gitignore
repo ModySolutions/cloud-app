@@ -10,6 +10,7 @@ web/app/cache/*
 
 # WordPress
 web/wp
+web/app/themes/app/dist
 web/.htaccess
 
 # Logs
