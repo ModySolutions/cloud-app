@@ -20,3 +20,9 @@ ini_set('display_errors', '1');
 
 // Enable plugin and theme updates and installation from the admin
 Config::define('DISALLOW_FILE_MODS', false);
+
+Config::define('SMTP_HOST', env('SMTP_HOST') ?? null);
+Config::define('SMTP_AUTH', env('SMTP_AUTH') ?? null);
+Config::define('SMTP_PORT', env('SMTP_PORT') ?? null);
+Config::define('SMTP_USERNAME', env('SMTP_USERNAME') ?? null);
+Config::define('SMTP_PASSWORD', env('SMTP_PASSWORD') ?? null);

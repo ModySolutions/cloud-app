@@ -1,0 +1,20 @@
+@use '../helpers/variables';
+
+input {
+  &:not([type=checkbox], [type=radio]) {
+    width: 100%;
+    background-color: variables.$white;
+    border: 1px solid variables.$light;
+    padding: .3rem;
+    border-radius: variables.$border-radius-md;
+    color: variables.$text-light;
+  }
+
+  &.input-lg {
+    padding: .5rem;
+  }
+
+  &:focus {
+    box-shadow: 0 0 .3rem .3rem variables.$primary-light;
+  }
+}

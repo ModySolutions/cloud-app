@@ -176,6 +176,10 @@ if (!defined('ABSPATH')) {
     define('ABSPATH', $webroot_dir . '/wp/');
 }
 
-if (!defined('APP_SRC')) {
-    define('APP_SRC', $root_dir . '/src/app');
+if (!defined('SRC_PATH')) {
+    define('SRC_PATH', $root_dir . '/src');
+}
+
+if (!defined('APP_PATH')) {
+    define('APP_PATH', $root_dir . '/src/app');
 }

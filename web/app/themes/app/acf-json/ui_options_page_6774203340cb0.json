@@ -1,0 +1,23 @@
+{
+    "key": "ui_options_page_6774203340cb0",
+    "title": "Autenticación",
+    "active": true,
+    "menu_order": 0,
+    "page_title": "Autenticación",
+    "menu_slug": "authentication",
+    "parent_slug": "options-general.php",
+    "advanced_configuration": 1,
+    "icon_url": "",
+    "menu_title": "",
+    "position": "",
+    "redirect": false,
+    "description": "",
+    "menu_icon": [],
+    "update_button": "Actualizar",
+    "updated_message": "Opciones Actualizadas",
+    "capability": "edit_posts",
+    "data_storage": "options",
+    "post_id": "",
+    "autoload": 0,
+    "modified": 1735663708
+}

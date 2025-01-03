@@ -1,0 +1,110 @@
+import validator from 'validator';
+import { __ } from '@wordpress/i18n';
+
+export default {
+    form: document.getElementById('reset-password'),
+    init() {
+        if (!this.form) return;
+        this.submitButton = this.form.querySelector('button[type=submit]');
+        this.form.addEventListener('submit', this.submit.bind(this));
+    },
+    async submit(event) {
+        event.preventDefault();
+        const formData = new FormData(this.form);
+        const errors = this.validateForm(formData);
+
+        const authMessage = this.form.querySelector('.auth-message');
+
+        if (this.submitButton) {
+            this.submitButton.disabled = true;
+            this.submitButton.innerHTML = __('Resetting password...');
+        }
+
+        if (errors.length > 0) {
+            this.displayMessage(authMessage, errors[0], 'error');
+            if (this.submitButton) {
+                this.submitButton.disabled = false;
+                this.submitButton.innerHTML = __('Reset password');
+            }
+            return;
+        }
+
+        try {
+            const { success, data } = await this.resetPassword(formData);
+            if (!success) {
+                this.displayMessage(authMessage, data.message, 'error');
+                if (this.submitButton) {
+                    this.submitButton.disabled = false;
+                    this.submitButton.innerHTML = __('Reset password');
+                }
+            } else {
+                this.displayMessage(authMessage, data.message, 'success');
+                if (this.submitButton) {
+                    this.submitButton.innerHTML = __('Password reset successfully!');
+                }
+                location.href=data?.initial_page || App.site_url;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            if (this.submitButton) {
+                this.submitButton.disabled = false;
+                this.submitButton.innerHTML = __('Reset password');
+            }
+        }
+    },
+    validateForm(data) {
+        const errors = [];
+
+        const password = data.get('password');
+        const confirmPassword = data.get('confirm-password');
+
+        if (!password || !this.isSecurePassword(password)) {
+            errors.push(__('Password must be at least 8 characters long, contain one uppercase letter, and one special character.'));
+        }
+
+        if (password !== confirmPassword) {
+            errors.push(__('Passwords do not match.'));
+        }
+
+        const key = data.get('key');
+        const email = data.get('email');
+        if (!key || !email) {
+            errors.push(__('Invalid reset link.'));
+        }
+
+        return errors;
+    },
+    isSecurePassword(password) {
+        const pattern = /^(?=.*[A-Z])(?=.*[\W])(?=.*[a-zA-Z0-9]).{8,}$/;
+        return pattern.test(password);
+    },
+    displayMessage(container, message, type = 'error') {
+        if (!container) return;
+
+        container.textContent = message;
+        container.className = 'my-3 ' + `auth-message ${type === 'error' ?
+            'bg-danger-light text-danger-dark' : 'bg-success-light text-success-dark'}`;
+        container.style.display = 'block';
+    },
+    async resetPassword(formData) {
+        const data = new URLSearchParams();
+        formData.forEach((value, key) => {
+            data.append(key, value);
+        });
+        data.append('action', 'reset_password');
+
+        const response = await fetch(App.ajax_url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: data.toString(),
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        return response.json();
+    }
+};

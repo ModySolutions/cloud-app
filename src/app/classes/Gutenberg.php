@@ -24,13 +24,14 @@ class Gutenberg {
 
 	public static function after_setup_theme() : void {
 		remove_theme_support('core-block-patterns');
+        flush_rewrite_rules();
 	}
 
 	public static function enqueue_block_editor_assets() : void {
 		$script = "window.onload = function() { const isFullscreenMode = wp.data.select( 'core/edit-post' ).isFeatureActive( 'fullscreenMode' ); if ( isFullscreenMode ) { wp.data.dispatch( 'core/edit-post' ).toggleFeature( 'fullscreenMode' ); } }";
 		wp_add_inline_script( 'wp-blocks', $script );
 
-		$editor = require_once APP_THEME_DIR . '/assets/dist/editor.asset.php';
+		$editor = require_once APP_THEME_DIR . '/dist/editor.asset.php';
 		wp_enqueue_script(
 			'app-editor',
 			APP_THEME_URL . '/dist/editor.js',
@@ -49,15 +50,21 @@ class Gutenberg {
 			array(
 				array(
 					'slug' => 'content',
-					'title' => __( 'Content', 'content'  ),
+					'title' => __( 'Content'  ),
 				),
 			),
 			array (
 				array(
-					'slug' => 'media-blocks',
-					'title' => __( 'Media', 'media-blocks'  ),
+					'slug' => 'media',
+					'title' => __( 'Media' ),
 				),
-			)
+			),
+			array (
+				array(
+					'slug' => 'utilities',
+					'title' => __( 'Utilities' ),
+				),
+			),
 		);
 	}
 }

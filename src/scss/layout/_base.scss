@@ -1,0 +1,86 @@
+@use "../helpers/media-queries";
+@use "../helpers/mixins";
+@use "../helpers/variables";
+
+//==================================================================
+// BASE PAGE LAYOUT / GENERIC STYLES
+//==================================================================
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background-color: variables.$background;
+}
+
+body {
+    &:not(.page-template-auth-template) {
+        display: grid;
+        grid-template-columns: 64px 264px 1fr;
+        grid-template-rows: auto;
+    }
+
+    &.page-template-auth-template {
+        display: flex;
+    }
+}
+
+
+.skip-link {
+    position: absolute;
+    top: 2.5rem;
+    left: 1rem;
+    transform: translateX(-100vw);
+    transition: transform 0.3s ease;
+    z-index: 4;
+    @include media-queries.for-laptop-up {
+        top: 1rem;
+    }
+    &:focus {
+        transform: translateX(0);
+    }
+}
+
+img {
+    height: auto;
+    max-width: 100%;
+}
+
+nav ul {
+    @include mixins.list-reset;
+}
+
+html.noscroll {
+    overflow: hidden;
+    &.overlay {
+        position: relative;
+    }
+}
+
+@each $color_key, $color in variables.$color_list {
+    .bg-#{'' + $color_key} {
+        background-color: $color;
+    }
+}
+
+//==================================================================
+// LAYOUT UTILITY
+//==================================================================
+.invisible {
+    @include mixins.invisible;
+}
+
+.bg-image {
+    @include mixins.bg-image;
+}
+
+.sr-only {
+    @include media-queries.for-tablet-up {
+        display: none;
+    }
+}

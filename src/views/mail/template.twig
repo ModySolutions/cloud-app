@@ -1,0 +1,15 @@
+<html {{ lang }}>
+<body style="font-family: Arial, sans-serif; line-height: 1.5; background-color: #f5f5f5; padding: 20px;">
+<div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
+    <header style="text-align: center; margin-bottom: 20px;background-color: #f5f5f5;padding: 20px;">
+        {{ logo | raw }}
+    </header>
+    <main>
+        {{ message | raw }}
+    </main>
+    <footer style="text-align: center; margin-top: 20px; font-size: 0.9em; color: #f5f5f5;background-color:#333;padding:20px;">
+        <p>&copy; {{ year }} {{ site.name }}. {{ __('All rights reserved.') }}</p>
+    </footer>
+</div>
+</body>
+</html>

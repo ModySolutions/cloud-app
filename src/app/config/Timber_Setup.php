@@ -4,15 +4,12 @@ namespace App\config;
 
 use Timber\Timber;
 
-class Timber_Setup
-{
-    static function init(): void
-    {
+class Timber_Setup {
+    static function init(): void {
         Timber_Setup::action();
     }
 
-    static function action(): void
-    {
+    static function action(): void {
         if (\Timber::class) {
             add_action('timber/context', self::timber_context(...));
             add_filter('timber/twig', self::timber_twig(...));
@@ -20,11 +17,9 @@ class Timber_Setup
         } else {
             add_action('admin_notices', self::admin_notice(...));
         }
-        add_action('after_switch_theme', self::after_switch_theme(...));
     }
 
-    public static function admin_notice(): void
-    {
+    public static function admin_notice(): void {
         echo <<<EOF
 <div class="error">
   <p>
@@ -34,18 +29,20 @@ class Timber_Setup
 EOF;
     }
 
-    public static function timber_context(array $context): array
-    {
+    public static function timber_context(array $context): array {
         if (function_exists('get_fields')) {
             $context['options'] = get_fields('options');
+            $context['auth_urls'] = [
+                'sign_in' => wp_login_url(),
+                'sign_up' => wp_registration_url(),
+                'lost_password' => wp_lostpassword_url(),
+            ];
         }
-        $context['header_menu'] = Timber::get_menu('header_menu');
-        $context['footer_top_menu'] = Timber::get_menu('footer_top_menu');
+        $context['site_url'] = get_bloginfo('url');
         return $context;
     }
 
-    public static function timber_twig(\Twig\Environment $twig): \Twig\Environment
-    {
+    public static function timber_twig(\Twig\Environment $twig): \Twig\Environment {
         $twig->addFilter(new \Twig\TwigFilter('admin_url', function ($filename) {
             return admin_url($filename);
         }));
@@ -58,38 +55,11 @@ EOF;
         return $twig;
     }
 
-    public static function timber_locations(array $paths) : array {
+    public static function timber_locations(array $paths): array {
         $paths['app'] = [
-            APP_SRC . '/views',
+            SRC_PATH.'/views',
         ];
 
         return $paths;
-    }
-
-    public static function after_switch_theme(): void
-    {
-        if (get_option('scaffold_defaultPosts')) {
-            return;
-        }
-        wp_delete_post(1, true);// Sample Post
-        wp_delete_post(2, true);// Sample Page
-        wp_delete_post(3, true);// Privacy Policy Page
-        wp_delete_comment(1, true);// Sample Comment
-
-        // Create home page
-        $home_page = array(
-            'post_type' => 'page',
-            'post_title' => 'Home',
-            'post_status' => 'publish',
-            'post_author' => 1,
-            'post_name' => '',
-            'page_template' => 'home.php'
-        );
-        $post_id = wp_insert_post($home_page);
-        update_option('page_on_front', $post_id);
-        update_option('show_on_front', 'page');
-        update_post_meta($post_id, '_yoast_wpseo_metadesc', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
-
-        add_option('scaffold_defaultPosts', 'removed');
     }
 }
