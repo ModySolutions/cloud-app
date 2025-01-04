@@ -145,8 +145,8 @@ ini_set('display_errors', '0');
 /**
  * Multisite
  */
-Config::define('WP_ALLOW_MULTISITE', true);
-Config::define('MULTISITE', true);
+Config::define('WP_ALLOW_MULTISITE', false);
+Config::define('MULTISITE', false);
 Config::define('SUBDOMAIN_INSTALL', false);
 Config::define('DOMAIN_CURRENT_SITE', env('DOMAIN_CURRENT_SITE'));
 Config::define('PATH_CURRENT_SITE', env('PATH_CURRENT_SITE') ?: '/');
@@ -183,3 +183,5 @@ if (!defined('SRC_PATH')) {
 if (!defined('APP_PATH')) {
     define('APP_PATH', $root_dir . '/src/app');
 }
+
+define( 'WP_DEFAULT_THEME', 'app' );

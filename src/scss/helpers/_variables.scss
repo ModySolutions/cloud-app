@@ -29,7 +29,7 @@ $success-light: #4ba7629c;
 $success-dark: #0f5228;
 
 $danger: #c53030;
-$danger-light: #e04a4a94;
+$danger-light: rgba(224, 74, 74, 0.45);
 $danger-dark: #992424;
 
 $info: #3178c6;
@@ -215,6 +215,11 @@ $grid-template-values: (
         4: repeat(4, 1fr),
         5: repeat(5, 1fr)
 );
+
+//==================================================================
+// ALIGN VARIABLES
+//==================================================================
+$text-alignments: (left, right, center);
 
 :root {
   --base-font-size: #{$base-font-size};

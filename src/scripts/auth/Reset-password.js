@@ -1,56 +1,16 @@
-import validator from 'validator';
 import { __ } from '@wordpress/i18n';
+import Submit from "../tools/Submit";
 
 export default {
     form: document.getElementById('reset-password'),
+    submitButtonText: 'Reset password',
+    submitButtonLoadingText: 'Resetting password...',
+    submitButtonSuccessText: 'Password reset successfully!',
     init() {
         if (!this.form) return;
         this.submitButton = this.form.querySelector('button[type=submit]');
-        this.form.addEventListener('submit', this.submit.bind(this));
-    },
-    async submit(event) {
-        event.preventDefault();
-        const formData = new FormData(this.form);
-        const errors = this.validateForm(formData);
-
-        const authMessage = this.form.querySelector('.auth-message');
-
-        if (this.submitButton) {
-            this.submitButton.disabled = true;
-            this.submitButton.innerHTML = __('Resetting password...');
-        }
-
-        if (errors.length > 0) {
-            this.displayMessage(authMessage, errors[0], 'error');
-            if (this.submitButton) {
-                this.submitButton.disabled = false;
-                this.submitButton.innerHTML = __('Reset password');
-            }
-            return;
-        }
-
-        try {
-            const { success, data } = await this.resetPassword(formData);
-            if (!success) {
-                this.displayMessage(authMessage, data.message, 'error');
-                if (this.submitButton) {
-                    this.submitButton.disabled = false;
-                    this.submitButton.innerHTML = __('Reset password');
-                }
-            } else {
-                this.displayMessage(authMessage, data.message, 'success');
-                if (this.submitButton) {
-                    this.submitButton.innerHTML = __('Password reset successfully!');
-                }
-                location.href=data?.initial_page || App.site_url;
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            if (this.submitButton) {
-                this.submitButton.disabled = false;
-                this.submitButton.innerHTML = __('Reset password');
-            }
-        }
+        this.message = this.form.querySelector('.message');
+        this.form.addEventListener('submit', Submit.bind(this));
     },
     validateForm(data) {
         const errors = [];
@@ -78,15 +38,7 @@ export default {
         const pattern = /^(?=.*[A-Z])(?=.*[\W])(?=.*[a-zA-Z0-9]).{8,}$/;
         return pattern.test(password);
     },
-    displayMessage(container, message, type = 'error') {
-        if (!container) return;
-
-        container.textContent = message;
-        container.className = 'my-3 ' + `auth-message ${type === 'error' ?
-            'bg-danger-light text-danger-dark' : 'bg-success-light text-success-dark'}`;
-        container.style.display = 'block';
-    },
-    async resetPassword(formData) {
+    async process_submit(formData) {
         const data = new URLSearchParams();
         formData.forEach((value, key) => {
             data.append(key, value);

@@ -1,7 +1,7 @@
 <form action="javascript:;" id="reset-password" novalidate>
-    <div class="auth-message my-3"></div>
+    <div class="message"></div>
     <div class="form-group" x-data="{ open: false }">
-        <label for="password">{{ __('Password') }}</label>
+        <label for="password">{{ __('Password') }} <span class="text-danger">*</span></label>
         <input x-bind:type="open ? 'text' : 'password'" name="password" id="password" class="input-lg">
         <span class="toggle-password" @click="open = !open">
             <svg x-cloak x-show="open" x-transition xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px">
@@ -13,7 +13,7 @@
         </span>
     </div>
     <div class="form-group" x-data="{ open: false }">
-        <label for="confirm-password">{{ __('Confirm Password') }}</label>
+        <label for="confirm-password">{{ __('Confirm Password') }} <span class="text-danger">*</span></label>
         <input x-bind:type="open ? 'text' : 'password'" name="confirm-password" id="confirm-password" class="input-lg">
         <span class="toggle-password" @click="open = !open">
             <svg x-cloak x-show="open" x-transition xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px">

@@ -1,0 +1,51 @@
+@use '../helpers/variables';
+.wizard {
+  height: 100vh;
+  main {
+    width: 50%;
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+
+      img {
+        width: 50%;
+      }
+    }
+
+    .url-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      position: relative;
+
+      .network-url {
+        font-size: 1rem;
+        color: variables.$text;
+        background-color: variables.$white;
+        border: 1px solid variables.$light;
+        border-right: none;
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+        -moz-border-radius-bottomright: 0;
+        -moz-border-radius-topright: 0;
+        margin-right: 0;
+        white-space: nowrap;
+        width: auto;
+      }
+
+      .url-suffix {
+        flex-grow: 1;
+        font-size: 1rem;
+        border: 1px solid variables.$light;
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+        -moz-border-radius-bottomleft: 0;
+        -moz-border-radius-topleft: 0;
+        border-left: none;
+        margin-left: 0;
+      }
+    }
+  }
+}

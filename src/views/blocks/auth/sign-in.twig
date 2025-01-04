@@ -1,11 +1,11 @@
 <form id="sign-in" method="POST" novalidate>
-    <div class="auth-message my-3"></div>
+    <div class="message"></div>
     <div class="form-group">
-        <label class="text-charcoal-light" for="email">{{ __('Email') }}</label>
+        <label for="email">{{ __('Email') }} <span class="text-danger">*</span></label>
         <input type="email" name="email" id="email" class="input-lg" required>
     </div>
     <div class="form-group" x-data="{ open: false }">
-        <label class="text-charcoal-light" for="password">{{ __('Password') }}</label>
+        <label for="password">{{ __('Password') }} <span class="text-danger">*</span></label>
         <input x-bind:type="open ? 'text' : 'password'" name="password" id="password" class="input-lg" requried>
         <span class="toggle-password" @click="open = !open">
             <svg x-show="open" x-transition xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px">
@@ -17,7 +17,7 @@
         </span>
     </div>
     <div class="form-group">
-        <label class="text-charcoal-light" for="rememberme">
+        <label for="rememberme">
             <input type="checkbox" name="rememberme" id="rememberme">
             {{ __('Remember me') }}
         </label>

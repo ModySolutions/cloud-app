@@ -2,6 +2,203 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/.pnpm/@alpinejs+mask@3.14.8/node_modules/@alpinejs/mask/dist/module.esm.js":
+/*!*************************************************************************************************!*\
+  !*** ./node_modules/.pnpm/@alpinejs+mask@3.14.8/node_modules/@alpinejs/mask/dist/module.esm.js ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ module_default),
+/* harmony export */   mask: () => (/* binding */ src_default),
+/* harmony export */   stripDown: () => (/* binding */ stripDown)
+/* harmony export */ });
+// packages/mask/src/index.js
+function src_default(Alpine) {
+  Alpine.directive("mask", (el, { value, expression }, { effect, evaluateLater, cleanup }) => {
+    let templateFn = () => expression;
+    let lastInputValue = "";
+    queueMicrotask(() => {
+      if (["function", "dynamic"].includes(value)) {
+        let evaluator = evaluateLater(expression);
+        effect(() => {
+          templateFn = (input) => {
+            let result;
+            Alpine.dontAutoEvaluateFunctions(() => {
+              evaluator((value2) => {
+                result = typeof value2 === "function" ? value2(input) : value2;
+              }, { scope: {
+                // These are "magics" we'll make available to the x-mask:function:
+                "$input": input,
+                "$money": formatMoney.bind({ el })
+              } });
+            });
+            return result;
+          };
+          processInputValue(el, false);
+        });
+      } else {
+        processInputValue(el, false);
+      }
+      if (el._x_model) {
+        if (el._x_model.get() === el.value)
+          return;
+        if (el._x_model.get() === null && el.value === "")
+          return;
+        el._x_model.set(el.value);
+      }
+    });
+    const controller = new AbortController();
+    cleanup(() => {
+      controller.abort();
+    });
+    el.addEventListener("input", () => processInputValue(el), {
+      signal: controller.signal,
+      // Setting this as a capture phase listener to ensure it runs
+      // before wire:model or x-model added as a latent binding...
+      capture: true
+    });
+    el.addEventListener("blur", () => processInputValue(el, false), { signal: controller.signal });
+    function processInputValue(el2, shouldRestoreCursor = true) {
+      let input = el2.value;
+      let template = templateFn(input);
+      if (!template || template === "false")
+        return false;
+      if (lastInputValue.length - el2.value.length === 1) {
+        return lastInputValue = el2.value;
+      }
+      let setInput = () => {
+        lastInputValue = el2.value = formatInput(input, template);
+      };
+      if (shouldRestoreCursor) {
+        restoreCursorPosition(el2, template, () => {
+          setInput();
+        });
+      } else {
+        setInput();
+      }
+    }
+    function formatInput(input, template) {
+      if (input === "")
+        return "";
+      let strippedDownInput = stripDown(template, input);
+      let rebuiltInput = buildUp(template, strippedDownInput);
+      return rebuiltInput;
+    }
+  }).before("model");
+}
+function restoreCursorPosition(el, template, callback) {
+  let cursorPosition = el.selectionStart;
+  let unformattedValue = el.value;
+  callback();
+  let beforeLeftOfCursorBeforeFormatting = unformattedValue.slice(0, cursorPosition);
+  let newPosition = buildUp(
+    template,
+    stripDown(
+      template,
+      beforeLeftOfCursorBeforeFormatting
+    )
+  ).length;
+  el.setSelectionRange(newPosition, newPosition);
+}
+function stripDown(template, input) {
+  let inputToBeStripped = input;
+  let output = "";
+  let regexes = {
+    "9": /[0-9]/,
+    "a": /[a-zA-Z]/,
+    "*": /[a-zA-Z0-9]/
+  };
+  let wildcardTemplate = "";
+  for (let i = 0; i < template.length; i++) {
+    if (["9", "a", "*"].includes(template[i])) {
+      wildcardTemplate += template[i];
+      continue;
+    }
+    for (let j = 0; j < inputToBeStripped.length; j++) {
+      if (inputToBeStripped[j] === template[i]) {
+        inputToBeStripped = inputToBeStripped.slice(0, j) + inputToBeStripped.slice(j + 1);
+        break;
+      }
+    }
+  }
+  for (let i = 0; i < wildcardTemplate.length; i++) {
+    let found = false;
+    for (let j = 0; j < inputToBeStripped.length; j++) {
+      if (regexes[wildcardTemplate[i]].test(inputToBeStripped[j])) {
+        output += inputToBeStripped[j];
+        inputToBeStripped = inputToBeStripped.slice(0, j) + inputToBeStripped.slice(j + 1);
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+      break;
+  }
+  return output;
+}
+function buildUp(template, input) {
+  let clean = Array.from(input);
+  let output = "";
+  for (let i = 0; i < template.length; i++) {
+    if (!["9", "a", "*"].includes(template[i])) {
+      output += template[i];
+      continue;
+    }
+    if (clean.length === 0)
+      break;
+    output += clean.shift();
+  }
+  return output;
+}
+function formatMoney(input, delimiter = ".", thousands, precision = 2) {
+  if (input === "-")
+    return "-";
+  if (/^\D+$/.test(input))
+    return "9";
+  if (thousands === null || thousands === void 0) {
+    thousands = delimiter === "," ? "." : ",";
+  }
+  let addThousands = (input2, thousands2) => {
+    let output = "";
+    let counter = 0;
+    for (let i = input2.length - 1; i >= 0; i--) {
+      if (input2[i] === thousands2)
+        continue;
+      if (counter === 3) {
+        output = input2[i] + thousands2 + output;
+        counter = 0;
+      } else {
+        output = input2[i] + output;
+      }
+      counter++;
+    }
+    return output;
+  };
+  let minus = input.startsWith("-") ? "-" : "";
+  let strippedInput = input.replaceAll(new RegExp(`[^0-9\\${delimiter}]`, "g"), "");
+  let template = Array.from({ length: strippedInput.split(delimiter)[0].length }).fill("9").join("");
+  template = `${minus}${addThousands(template, thousands)}`;
+  if (precision > 0 && input.includes(delimiter))
+    template += `${delimiter}` + "9".repeat(precision);
+  queueMicrotask(() => {
+    if (this.el.value.endsWith(delimiter))
+      return;
+    if (this.el.value[this.el.selectionStart - 1] === delimiter) {
+      this.el.setSelectionRange(this.el.selectionStart - 1, this.el.selectionStart - 1);
+    }
+  });
+  return template;
+}
+
+// packages/mask/builds/module.js
+var module_default = src_default;
+
+
+
+/***/ }),
+
 /***/ "./node_modules/.pnpm/alpinejs@3.14.8/node_modules/alpinejs/dist/module.esm.js":
 /*!*************************************************************************************!*\
   !*** ./node_modules/.pnpm/alpinejs@3.14.8/node_modules/alpinejs/dist/module.esm.js ***!
@@ -3433,57 +3630,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _tools_Submit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../tools/Submit */ "./src/scripts/tools/Submit.js");
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   form: document.getElementById('reset-password'),
+  submitButtonText: 'Reset password',
+  submitButtonLoadingText: 'Resetting password...',
+  submitButtonSuccessText: 'Password reset successfully!',
   init() {
     if (!this.form) return;
     this.submitButton = this.form.querySelector('button[type=submit]');
-    this.form.addEventListener('submit', this.submit.bind(this));
-  },
-  async submit(event) {
-    event.preventDefault();
-    const formData = new FormData(this.form);
-    const errors = this.validateForm(formData);
-    const authMessage = this.form.querySelector('.auth-message');
-    if (this.submitButton) {
-      this.submitButton.disabled = true;
-      this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Resetting password...');
-    }
-    if (errors.length > 0) {
-      this.displayMessage(authMessage, errors[0], 'error');
-      if (this.submitButton) {
-        this.submitButton.disabled = false;
-        this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Reset password');
-      }
-      return;
-    }
-    try {
-      const {
-        success,
-        data
-      } = await this.resetPassword(formData);
-      if (!success) {
-        this.displayMessage(authMessage, data.message, 'error');
-        if (this.submitButton) {
-          this.submitButton.disabled = false;
-          this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Reset password');
-        }
-      } else {
-        this.displayMessage(authMessage, data.message, 'success');
-        if (this.submitButton) {
-          this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Password reset successfully!');
-        }
-        location.href = data?.initial_page || App.site_url;
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      if (this.submitButton) {
-        this.submitButton.disabled = false;
-        this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Reset password');
-      }
-    }
+    this.message = this.form.querySelector('.message');
+    this.form.addEventListener('submit', _tools_Submit__WEBPACK_IMPORTED_MODULE_1__["default"].bind(this));
   },
   validateForm(data) {
     const errors = [];
@@ -3506,13 +3665,7 @@ __webpack_require__.r(__webpack_exports__);
     const pattern = /^(?=.*[A-Z])(?=.*[\W])(?=.*[a-zA-Z0-9]).{8,}$/;
     return pattern.test(password);
   },
-  displayMessage(container, message, type = 'error') {
-    if (!container) return;
-    container.textContent = message;
-    container.className = 'my-3 ' + `auth-message ${type === 'error' ? 'bg-danger-light text-danger-dark' : 'bg-success-light text-success-dark'}`;
-    container.style.display = 'block';
-  },
-  async resetPassword(formData) {
+  async process_submit(formData) {
     const data = new URLSearchParams();
     formData.forEach((value, key) => {
       data.append(key, value);
@@ -3544,66 +3697,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! validator */ "./node_modules/.pnpm/validator@13.12.0/node_modules/validator/index.js");
-/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(validator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! validator */ "./node_modules/.pnpm/validator@13.12.0/node_modules/validator/index.js");
+/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(validator__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _tools_Submit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../tools/Submit */ "./src/scripts/tools/Submit.js");
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   form: document.getElementById('sign-in'),
+  submitButtonText: 'Sign in',
+  submitButtonLoadingText: 'Signing in...',
+  submitButtonSuccessText: 'Opening your dashboard...',
   init() {
     if (!this.form) return;
     this.submitButton = this.form.querySelector('button[type=submit]');
-    this.form.addEventListener('submit', this.submit.bind(this));
-  },
-  async submit(event) {
-    event.preventDefault();
-    const formData = new FormData(this.form);
-    const errors = this.validateForm(formData);
-    const authMessage = this.form.querySelector('.auth-message');
-    if (this.submitButton) {
-      this.submitButton.disabled = true;
-      this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Signing in...');
-    }
-    if (errors.length > 0) {
-      this.displayMessage(authMessage, errors[0], 'error');
-      if (this.submitButton) {
-        this.submitButton.disabled = false;
-        this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Sign in');
-      }
-      return;
-    }
-    try {
-      const {
-        success,
-        data
-      } = await this.authenticate(formData);
-      if (!success) {
-        this.displayMessage(authMessage, data.message, 'error');
-        if (this.submitButton) {
-          this.submitButton.disabled = false;
-          this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Sign in');
-        }
-      } else {
-        this.displayMessage(authMessage, data.message, 'success');
-        if (this.submitButton) {
-          this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Opening your panel...');
-        }
-        location.href = data?.initial_page || App.site_url;
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      if (this.submitButton) {
-        this.submitButton.disabled = false;
-        this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Sign in');
-      }
-    }
+    this.message = this.form.querySelector('.message');
+    this.form.addEventListener('submit', _tools_Submit__WEBPACK_IMPORTED_MODULE_1__["default"].bind(this));
   },
   validateForm(data) {
     const errors = [];
     const email = data.get('email');
-    if (!email || !validator__WEBPACK_IMPORTED_MODULE_1___default().isEmail(email)) {
+    if (!email || !validator__WEBPACK_IMPORTED_MODULE_2___default().isEmail(email)) {
       errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Invalid email address'));
     }
     const password = data.get('password');
@@ -3612,13 +3728,7 @@ __webpack_require__.r(__webpack_exports__);
     }
     return errors;
   },
-  displayMessage(container, message, type = 'error') {
-    if (!container) return;
-    container.innerHTML = message;
-    container.className = 'my-3 ' + `auth-message ${type === 'error' ? 'bg-danger-light text-danger-dark' : 'bg-success-light text-success-dark'}`;
-    container.style.display = 'block';
-  },
-  async authenticate(formData) {
+  async process_submit(formData) {
     const data = new URLSearchParams();
     formData.forEach((value, key) => {
       data.append(key, value);
@@ -3650,82 +3760,254 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! validator */ "./node_modules/.pnpm/validator@13.12.0/node_modules/validator/index.js");
-/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(validator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! validator */ "./node_modules/.pnpm/validator@13.12.0/node_modules/validator/index.js");
+/* harmony import */ var validator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(validator__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _tools_Submit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../tools/Submit */ "./src/scripts/tools/Submit.js");
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   form: document.getElementById('sign-up'),
+  submitButtonText: 'Sign up',
+  submitButtonLoadingText: 'Signing up...',
+  submitButtonSuccessText: 'Check your email...',
   init() {
     if (!this.form) return;
     this.submitButton = this.form.querySelector('button[type=submit]');
-    this.form.addEventListener('submit', this.submit.bind(this));
-  },
-  async submit(event) {
-    event.preventDefault();
-    const formData = new FormData(this.form);
-    const errors = this.validateForm(formData);
-    const authMessage = this.form.querySelector('.auth-message');
-    if (this.submitButton) {
-      this.submitButton.disabled = true;
-      this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Signing up...');
-    }
-    if (errors.length > 0) {
-      this.displayMessage(authMessage, errors[0], 'error');
-      if (this.submitButton) {
-        this.submitButton.disabled = false;
-        this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Sign up');
-      }
-      return;
-    }
-    try {
-      const {
-        success,
-        data
-      } = await this.sign_up(formData);
-      if (!success) {
-        this.displayMessage(authMessage, data.message, 'error');
-        if (this.submitButton) {
-          this.submitButton.disabled = false;
-          this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Sign up');
-        }
-      } else {
-        this.displayMessage(authMessage, data.message, 'success');
-        this.form.querySelectorAll('div:not(.auth-message)').forEach(div => div.remove());
-        if (this.submitButton) {
-          this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Check your email...');
-        }
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      if (this.submitButton) {
-        this.submitButton.disabled = false;
-        this.submitButton.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Sign up');
-      }
-    }
+    this.message = this.form.querySelector('.message');
+    this.form.addEventListener('submit', _tools_Submit__WEBPACK_IMPORTED_MODULE_1__["default"].bind(this));
   },
   validateForm(data) {
     const errors = [];
     const email = data.get('email');
-    if (!email || !validator__WEBPACK_IMPORTED_MODULE_1___default().isEmail(email)) {
+    if (!email || !validator__WEBPACK_IMPORTED_MODULE_2___default().isEmail(email)) {
       errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Invalid email address'));
     }
     return errors;
   },
-  displayMessage(container, message, type = 'error') {
-    if (!container) return;
-    container.textContent = message;
-    container.className = 'my-3 ' + `auth-message ${type === 'error' ? 'bg-danger-light text-danger-dark' : 'bg-success-light text-success-dark'}`;
-    container.style.display = 'block';
-  },
-  async sign_up(formData) {
+  async process_submit(formData) {
     const data = new URLSearchParams();
     formData.forEach((value, key) => {
       data.append(key, value);
     });
     data.append('action', 'sign_up');
+    const response = await fetch(App.ajax_url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: data.toString()
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  }
+});
+
+/***/ }),
+
+/***/ "./src/scripts/tools/Submit.js":
+/*!*************************************!*\
+  !*** ./src/scripts/tools/Submit.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _tools_Utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../tools/Utils */ "./src/scripts/tools/Utils.js");
+
+/* harmony default export */ async function __WEBPACK_DEFAULT_EXPORT__(event) {
+  event.preventDefault();
+  const formData = new FormData(this.form);
+  const errors = this.validateForm(formData);
+  _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].toggleButton(this.submitButton, true, this.submitButtonLoadingText);
+  if (errors.length > 0) {
+    _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].displayMessage(this.message, errors[0], 'error');
+    _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
+    return;
+  }
+  try {
+    const {
+      success,
+      data: {
+        initial_page,
+        message
+      }
+    } = await this.process_submit(formData);
+    if (!success) {
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].displayMessage(this.message, message, 'error');
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
+    } else {
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].displayMessage(this.message, message, 'success');
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].toggleButton(this.submitButton, false, this.submitButtonSuccessText);
+      if (initial_page) {
+        location.href = initial_page;
+      }
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
+  }
+}
+
+/***/ }),
+
+/***/ "./src/scripts/tools/Utils.js":
+/*!************************************!*\
+  !*** ./src/scripts/tools/Utils.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var alpinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alpinejs */ "./node_modules/.pnpm/alpinejs@3.14.8/node_modules/alpinejs/dist/module.esm.js");
+/* harmony import */ var _kebabcase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./kebabcase */ "./src/scripts/tools/kebabcase.js");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  init() {
+    alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].magic('kebabcase', () => {
+      return subject => (0,_kebabcase__WEBPACK_IMPORTED_MODULE_1__["default"])(subject);
+    });
+  },
+  toggleButton(button, disabled, text) {
+    if (button) {
+      button.disabled = disabled;
+      button.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)(text);
+    }
+  },
+  displayMessage(container, message, type = 'error', spacing = 2) {
+    if (!container) return;
+    container.innerHTML = message;
+    let containerClassNames = [`my-${spacing}`, `p-${spacing}`, 'rounded', 'radius-sm', 'message'];
+    switch (type) {
+      case 'error':
+        containerClassNames.push('bg-danger-light');
+        containerClassNames.push('text-danger-dark');
+        break;
+      case 'success':
+        containerClassNames.push('bg-success-light');
+        containerClassNames.push('text-success-dark');
+        break;
+      case 'info':
+        containerClassNames.push('bg-info-light');
+        containerClassNames.push('text-info-dark');
+        break;
+      case 'warning':
+        containerClassNames.push('bg-warning-light');
+        containerClassNames.push('text-warning-dark');
+        break;
+    }
+    container.className = containerClassNames.join(' ');
+    container.style.display = 'block';
+  }
+});
+
+/***/ }),
+
+/***/ "./src/scripts/tools/kebabcase.js":
+/*!****************************************!*\
+  !*** ./src/scripts/tools/kebabcase.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ toKebabCase)
+/* harmony export */ });
+function toKebabCase(str) {
+  return str.replace(/([a-z0-9])([A-Z])/g, '$1-$2') // Convierte camelCase a kebab-case
+  .replace(/\s+/g, '-') // Reemplaza los espacios por guiones
+  .toLowerCase(); // Convierte todo a minúsculas
+}
+
+/***/ }),
+
+/***/ "./src/scripts/wizard/Setup.js":
+/*!*************************************!*\
+  !*** ./src/scripts/wizard/Setup.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _tools_Utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../tools/Utils */ "./src/scripts/tools/Utils.js");
+/* harmony import */ var _tools_Submit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../tools/Submit */ "./src/scripts/tools/Submit.js");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  form: document.getElementById('create-space'),
+  space_name: document.getElementById('space_name'),
+  submitButtonText: 'Create my Space',
+  submitButtonLoadingText: 'Creating your Space...',
+  submitButtonSuccessText: 'Space created. Redirecting...',
+  init() {
+    if (!this.form) return;
+    this.submitButton = this.form.querySelector('button[type=submit]');
+    this.message = this.form.querySelector('.message');
+    this.form.addEventListener('submit', _tools_Submit__WEBPACK_IMPORTED_MODULE_2__["default"].bind(this));
+    this.space_name.addEventListener('blur', this.check_site_name_exists.bind(this));
+  },
+  validateForm(data) {
+    const errors = [];
+    const blog_title = data.get('blog_title');
+    const space_name = data.get('space_name');
+    if (!blog_title || blog_title.trim().length === 0) {
+      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Your company name is required.'));
+    }
+    if (!space_name) {
+      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The site name is required'));
+    }
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(space_name)) {
+      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The site name should be URL friendly. No spaces, no weird characters.'));
+    }
+    return errors;
+  },
+  async check_site_name_exists(event) {
+    const data = new URLSearchParams();
+    data.append('action', 'check_space_name_exists');
+    data.append('space_name', this.space_name.value);
+    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, 'Checking if your URL is available...');
+    const response = await fetch(App.ajax_url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: data.toString()
+    });
+    if (!response.ok) {
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
+      throw new Error('Network response was not ok');
+    }
+    const datum = await response.json();
+    if (datum?.data?.exists) {
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].displayMessage(this.message, datum?.data?.message, 'error');
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, 'Fix the URL to create your Space');
+    } else {
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
+    }
+  },
+  async process_submit(formData) {
+    const data = new URLSearchParams();
+    formData.forEach((value, key) => {
+      data.append(key, value);
+    });
+    data.append('action', 'create_site');
     const response = await fetch(App.ajax_url, {
       method: 'POST',
       headers: {
@@ -11213,9 +11495,15 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scss_app_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../scss/app.scss */ "./src/scss/app.scss");
 /* harmony import */ var alpinejs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! alpinejs */ "./node_modules/.pnpm/alpinejs@3.14.8/node_modules/alpinejs/dist/module.esm.js");
-/* harmony import */ var _auth_Sign_in__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./auth/Sign-in */ "./src/scripts/auth/Sign-in.js");
-/* harmony import */ var _auth_Sign_up__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./auth/Sign-up */ "./src/scripts/auth/Sign-up.js");
-/* harmony import */ var _auth_Reset_password__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./auth/Reset-password */ "./src/scripts/auth/Reset-password.js");
+/* harmony import */ var _alpinejs_mask__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @alpinejs/mask */ "./node_modules/.pnpm/@alpinejs+mask@3.14.8/node_modules/@alpinejs/mask/dist/module.esm.js");
+/* harmony import */ var _auth_Sign_in__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./auth/Sign-in */ "./src/scripts/auth/Sign-in.js");
+/* harmony import */ var _auth_Sign_up__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./auth/Sign-up */ "./src/scripts/auth/Sign-up.js");
+/* harmony import */ var _auth_Reset_password__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./auth/Reset-password */ "./src/scripts/auth/Reset-password.js");
+/* harmony import */ var _tools_Utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./tools/Utils */ "./src/scripts/tools/Utils.js");
+/* harmony import */ var _wizard_Setup__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./wizard/Setup */ "./src/scripts/wizard/Setup.js");
+
+
+
 
 
 
@@ -11223,10 +11511,17 @@ __webpack_require__.r(__webpack_exports__);
 
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"];
 window.addEventListener('load', () => {
-  _auth_Sign_up__WEBPACK_IMPORTED_MODULE_3__["default"].init();
-  _auth_Sign_in__WEBPACK_IMPORTED_MODULE_2__["default"].init();
-  _auth_Reset_password__WEBPACK_IMPORTED_MODULE_4__["default"].init();
+  _tools_Utils__WEBPACK_IMPORTED_MODULE_6__["default"].init();
+  _auth_Sign_up__WEBPACK_IMPORTED_MODULE_4__["default"].init();
+  _auth_Sign_in__WEBPACK_IMPORTED_MODULE_3__["default"].init();
+  _auth_Reset_password__WEBPACK_IMPORTED_MODULE_5__["default"].init();
+  _wizard_Setup__WEBPACK_IMPORTED_MODULE_7__["default"].init();
+  alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_alpinejs_mask__WEBPACK_IMPORTED_MODULE_2__["default"]);
   alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].start();
+});
+document.addEventListener('DOMContentLoaded', () => {
+  const userLanguage = navigator.language || navigator.userLanguage;
+  document.cookie = `browser_language=${userLanguage}; path=/; max-age=${60 * 60 * 24 * 7}`;
 });
 })();
 

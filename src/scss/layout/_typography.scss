@@ -166,3 +166,9 @@ ul {
         color: $color;
     }
 }
+
+@each $text-alignment in variables.$text-alignments {
+    .text-#{$text-alignment} {
+        text-align: #{$text-alignment};
+    }
+}

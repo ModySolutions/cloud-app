@@ -798,7 +798,7 @@ html {
   background-color: #f5f5f5;
 }
 
-body:not(.page-template-auth-template) {
+body.home {
   display: grid;
   grid-template-columns: 64px 264px 1fr;
   grid-template-rows: auto;
@@ -922,7 +922,7 @@ html.noscroll.overlay {
 }
 
 .bg-danger-light {
-  background-color: rgba(224, 74, 74, 0.5803921569);
+  background-color: rgba(224, 74, 74, 0.45);
 }
 
 .bg-danger-dark {
@@ -1295,7 +1295,7 @@ ul li::before {
 }
 
 .text-danger-light {
-  color: rgba(224, 74, 74, 0.5803921569);
+  color: rgba(224, 74, 74, 0.45);
 }
 
 .text-danger-dark {
@@ -1368,6 +1368,18 @@ ul li::before {
 
 .text-grey-90 {
   color: #1a1a1a;
+}
+
+.text-left {
+  text-align: right;
+}
+
+.text-right {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
 }
 
 .mt-0 {
@@ -1917,7 +1929,7 @@ button.btn-danger, .btn.btn-danger {
   background-color: #c53030;
 }
 button.btn-danger-light, .btn.btn-danger-light {
-  background-color: rgba(224, 74, 74, 0.5803921569);
+  background-color: rgba(224, 74, 74, 0.45);
 }
 button.btn-danger-dark, .btn.btn-danger-dark {
   background-color: #992424;
@@ -2043,8 +2055,8 @@ button.btn-outline.btn-danger, .btn.btn-outline.btn-danger {
   color: #c53030;
 }
 button.btn-outline.btn-danger-light, .btn.btn-outline.btn-danger-light {
-  border-color: rgba(224, 74, 74, 0.5803921569);
-  color: rgba(224, 74, 74, 0.5803921569);
+  border-color: rgba(224, 74, 74, 0.45);
+  color: rgba(224, 74, 74, 0.45);
 }
 button.btn-outline.btn-danger-dark, .btn.btn-outline.btn-danger-dark {
   border-color: #992424;
@@ -2169,4 +2181,50 @@ label {
 .auth main form .auth-message {
   padding: 1rem;
   border-radius: 0.5rem;
+}
+
+.wizard {
+  height: 100vh;
+}
+.wizard main {
+  width: 50%;
+}
+.wizard main .logo {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.wizard main .logo img {
+  width: 50%;
+}
+.wizard main .url-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+.wizard main .url-input-wrapper .network-url {
+  font-size: 1rem;
+  color: #333333;
+  background-color: #FFFFFF;
+  border: 1px solid #e0e0e0;
+  border-left: none;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  -moz-border-radius-bottomleft: 0;
+  -moz-border-radius-topleft: 0;
+  margin-left: 0;
+  white-space: nowrap;
+  width: auto;
+}
+.wizard main .url-input-wrapper .url-suffix {
+  flex-grow: 1;
+  font-size: 1rem;
+  border: 1px solid #e0e0e0;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  -moz-border-radius-bottomright: 0;
+  -moz-border-radius-topright: 0;
+  border-right: none;
+  margin-right: 0;
 }

@@ -50,7 +50,6 @@
     "roots/wp-config": "1.0.0",
     "roots/wp-password-bcrypt": "1.2.0",
     "wpackagist-theme/twentytwentyfive": "^1.0",
-    "roots/multisite-url-fixer": "^1.1",
     "timber/timber": "^2.3",
     "wpengine/advanced-custom-fields-pro": "*"
   },

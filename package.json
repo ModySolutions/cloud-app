@@ -18,6 +18,7 @@
   },
   "homepage": "https://bitbucket.org/mediamechanics/c-wirthy-wordpress#readme",
   "dependencies": {
+    "@alpinejs/mask": "^3.14.8",
     "@wordpress/components": "^28.1.0",
     "@wordpress/i18n": "^5.14.0",
     "alpinejs": "^3.14.8",

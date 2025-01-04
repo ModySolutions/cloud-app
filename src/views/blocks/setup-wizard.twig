@@ -1,0 +1,5 @@
+<div class="wizard-form flex flex-column justify-center p-4 rounded radius-md bg-white">
+    {% include '@app/common/logos/logo.twig' with { link: site_url } %}
+    {% include '@app/blocks/setup-wizard/intro.twig' %}
+    {% include '@app/blocks/setup-wizard/form.twig' with {network_url: network_url} %}
+</div>
