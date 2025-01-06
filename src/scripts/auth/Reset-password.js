@@ -58,5 +58,9 @@ export default {
         }
 
         return response.json();
+    },
+    store_install_key(data) {
+        const { install_key } = data;
+        localStorage.setItem('install_key', install_key);
     }
 };

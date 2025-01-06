@@ -1,6 +1,6 @@
 {
     "key": "group_6776f6bce4390",
-    "title": "OPTIONS - WIZARD",
+    "title": "OPTIONS - CREATE SPACE",
     "fields": [
         {
             "key": "field_6776f6bd25c96",
@@ -35,7 +35,7 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "setup-wizard"
+                "value": "create-space"
             }
         ]
     ],
@@ -48,5 +48,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1735849734
+    "modified": 1736186724
 }

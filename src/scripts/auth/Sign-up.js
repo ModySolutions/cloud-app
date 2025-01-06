@@ -41,5 +41,8 @@ export default {
         }
 
         return response.json();
+    },
+    hide_form() {
+        this.form.querySelectorAll('div:not(.message)').forEach(div => div.remove());
     }
 }

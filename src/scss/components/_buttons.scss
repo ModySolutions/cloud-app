@@ -46,7 +46,7 @@
         width: 100%;
     }
 
-    &:hover, &:focus {
+    &:hover, &:focus, &[disabled] {
         background-color: color.adjust(variables.$primary, $lightness: 10%);
     }
 

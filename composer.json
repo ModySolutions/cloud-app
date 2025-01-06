@@ -51,7 +51,9 @@
     "roots/wp-password-bcrypt": "1.2.0",
     "wpackagist-theme/twentytwentyfive": "^1.0",
     "timber/timber": "^2.3",
-    "wpengine/advanced-custom-fields-pro": "*"
+    "wpengine/advanced-custom-fields-pro": "*",
+    "wpackagist-plugin/wp-crontrol": "^1.17",
+    "ext-pdo": "*"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",

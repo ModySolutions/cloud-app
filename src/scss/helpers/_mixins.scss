@@ -185,3 +185,52 @@
         @include border-radius(variables.$border-radius-lg);
     }
 }
+
+@mixin animate-display($duration: 0.5s, $easing: ease-in-out) {
+    opacity: 0;
+    transition: opacity $duration $easing;
+
+    &.is-visible {
+        display: block;
+        opacity: 1;
+    }
+
+    &.is-hidden {
+        display: none;
+        opacity: 0;
+    }
+}
+
+.animate-display {
+    display: none;
+    @include animate-display();
+
+    &.is-visible {
+        display: block;
+    }
+}
+
+@mixin spin {
+    animation: spin 1s linear infinite;
+}
+
+@each $color, $color_value in variables.$loading_color_list {
+    @each $size, $size_value in variables.$loading_icon_sizes {
+        .loading-icon-#{$color}-#{$size} {
+            width: $size_value;
+            height: $size_value;
+            background: url('images/loading-icon-#{$color}.png') no-repeat center;
+            background-size: contain;
+            @include spin;
+        }
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

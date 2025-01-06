@@ -232,3 +232,19 @@ $text-alignments: (left, right, center);
     --color-#{'' + $color_key}: $color;
   }
 }
+
+//==================================================================
+// LOADING VARIABLES
+//==================================================================
+$loading_color_list: (
+        primary: $primary,
+        black: $black,
+        white: $white
+);
+$loading_icon_sizes: (
+        1: 16px,
+        2: 25px,
+        3: 35px,
+        4: 50px,
+        5: 60px
+);

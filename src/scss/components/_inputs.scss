@@ -17,4 +17,8 @@ input {
   &:focus {
     box-shadow: 0 0 .3rem .3rem variables.$primary-light;
   }
+
+  &[disabled] {
+    background-color: variables.$background;
+  }
 }

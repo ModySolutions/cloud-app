@@ -3682,6 +3682,12 @@ __webpack_require__.r(__webpack_exports__);
       throw new Error('Network response was not ok');
     }
     return response.json();
+  },
+  store_install_key(data) {
+    const {
+      install_key
+    } = data;
+    localStorage.setItem('install_key', install_key);
   }
 });
 
@@ -3804,6 +3810,9 @@ __webpack_require__.r(__webpack_exports__);
       throw new Error('Network response was not ok');
     }
     return response.json();
+  },
+  hide_form() {
+    this.form.querySelectorAll('div:not(.message)').forEach(div => div.remove());
   }
 });
 
@@ -3825,7 +3834,8 @@ __webpack_require__.r(__webpack_exports__);
   event.preventDefault();
   const formData = new FormData(this.form);
   const errors = this.validateForm(formData);
-  _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].toggleButton(this.submitButton, true, this.submitButtonLoadingText);
+  _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].toggleButton(this.submitButton, true, this.submitButtonLoadingText, 'white');
+  _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].disableFields(this.form);
   if (errors.length > 0) {
     _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].displayMessage(this.message, errors[0], 'error');
     _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
@@ -3836,15 +3846,22 @@ __webpack_require__.r(__webpack_exports__);
       success,
       data: {
         initial_page,
-        message
+        message,
+        callback,
+        callback_data
       }
     } = await this.process_submit(formData);
     if (!success) {
       _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].displayMessage(this.message, message, 'error');
       _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].enableFields(this.form);
     } else {
       _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].displayMessage(this.message, message, 'success');
       _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].toggleButton(this.submitButton, false, this.submitButtonSuccessText);
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].enableFields(this.form);
+      if (callback) {
+        this[callback](callback_data);
+      }
       if (initial_page) {
         location.href = initial_page;
       }
@@ -3880,16 +3897,39 @@ __webpack_require__.r(__webpack_exports__);
       return subject => (0,_kebabcase__WEBPACK_IMPORTED_MODULE_1__["default"])(subject);
     });
   },
-  toggleButton(button, disabled, text) {
+  toggleButton(button, disabled, text, loading = undefined, size = 1) {
     if (button) {
       button.disabled = disabled;
-      button.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)(text);
+      if (loading) {
+        const loader = this.loading(loading, size);
+        button.innerHTML = '';
+        button.appendChild(loader);
+        const textContainer = document.createElement('span');
+        textContainer.className = 'ml-1';
+        textContainer.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)(text);
+        button.appendChild(textContainer);
+      } else {
+        button.innerHTML = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)(text);
+      }
     }
+  },
+  loading(color, size) {
+    const validColors = ['primary', 'black', 'white'];
+    const validSizes = [1, 2, 3, 4, 5];
+    if (!validColors.includes(color)) {
+      throw new Error(`Invalid color: ${color}. Valid options are ${validColors.join(', ')}.`);
+    }
+    if (!validSizes.includes(size)) {
+      throw new Error(`Invalid size: ${size}. Valid options are ${validSizes.join(', ')}.`);
+    }
+    const loadingIcon = document.createElement('span');
+    loadingIcon.className = `loading-icon-${color}-${size}`;
+    return loadingIcon;
   },
   displayMessage(container, message, type = 'error', spacing = 2) {
     if (!container) return;
     container.innerHTML = message;
-    let containerClassNames = [`my-${spacing}`, `p-${spacing}`, 'rounded', 'radius-sm', 'message'];
+    let containerClassNames = [`my-${spacing}`, `p-${spacing}`, 'rounded', 'radius-sm', 'message', 'animate-display', 'is-visible'];
     switch (type) {
       case 'error':
         containerClassNames.push('bg-danger-light');
@@ -3910,6 +3950,21 @@ __webpack_require__.r(__webpack_exports__);
     }
     container.className = containerClassNames.join(' ');
     container.style.display = 'block';
+  },
+  hideMessage(container) {
+    if (!container) return;
+    container.innerHTML = '';
+    container.className = 'animate-display is-hidden';
+  },
+  disableFields(element, selector = 'input') {
+    element.querySelectorAll(selector).forEach(element => {
+      element.disabled = true;
+    });
+  },
+  enableFields(element, selector = 'input') {
+    element.querySelectorAll(selector).forEach(element => {
+      element.disabled = false;
+    });
   }
 });
 
@@ -3952,37 +4007,46 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   form: document.getElementById('create-space'),
+  company_name: document.getElementById('company_name'),
   space_name: document.getElementById('space_name'),
   submitButtonText: 'Create my Space',
   submitButtonLoadingText: 'Creating your Space...',
   submitButtonSuccessText: 'Space created. Redirecting...',
+  timer: null,
   init() {
     if (!this.form) return;
     this.submitButton = this.form.querySelector('button[type=submit]');
     this.message = this.form.querySelector('.message');
     this.form.addEventListener('submit', _tools_Submit__WEBPACK_IMPORTED_MODULE_2__["default"].bind(this));
     this.space_name.addEventListener('blur', this.check_site_name_exists.bind(this));
+    this.company_name.addEventListener('blur', this.check_site_name_exists.bind(this));
   },
   validateForm(data) {
     const errors = [];
-    const blog_title = data.get('blog_title');
+    const company_name = data.get('company_name');
     const space_name = data.get('space_name');
-    if (!blog_title || blog_title.trim().length === 0) {
+    if (!company_name || company_name.trim().length === 0) {
       errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Your company name is required.'));
     }
     if (!space_name) {
-      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The site name is required'));
+      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The space name is required'));
     }
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(space_name)) {
-      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The site name should be URL friendly. No spaces, no weird characters.'));
+      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The space name should be URL friendly. <em>No spaces, no special characters</em>.'));
     }
     return errors;
   },
   async check_site_name_exists(event) {
     const data = new URLSearchParams();
+    const space_name = document.getElementById('space_name').value;
+    if (!space_name) {
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].displayMessage(this.message, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The space name is required.'), 'error');
+      return;
+    }
     data.append('action', 'check_space_name_exists');
     data.append('space_name', this.space_name.value);
-    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, 'Checking if your URL is available...');
+    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].hideMessage(this.message);
+    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, 'Checking if your URL is available...', 'white');
     const response = await fetch(App.ajax_url, {
       method: 'POST',
       headers: {
@@ -3992,12 +4056,12 @@ __webpack_require__.r(__webpack_exports__);
     });
     if (!response.ok) {
       _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
-      throw new Error('Network response was not ok');
+      throw new Error('Network response was not ok.');
     }
     const datum = await response.json();
     if (datum?.data?.exists) {
       _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].displayMessage(this.message, datum?.data?.message, 'error');
-      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, 'Fix the URL to create your Space');
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, 'Fix the site name to create your Space.');
     } else {
       _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
     }
@@ -4007,7 +4071,11 @@ __webpack_require__.r(__webpack_exports__);
     formData.forEach((value, key) => {
       data.append(key, value);
     });
-    data.append('action', 'create_site');
+    const install_key = localStorage.getItem('install_key');
+    if (install_key) {
+      data.append('install_key', install_key);
+    }
+    data.append('action', 'create_space');
     const response = await fetch(App.ajax_url, {
       method: 'POST',
       headers: {
@@ -4016,9 +4084,55 @@ __webpack_require__.r(__webpack_exports__);
       body: data.toString()
     });
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error('Network response was not ok.');
     }
     return response.json();
+  },
+  poll_check_finished_install(callback_data) {
+    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, this.submitButtonLoadingText, 'white');
+    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].disableFields(this.form);
+    const {
+      queue_id
+    } = callback_data;
+    const intervalId = setInterval(async () => {
+      const {
+        success,
+        data: {
+          message,
+          done,
+          ping_page
+        }
+      } = await this.check_finished_install(queue_id);
+      if (done) {
+        clearInterval(intervalId);
+        _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, message, 'white');
+        if (ping_page) {
+          location.href = ping_page;
+        }
+      }
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, this.submitButtonLoadingText, 'white');
+    }, 3 * 1000);
+  },
+  async check_finished_install(queue_ui) {
+    const data = new URLSearchParams({
+      'action': 'check_setup_finished',
+      'queue_id': queue_ui
+    });
+    try {
+      const response = await fetch(App.ajax_url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: data.toString()
+      });
+      if (!response.ok) {
+        return false;
+      }
+      return await response.json();
+    } catch (error) {
+      return false;
+    }
   }
 });
 

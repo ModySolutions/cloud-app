@@ -28,16 +28,36 @@ $root_dir = dirname(__DIR__);
  *
  * @var string
  */
-$webroot_dir = $root_dir . '/web';
+$webroot_dir = $root_dir.'/web';
 
 /**
  * Use Dotenv to set required environment variables and load .env file in root
  * .env.local will override .env if it exists
  */
-if (file_exists($root_dir . '/.env')) {
-    $env_files = file_exists($root_dir . '/.env.local')
+if (file_exists($root_dir.'/.env')) {
+    if (!function_exists('app_get_subdomain')) {
+        function app_get_subdomain(): string {
+            $host = parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST) ?? $_SERVER['HTTP_HOST'];
+            $parts = explode('.', $host);
+
+            if (count($parts) > 2) {
+                array_pop($parts);
+                array_pop($parts);
+            }
+            return implode('.', $parts);
+        }
+    }
+
+    $env_files = file_exists($root_dir.'/.env.local')
         ? ['.env', '.env.local']
         : ['.env'];
+
+    $paths = [$root_dir];
+
+    $sub_domain = app_get_subdomain();
+    if ($sub_domain && file_exists("{$root_dir}/config/sites/{$sub_domain}/.env")) {
+        $paths[] = "{$root_dir}/config/sites/{$sub_domain}";
+    }
 
     $repository = Dotenv\Repository\RepositoryBuilder::createWithNoAdapters()
         ->addAdapter(Dotenv\Repository\Adapter\EnvConstAdapter::class)
@@ -45,7 +65,7 @@ if (file_exists($root_dir . '/.env')) {
         ->immutable()
         ->make();
 
-    $dotenv = Dotenv\Dotenv::create($repository, $root_dir, $env_files, false);
+    $dotenv = Dotenv\Dotenv::create($repository, $paths, $env_files, false);
     $dotenv->load();
 
     $dotenv->required(['WP_HOME', 'WP_SITEURL']);
@@ -77,8 +97,8 @@ Config::define('WP_SITEURL', env('WP_SITEURL'));
  * Custom Content Directory
  */
 Config::define('CONTENT_DIR', '/app');
-Config::define('WP_CONTENT_DIR', $webroot_dir . Config::get('CONTENT_DIR'));
-Config::define('WP_CONTENT_URL', Config::get('WP_HOME') . Config::get('CONTENT_DIR'));
+Config::define('WP_CONTENT_DIR', $webroot_dir.Config::get('CONTENT_DIR'));
+Config::define('WP_CONTENT_URL', Config::get('WP_HOME').Config::get('CONTENT_DIR'));
 
 /**
  * DB settings
@@ -161,7 +181,7 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
     $_SERVER['HTTPS'] = 'on';
 }
 
-$env_config = __DIR__ . '/environments/' . WP_ENV . '.php';
+$env_config = __DIR__.'/environments/'.WP_ENV.'.php';
 
 if (file_exists($env_config)) {
     require_once $env_config;
@@ -173,15 +193,24 @@ Config::apply();
  * Bootstrap WordPress
  */
 if (!defined('ABSPATH')) {
-    define('ABSPATH', $webroot_dir . '/wp/');
+    define('ABSPATH', $webroot_dir.'/wp/');
 }
 
 if (!defined('SRC_PATH')) {
-    define('SRC_PATH', $root_dir . '/src');
+    define('SRC_PATH', $root_dir.'/src');
 }
 
 if (!defined('APP_PATH')) {
-    define('APP_PATH', $root_dir . '/src/app');
+    define('APP_PATH', $root_dir.'/src/app');
 }
 
-define( 'WP_DEFAULT_THEME', 'app' );
+if (!defined('LOGS_PATH')) {
+    define('LOGS_PATH', $root_dir.'/logs');
+}
+
+const WP_DEFAULT_THEME = 'app';
+$sites_path = __DIR__.'/sites';
+define('MC_SITES_PATH', $sites_path);
+
+// @todo make database hosts a fetchable object from several databases
+const DEFAULT_DB_HOST = '127.0.0.1';

@@ -21,13 +21,13 @@ aside {
 
         .link {
           text-align: center;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          gap: .3rem;
+
+          svg {
+            margin-bottom:0;
+          }
 
           span {
-            font-size: .75rem;
+            font-size: .6rem;
           }
         }
       }

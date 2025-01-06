@@ -19,7 +19,7 @@ Config::define('DISALLOW_INDEXING', true);
 ini_set('display_errors', '1');
 
 // Enable plugin and theme updates and installation from the admin
-Config::define('DISALLOW_FILE_MODS', false);
+Config::define('DISALLOW_FILE_MODS', true);
 
 Config::define('SMTP_HOST', env('SMTP_HOST') ?? null);
 Config::define('SMTP_AUTH', env('SMTP_AUTH') ?? null);

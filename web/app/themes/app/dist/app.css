@@ -781,6 +781,151 @@ template {
   border-bottom-right-radius: 1rem;
 }
 
+.animate-display {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+.animate-display.is-visible {
+  display: block;
+  opacity: 1;
+}
+.animate-display.is-hidden {
+  display: none;
+  opacity: 0;
+}
+.animate-display.is-visible {
+  display: block;
+}
+
+.loading-icon-primary-1 {
+  width: 16px;
+  height: 16px;
+  background: url(images/loading-icon-primary.85edf901.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-primary-2 {
+  width: 25px;
+  height: 25px;
+  background: url(images/loading-icon-primary.85edf901.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-primary-3 {
+  width: 35px;
+  height: 35px;
+  background: url(images/loading-icon-primary.85edf901.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-primary-4 {
+  width: 50px;
+  height: 50px;
+  background: url(images/loading-icon-primary.85edf901.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-primary-5 {
+  width: 60px;
+  height: 60px;
+  background: url(images/loading-icon-primary.85edf901.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-black-1 {
+  width: 16px;
+  height: 16px;
+  background: url(images/loading-icon-black.70f2c71d.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-black-2 {
+  width: 25px;
+  height: 25px;
+  background: url(images/loading-icon-black.70f2c71d.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-black-3 {
+  width: 35px;
+  height: 35px;
+  background: url(images/loading-icon-black.70f2c71d.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-black-4 {
+  width: 50px;
+  height: 50px;
+  background: url(images/loading-icon-black.70f2c71d.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-black-5 {
+  width: 60px;
+  height: 60px;
+  background: url(images/loading-icon-black.70f2c71d.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-white-1 {
+  width: 16px;
+  height: 16px;
+  background: url(images/loading-icon-white.72507183.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-white-2 {
+  width: 25px;
+  height: 25px;
+  background: url(images/loading-icon-white.72507183.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-white-3 {
+  width: 35px;
+  height: 35px;
+  background: url(images/loading-icon-white.72507183.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-white-4 {
+  width: 50px;
+  height: 50px;
+  background: url(images/loading-icon-white.72507183.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+.loading-icon-white-5 {
+  width: 60px;
+  height: 60px;
+  background: url(images/loading-icon-white.72507183.png) no-repeat center;
+  background-size: contain;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 [x-cloak] {
   display: none !important;
 }
@@ -1761,13 +1906,12 @@ aside.sidebar.main nav {
 }
 aside.sidebar.main nav .link {
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.3rem;
+}
+aside.sidebar.main nav .link svg {
+  margin-bottom: 0;
 }
 aside.sidebar.main nav .link span {
-  font-size: 0.75rem;
+  font-size: 0.6rem;
 }
 
 aside.sidebar.dynamic {
@@ -1863,6 +2007,9 @@ input.input-lg {
 }
 input:focus {
   box-shadow: 0 0 0.3rem 0.3rem #4a919a;
+}
+input[disabled] {
+  background-color: #f5f5f5;
 }
 
 button, .btn {
@@ -2136,7 +2283,7 @@ button.btn-outline.green, .btn.btn-outline.green {
 button.btn-wide, .btn.btn-wide {
   width: 100%;
 }
-button:hover, button:focus, .btn:hover, .btn:focus {
+button:hover, button:focus, button[disabled], .btn:hover, .btn:focus, .btn[disabled] {
   background-color: rgb(0, 140.2803738318, 158);
 }
 button > svg, .btn > svg {

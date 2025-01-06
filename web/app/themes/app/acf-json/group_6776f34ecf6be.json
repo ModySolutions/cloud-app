@@ -1,10 +1,10 @@
 {
     "key": "group_6776f34ecf6be",
-    "title": "BLOCK - WIZARD",
+    "title": "BLOCK - CREATE SITE",
     "fields": [
         {
             "key": "field_6776f3656ddb1",
-            "label": "Setup Wizard",
+            "label": "Create site",
             "name": "",
             "aria-label": "",
             "type": "accordion",
@@ -34,7 +34,7 @@
                 "class": "",
                 "id": ""
             },
-            "message": "This block inserts the authentication process in the container page.",
+            "message": "This block inserts the create site form in the container page.",
             "new_lines": "wpautop",
             "esc_html": 0
         }
@@ -44,7 +44,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "app\/setup-wizard"
+                "value": "all"
             }
         ]
     ],
@@ -57,5 +57,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1735848939
+    "modified": 1736186425
 }
