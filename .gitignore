@@ -32,6 +32,9 @@ node_modules
 .idea
 .vscode
 
+# Users
+/config/users
+
 # WP-CLI
 wp-cli.local.yml
 
