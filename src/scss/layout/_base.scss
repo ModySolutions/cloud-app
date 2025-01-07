@@ -19,7 +19,7 @@ html {
 }
 
 body {
-    &.home {
+    &.page-template-default {
         display: grid;
         grid-template-columns: 64px 264px 1fr;
         grid-template-rows: auto;

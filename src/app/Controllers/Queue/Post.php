@@ -77,8 +77,7 @@ class Post {
                 $company_name,
                 $wp_home,
                 $admin_user,
-                $admin_email,
-                $admin_password
+                $admin_email
             );
 
             if (!is_wp_error($install)) {
@@ -104,7 +103,7 @@ class Post {
                 }
 
                 $sign_in_url = add_query_arg([
-                    'autologin_user' => urlencode($site_owner->ID),
+                    'autologin_user' => 1,
                     'key' => base64_encode('from-first-install'),
                 ], "{$wp_home}/auth");
 
@@ -141,9 +140,9 @@ class Post {
         string $company_name,
         string $wp_home,
         string $admin_user,
-        string $admin_email,
-        string $admin_password
+        string $admin_email
     ): array|\WP_Error {
+        $admin_password = wp_generate_password();
         return wp_remote_post(
             "{$wp_home}/wp/wp-admin/install.php?step=2",
             array(

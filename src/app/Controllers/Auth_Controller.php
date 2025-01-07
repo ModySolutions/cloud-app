@@ -61,20 +61,20 @@ class Auth_Controller {
     }
 
     public static function login_url(string $login, string $redirect, bool $force_re_auth): string {
-        $auth_page = get_field('authentication_page', 'option');
+        $auth_page = get_option('authentication_page_id');
         $page_permalink = get_permalink($auth_page);
         $login_page = trailingslashit("{$page_permalink}sign-in");
         return $redirect ? add_query_arg('initial_page', $redirect, $login_page) : $login_page;
     }
 
     public static function register_url(string $register): string {
-        $auth_page = get_field('authentication_page', 'option');
+        $auth_page = get_option('authentication_page_id');
         $page_permalink = get_permalink($auth_page);
         return trailingslashit("{$page_permalink}sign-up");
     }
 
     public static function lostpassword_url(string $lostpassword_url, string $redirect): string {
-        $auth_page = get_field('authentication_page', 'option');
+        $auth_page = get_option('authentication_page_id');
         $page_permalink = get_permalink($auth_page);
         $lostpassword_page = trailingslashit("{$page_permalink}forgot-passwd");
         return $redirect ? add_query_arg('initial_page', $redirect, $lostpassword_page) : $lostpassword_page;

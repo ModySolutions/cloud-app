@@ -17,10 +17,16 @@ aside {
         flex-direction: column;
         align-items: center;
         justify-content: start;
-        gap: .75rem;
+        gap: 2rem;
 
         .link {
           text-align: center;
+          padding: .5rem;
+          border-radius: .5rem;
+
+          &:hover {
+            background-color: variables.$primary-lighter;
+          }
 
           svg {
             margin-bottom:0;
@@ -28,6 +34,9 @@ aside {
 
           span {
             font-size: .6rem;
+            display: block;
+            margin-top:-.3rem;
+            width: 2.625rem;
           }
         }
       }

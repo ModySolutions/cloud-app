@@ -16,6 +16,7 @@ export default async function(event) {
         if (errors.length > 0) {
             Utils.displayMessage(this.message, errors[0], 'error');
             Utils.toggleButton(this.submitButton, false, this.submitButtonText);
+            Utils.enableFields(this.form);
             return;
         }
 

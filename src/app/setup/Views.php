@@ -34,6 +34,12 @@ EOF;
             ];
         }
         $context['site_url'] = get_bloginfo('url');
+        $context['dashboard_page'] = get_permalink(get_option('dashboard_page'));
+        $context['apps_page_id'] = get_permalink(get_option('apps_page_id'));
+        $context['users_page_id'] = get_permalink(get_option('users_page_id'));
+        $context['settings_page_id'] = get_permalink(get_option('settings_page_id'));
+        $context['activity_page_id'] = get_permalink(get_option('activity_page_id'));
+        $context['support_page_id'] = get_permalink(get_option('support_page_id'));
         $context['network_url'] = network_home_url();
         $context['ajax_url'] = admin_url('admin-ajax.php');
         return $context;

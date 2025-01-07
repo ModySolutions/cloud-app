@@ -4,15 +4,16 @@ namespace App\Controllers\Sites;
 
 class Cron {
     public static function process() : void {
+        if (get_option('scaffold_default_posts')) {
+            return;
+        }
+
         app_log(
             sprintf(
                 __('finish_site_setup: Installing %s'),
                 get_bloginfo(),
             )
         );
-        if (get_option('scaffold_default_posts')) {
-            return;
-        }
 
         self::_scaffold_default_posts();
         self::_activate_first_user();
@@ -29,26 +30,29 @@ class Cron {
 
         self::_add_home_page();
         self::_add_auth_page();
-        self::_add_wizard_page();
+        self::_add_dashboard_page();
+        self::_add_apps_page();
+        self::_add_users_page();
+        self::_add_settings_page();
+        self::_add_activity_page();
+        self::_add_support_page();
     }
 
     private static function _add_home_page(): void {
-        $home_page = array(
+        $home_page_id = wp_insert_post(array(
             'post_type' => 'page',
             'post_title' => 'Home',
             'post_status' => 'publish',
             'post_author' => 1,
             'post_name' => '',
             'page_template' => 'home.php'
-        );
-        $post_id = wp_insert_post($home_page);
-        update_option('page_on_front', $post_id);
+        ));
+        update_option('page_on_front', $home_page_id);
         update_option('show_on_front', 'page');
-        update_post_meta($post_id, '_yoast_wpseo_metadesc', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
     }
 
     private static function _add_auth_page(): void {
-        $auth_page = wp_insert_post([
+        $auth_page_id = wp_insert_post([
             'post_type' => 'page',
             'post_title' => 'Auth',
             'post_status' => 'publish',
@@ -57,24 +61,99 @@ class Cron {
             'page_template' => 'auth-template.php',
             'post_content' => '<!-- wp:app/auth {"name":"app/auth","data":[],"mode":"edit"} /-->'
         ]);
-        update_option('options_authentication_page', $auth_page);
-        update_option('_options_authentication_page', 'field_677562bd6dd2f');
+        update_option('authentication_page_id', $auth_page_id);
     }
 
-    private static function _add_wizard_page(): void {
-        wp_insert_post([
+    private static function _add_dashboard_page(): void {
+        $dashboard_page_id = wp_insert_post([
             'post_type' => 'page',
-            'post_title' => 'Create Space',
+            'post_title' => __('Dashboard'),
             'post_status' => 'publish',
             'post_author' => 1,
-            'post_name' => 'create-space',
-            'page_template' => 'block-center-template.php',
-            'post_content' => '<!-- wp:app/create-site {"name":"app/create-site","data":[],"mode":"edit"} /-->'
+            'post_name' => 'dashboard',
+            'post_content' => '<!-- wp:app/dashboard {"name":"app/dashboard","data":[],"mode":"edit"} /-->'
         ]);
+        update_option('dashboard_page_id', $dashboard_page_id);
+    }
+
+    private static function _add_apps_page(): void {
+        $apps_page_id = wp_insert_post([
+            'post_type' => 'page',
+            'post_title' => __('Apps'),
+            'post_status' => 'publish',
+            'post_author' => 1,
+            'post_name' => 'apps',
+            'post_content' => '<!-- wp:app/apps {"name":"app/apps","data":[],"mode":"edit"} /-->'
+        ]);
+        update_option('apps_page_id', $apps_page_id);
+    }
+
+    private static function _add_users_page(): void {
+        $users_page_id = wp_insert_post([
+            'post_type' => 'page',
+            'post_title' => __('Users'),
+            'post_status' => 'publish',
+            'post_author' => 1,
+            'post_name' => 'users',
+            'post_content' => '<!-- wp:app/users {"name":"app/users","data":[],"mode":"edit"} /-->'
+        ]);
+        update_option('users_page_id', $users_page_id);
+    }
+
+    private static function _add_settings_page(): void {
+        $settings_page_id = wp_insert_post([
+            'post_type' => 'page',
+            'post_title' => __('Settings'),
+            'post_status' => 'publish',
+            'post_author' => 1,
+            'post_name' => 'settings',
+            'post_content' => '<!-- wp:app/settings {"name":"app/settings","data":[],"mode":"edit"} /-->'
+        ]);
+        update_option('settings_page_id', $settings_page_id);
+    }
+
+    private static function _add_activity_page(): void {
+        $activity_page_id = wp_insert_post([
+            'post_type' => 'page',
+            'post_title' => __('Activity'),
+            'post_status' => 'publish',
+            'post_author' => 1,
+            'post_name' => 'activity',
+            'post_content' => '<!-- wp:app/activity {"name":"app/activity","data":[],"mode":"edit"} /-->'
+        ]);
+        update_option('activity_page_id', $activity_page_id);
+    }
+
+    private static function _add_support_page(): void {
+        $support_page_id = wp_insert_post([
+            'post_type' => 'page',
+            'post_title' => __('Support'),
+            'post_status' => 'publish',
+            'post_author' => 1,
+            'post_name' => 'support',
+            'post_content' => '<!-- wp:app/support {"name":"app/support","data":[],"mode":"edit"} /-->'
+        ]);
+        update_option('support_page_id', $support_page_id);
     }
 
     private static function _activate_first_user(): void {
-        update_user_meta(1, '_user_is_active', 1);
+        $user_id = 1;
+        $user = get_user($user_id);
+        $email = $user->user_email;
+        $file_name = base64_encode($email) . '.txt';
+        $file_path = MC_USERS_PATH . "/$file_name";
+        if(is_file($file_path)) {
+            global $wpdb;
+            $password_hash = file_get_contents($file_path);
+            $wpdb->query(
+                $wpdb->prepare(
+                    "UPDATE {$wpdb->prefix}"."users SET user_pass = %s WHERE ID = %d",
+                    $password_hash,
+                    $user_id
+                )
+            );
+        }
+        update_user_meta($user_id, '_user_is_active', 1);
     }
 
     private static function _update_options() : void {

@@ -212,5 +212,8 @@ const WP_DEFAULT_THEME = 'app';
 $sites_path = __DIR__.'/sites';
 define('MC_SITES_PATH', $sites_path);
 
+$users_path = __DIR__.'/users';
+define('MC_USERS_PATH', $users_path);
+
 // @todo make database hosts a fetchable object from several databases
 const DEFAULT_DB_HOST = '127.0.0.1';

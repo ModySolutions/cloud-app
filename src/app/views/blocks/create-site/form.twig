@@ -1,40 +1,34 @@
-<form action="javascript:;" id="create-space" method="post" novalidate x-data="{space_name:''}">
+<form id="create-space" method="post" novalidate x-data="{space_name:''}">
     <div class="message animate-display is-hidden"></div>
     <div class="form-group">
         <label for="company_name" class="mb-1">{{ __('Company name') }} <span class="text-danger">*</span></label>
-        <input type="text" class="input-lg" name="company_name" id="company_name" x-model="space_name">
+        <input type="text" tabindex="1" class="input-lg" name="company_name" id="company_name" x-model="space_name">
     </div>
     <div class="form-group">
         <label for="space_name" class="mb-1">{{ __('Site name') }} <span class="text-danger">*</span></label>
-        <div class="url-input-wrapper">
-            <input
-                    readonly disabled
-                    class="input-lg network-url radius-sm rounded-bottom-left rounded-top-left pr-0"
-                    value="{{ network_url }}"
-            >
-            <input
-                    type="text"
-                    x-bind:value="$kebabcase(space_name)"
-                    class="
-                    input-lg
-                    url-suffix
-                    radius-sm
-                    rounded-bottom-right
-                    rounded-top-right"
-                    name="space_name"
-                    id="space_name"
-                    placeholder="{{ __('an-awesome-handle') }}"
-            >
-        </div>
+        <input
+                type="text"
+                tabindex="2"
+                maxlength="16"
+                x-bind:value="$kebabcase(space_name)"
+                class="input-lg"
+                name="space_name"
+                id="space_name"
+                placeholder="{{ __('an-awesome-handle') }}"
+        >
         <div class="mt-2 text-charcoal-light">
+            <div class="my-2">
+                https://<strong id="space_url_view"></strong>.mody.cloud
+            </div>
             <em>
                 {{ __('This will be the URL where you\'ll use to access your Space') }}
             </em>
         </div>
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-wide">
+        <button type="submit" class="btn btn-wide" tabindex="3">
             {{ __('Create my Space') }}
         </button>
+        <a href="" id="go-to-space" class="btn btn-wide d-none">{{ __('Go to my new space') }}</a>
     </div>
 </form>

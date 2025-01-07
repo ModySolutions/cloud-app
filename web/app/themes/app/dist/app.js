@@ -3682,12 +3682,6 @@ __webpack_require__.r(__webpack_exports__);
       throw new Error('Network response was not ok');
     }
     return response.json();
-  },
-  store_install_key(data) {
-    const {
-      install_key
-    } = data;
-    localStorage.setItem('install_key', install_key);
   }
 });
 
@@ -3818,6 +3812,171 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/scripts/site/Create.js":
+/*!************************************!*\
+  !*** ./src/scripts/site/Create.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _tools_Utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../tools/Utils */ "./src/scripts/tools/Utils.js");
+/* harmony import */ var _tools_Submit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../tools/Submit */ "./src/scripts/tools/Submit.js");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  form: document.getElementById('create-space'),
+  company_name: document.getElementById('company_name'),
+  space_name: document.getElementById('space_name'),
+  submitButtonText: 'Create my Space',
+  submitButtonLoadingText: 'Creating your Space...',
+  submitButtonSuccessText: 'Space created. Redirecting...',
+  timer: null,
+  init() {
+    if (!this.form) return;
+    this.submitButton = this.form.querySelector('button[type=submit]');
+    this.message = this.form.querySelector('.message');
+    this.form.addEventListener('submit', _tools_Submit__WEBPACK_IMPORTED_MODULE_2__["default"].bind(this));
+    this.space_name.addEventListener('blur', this.check_site_name_exists.bind(this));
+    this.company_name.addEventListener('input', this.mask_space_name.bind(this));
+    this.space_name.addEventListener('input', this.mask_space_name.bind(this));
+    this.company_name.addEventListener('blur', this.check_site_name_exists.bind(this));
+  },
+  validateForm(data) {
+    const errors = [];
+    const company_name = data.get('company_name');
+    const space_name = data.get('space_name');
+    if (!company_name || company_name.trim().length === 0) {
+      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Your company name is required.'));
+    }
+    if (!space_name) {
+      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The space name is required'));
+    }
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(space_name)) {
+      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The space name should be URL friendly. <em>No spaces, no special characters</em>.'));
+    }
+    if (space_name.trim().length > 16) {
+      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The space name should be 16 characters maximum.'));
+    }
+    return errors;
+  },
+  async check_site_name_exists(event) {
+    const data = new URLSearchParams();
+    const space_name = document.getElementById('space_name').value;
+    if (!space_name) {
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].displayMessage(this.message, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The space name is required.'), 'error');
+      return;
+    }
+    data.append('action', 'check_space_name_exists');
+    data.append('space_name', this.space_name.value);
+    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].hideMessage(this.message);
+    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, 'Checking if your URL is available...', 'white');
+    const response = await fetch(App.ajax_url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: data.toString()
+    });
+    if (!response.ok) {
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
+      throw new Error('Network response was not ok.');
+    }
+    const datum = await response.json();
+    if (datum?.data?.exists) {
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].displayMessage(this.message, datum?.data?.message, 'error');
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, 'Fix the site name to create your Space.');
+    } else {
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
+    }
+  },
+  mask_space_name() {
+    const element = this.space_name;
+    const value = element.value.toLowerCase().replace(/[^a-z0-9-]/g, '');
+    element.value = value;
+    document.getElementById('space_url_view').innerText = value;
+  },
+  async process_submit(formData) {
+    const data = new URLSearchParams();
+    formData.forEach((value, key) => {
+      data.append(key, value);
+    });
+    const install_key = localStorage.getItem('install_key');
+    if (install_key) {
+      data.append('install_key', install_key);
+    }
+    data.append('action', 'create_space');
+    const response = await fetch(App.ajax_url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: data.toString()
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok.');
+    }
+    return response.json();
+  },
+  poll_check_finished_install(callback_data) {
+    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, this.submitButtonLoadingText, 'white');
+    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].disableFields(this.form);
+    const {
+      queue_id
+    } = callback_data;
+    const intervalId = setInterval(async () => {
+      const {
+        success,
+        data: {
+          message,
+          done,
+          ping_page
+        }
+      } = await this.check_finished_install(queue_id);
+      if (done) {
+        clearInterval(intervalId);
+        _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, message, 'white');
+        if (ping_page) {
+          this.submitButton.classList.add('d-none');
+          const goToSpace = document.getElementById('go-to-space');
+          goToSpace.classList.remove('d-none');
+          goToSpace.setAttribute('href', ping_page);
+          location.href = ping_page;
+        }
+      }
+      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, this.submitButtonLoadingText, 'white');
+    }, 3 * 1000);
+  },
+  async check_finished_install(queue_ui) {
+    const data = new URLSearchParams({
+      'action': 'check_setup_finished',
+      'queue_id': queue_ui
+    });
+    try {
+      const response = await fetch(App.ajax_url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: data.toString()
+      });
+      if (!response.ok) {
+        return false;
+      }
+      return await response.json();
+    } catch (error) {
+      return false;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./src/scripts/tools/Submit.js":
 /*!*************************************!*\
   !*** ./src/scripts/tools/Submit.js ***!
@@ -3839,6 +3998,7 @@ __webpack_require__.r(__webpack_exports__);
   if (errors.length > 0) {
     _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].displayMessage(this.message, errors[0], 'error');
     _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
+    _tools_Utils__WEBPACK_IMPORTED_MODULE_0__["default"].enableFields(this.form);
     return;
   }
   try {
@@ -3985,156 +4145,6 @@ function toKebabCase(str) {
   .replace(/\s+/g, '-') // Reemplaza los espacios por guiones
   .toLowerCase(); // Convierte todo a minúsculas
 }
-
-/***/ }),
-
-/***/ "./src/scripts/wizard/Setup.js":
-/*!*************************************!*\
-  !*** ./src/scripts/wizard/Setup.js ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _tools_Utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../tools/Utils */ "./src/scripts/tools/Utils.js");
-/* harmony import */ var _tools_Submit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../tools/Submit */ "./src/scripts/tools/Submit.js");
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  form: document.getElementById('create-space'),
-  company_name: document.getElementById('company_name'),
-  space_name: document.getElementById('space_name'),
-  submitButtonText: 'Create my Space',
-  submitButtonLoadingText: 'Creating your Space...',
-  submitButtonSuccessText: 'Space created. Redirecting...',
-  timer: null,
-  init() {
-    if (!this.form) return;
-    this.submitButton = this.form.querySelector('button[type=submit]');
-    this.message = this.form.querySelector('.message');
-    this.form.addEventListener('submit', _tools_Submit__WEBPACK_IMPORTED_MODULE_2__["default"].bind(this));
-    this.space_name.addEventListener('blur', this.check_site_name_exists.bind(this));
-    this.company_name.addEventListener('blur', this.check_site_name_exists.bind(this));
-  },
-  validateForm(data) {
-    const errors = [];
-    const company_name = data.get('company_name');
-    const space_name = data.get('space_name');
-    if (!company_name || company_name.trim().length === 0) {
-      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Your company name is required.'));
-    }
-    if (!space_name) {
-      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The space name is required'));
-    }
-    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(space_name)) {
-      errors.push((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The space name should be URL friendly. <em>No spaces, no special characters</em>.'));
-    }
-    return errors;
-  },
-  async check_site_name_exists(event) {
-    const data = new URLSearchParams();
-    const space_name = document.getElementById('space_name').value;
-    if (!space_name) {
-      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].displayMessage(this.message, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('The space name is required.'), 'error');
-      return;
-    }
-    data.append('action', 'check_space_name_exists');
-    data.append('space_name', this.space_name.value);
-    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].hideMessage(this.message);
-    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, 'Checking if your URL is available...', 'white');
-    const response = await fetch(App.ajax_url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: data.toString()
-    });
-    if (!response.ok) {
-      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
-      throw new Error('Network response was not ok.');
-    }
-    const datum = await response.json();
-    if (datum?.data?.exists) {
-      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].displayMessage(this.message, datum?.data?.message, 'error');
-      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, 'Fix the site name to create your Space.');
-    } else {
-      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, false, this.submitButtonText);
-    }
-  },
-  async process_submit(formData) {
-    const data = new URLSearchParams();
-    formData.forEach((value, key) => {
-      data.append(key, value);
-    });
-    const install_key = localStorage.getItem('install_key');
-    if (install_key) {
-      data.append('install_key', install_key);
-    }
-    data.append('action', 'create_space');
-    const response = await fetch(App.ajax_url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: data.toString()
-    });
-    if (!response.ok) {
-      throw new Error('Network response was not ok.');
-    }
-    return response.json();
-  },
-  poll_check_finished_install(callback_data) {
-    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, this.submitButtonLoadingText, 'white');
-    _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].disableFields(this.form);
-    const {
-      queue_id
-    } = callback_data;
-    const intervalId = setInterval(async () => {
-      const {
-        success,
-        data: {
-          message,
-          done,
-          ping_page
-        }
-      } = await this.check_finished_install(queue_id);
-      if (done) {
-        clearInterval(intervalId);
-        _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, message, 'white');
-        if (ping_page) {
-          location.href = ping_page;
-        }
-      }
-      _tools_Utils__WEBPACK_IMPORTED_MODULE_1__["default"].toggleButton(this.submitButton, true, this.submitButtonLoadingText, 'white');
-    }, 3 * 1000);
-  },
-  async check_finished_install(queue_ui) {
-    const data = new URLSearchParams({
-      'action': 'check_setup_finished',
-      'queue_id': queue_ui
-    });
-    try {
-      const response = await fetch(App.ajax_url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: data.toString()
-      });
-      if (!response.ok) {
-        return false;
-      }
-      return await response.json();
-    } catch (error) {
-      return false;
-    }
-  }
-});
 
 /***/ }),
 
@@ -11614,7 +11624,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _auth_Sign_up__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./auth/Sign-up */ "./src/scripts/auth/Sign-up.js");
 /* harmony import */ var _auth_Reset_password__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./auth/Reset-password */ "./src/scripts/auth/Reset-password.js");
 /* harmony import */ var _tools_Utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./tools/Utils */ "./src/scripts/tools/Utils.js");
-/* harmony import */ var _wizard_Setup__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./wizard/Setup */ "./src/scripts/wizard/Setup.js");
+/* harmony import */ var _site_Create__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./site/Create */ "./src/scripts/site/Create.js");
 
 
 
@@ -11629,7 +11639,7 @@ window.addEventListener('load', () => {
   _auth_Sign_up__WEBPACK_IMPORTED_MODULE_4__["default"].init();
   _auth_Sign_in__WEBPACK_IMPORTED_MODULE_3__["default"].init();
   _auth_Reset_password__WEBPACK_IMPORTED_MODULE_5__["default"].init();
-  _wizard_Setup__WEBPACK_IMPORTED_MODULE_7__["default"].init();
+  _site_Create__WEBPACK_IMPORTED_MODULE_7__["default"].init();
   alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_alpinejs_mask__WEBPACK_IMPORTED_MODULE_2__["default"]);
   alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].start();
 });

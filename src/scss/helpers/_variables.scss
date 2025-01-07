@@ -5,6 +5,7 @@
 $primary: #005f6b;
 $primary-light: #4a919a;
 $primary-dark: #003f49;
+$primary-lighter: #005f6b36;
 
 $secondary: #7a4f94;
 $secondary-light: #a97bb8;
@@ -237,9 +238,9 @@ $text-alignments: (left, right, center);
 // LOADING VARIABLES
 //==================================================================
 $loading_color_list: (
-        primary: $primary,
-        black: $black,
-        white: $white
+        'primary': $primary,
+        'black': $black,
+        'white': $white
 );
 $loading_icon_sizes: (
         1: 16px,

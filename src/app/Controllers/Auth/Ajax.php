@@ -3,6 +3,7 @@
 namespace App\Controllers\Auth;
 
 use Timber\Timber;
+use function Env\env;
 
 class Ajax {
     public static function sign_in(): void {
@@ -76,9 +77,12 @@ class Ajax {
         update_user_meta($user->ID, '_failed_login_attempts', 0);
 
         wp_set_auth_cookie($user->ID, true);
+
+        $dashboard_page_id = get_option('dashboard_page_id');
+        $dashboard_url = get_permalink($dashboard_page_id);
         wp_send_json_success(array(
             'message' => sprintf(__('Login successful, welcome %s'), $userdata->first_name),
-            'initial_page' => user_can($user, 'manage_network') ? network_admin_url() : home_url(),
+            'initial_page' => user_can($user, 'manage_network') ? network_admin_url() : $dashboard_url,
         ));
     }
 
@@ -217,24 +221,41 @@ class Ajax {
 
         $first_time = $_POST['first_time'] ?? false;
         if ($first_time === 'yes') {
-            $wizard_page = get_field('wizard_page', 'option');
-            $initial_page = get_permalink($wizard_page);
-            $user = wp_authenticate($email, $password);
-            wp_set_auth_cookie($user->ID, true);
+            $initial_page = self::_authenticate_user($email, $password);
+            self::_store_password_hash($email);
         }
 
         wp_send_json_success([
             'message' => __('Password reset successfully. Let\'s make awesome...'),
             'initial_page' => $initial_page ?? home_url(),
-            'callback' => $first_time ? 'store_install_key' : null,
-            'callback_data' => $first_time ? array(
-                'install_key' => base64_encode("{$email}|--|{$password}"),
-            ) : null,
         ]);
     }
 
     private static function _is_secure_password(string $password): bool {
         $pattern = '/^(?=.*[A-Z])(?=.*[\W])(?=.*[a-zA-Z0-9]).{8,}$/';
         return preg_match($pattern, $password) === 1;
+    }
+
+    private static function _authenticate_user($email, $password) : string {
+        $create_page_id = get_option('create_page_id');
+        $initial_page = get_permalink($create_page_id);
+        $user = wp_authenticate($email, $password);
+        wp_set_auth_cookie($user->ID, true);
+        return $initial_page;
+    }
+
+    private static function _store_password_hash($email) : void {
+        if(!is_dir(MC_USERS_PATH)) {
+            mkdir(MC_USERS_PATH);
+        }
+
+        $file_name = base64_encode($email) . '.txt';
+        $file_path = MC_USERS_PATH . "/$file_name";
+        if(!is_file($file_path)) {
+            touch($file_path);
+        }
+
+        $user = get_user_by('email', $email);
+        file_put_contents($file_path, $user->user_pass);
     }
 }

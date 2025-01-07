@@ -5,7 +5,7 @@ import SignIn from "./auth/Sign-in";
 import SignUp from "./auth/Sign-up";
 import ResetPassword from "./auth/Reset-password";
 import Utils from "./tools/Utils";
-import Setup from "./wizard/Setup";
+import Create from "./site/Create";
 
 window.Alpine = Alpine;
 
@@ -14,7 +14,7 @@ window.addEventListener('load', () => {
     SignUp.init();
     SignIn.init();
     ResetPassword.init();
-    Setup.init();
+    Create.init();
     Alpine.plugin(mask);
     Alpine.start();
 })

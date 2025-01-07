@@ -3,35 +3,6 @@
     "title": "OPTIONS - AUTH",
     "fields": [
         {
-            "key": "field_677562bd6dd2f",
-            "label": "Authentication page",
-            "name": "authentication_page",
-            "aria-label": "",
-            "type": "post_object",
-            "instructions": "You must add the Auth Block to the content of selected page",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "page"
-            ],
-            "post_status": [
-                "publish"
-            ],
-            "taxonomy": "",
-            "return_format": "id",
-            "multiple": 0,
-            "allow_null": 0,
-            "allow_in_bindings": 0,
-            "bidirectional": 0,
-            "ui": 1,
-            "bidirectional_target": []
-        },
-        {
             "key": "field_67742075d700a",
             "label": "Block wp admin access",
             "name": "block_wp_admin_access",
@@ -92,5 +63,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1735746374
+    "modified": 1736193341
 }

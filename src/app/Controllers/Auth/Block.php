@@ -8,12 +8,26 @@ class Block {
         $allowed_actions = ['sign-in', 'sign-up', 'forgot-passwd', 'reset-passwd'];
         $context['action'] = in_array($action, $allowed_actions) ? $action : 'sign-in';
 
-        if(in_array($context['action'], ['sign-in', 'sign-up']) && is_user_logged_in()){
-            wp_redirect(home_url());
+        self::_redirect_if_logged_in($context['action']);
+        self::_maybe_auto_login($context['action']);
+        self::_maybe_populate_email($context['action'], $context);
+        self::_maybe_populate_reset_passwd($context['action'], $context);
+
+        $context['template'] = "@app/blocks/auth/{$context['action']}.twig";
+        return $context;
+    }
+
+    private static function _redirect_if_logged_in($action) : void {
+        if(in_array($action, array('sign-in', 'sign-up')) && is_user_logged_in()){
+            $dashboard_page_id = get_option('dashboard_page_id');
+            $dashboard_url = get_permalink($dashboard_page_id);
+            wp_redirect($dashboard_url);
             exit;
         }
+    }
 
-        if($context['action'] === 'sign-in' &&
+    private static function _maybe_auto_login($action) : void {
+        if($action === 'sign-in' &&
             (array_key_exists('autologin_user', $_GET) &&
                 array_key_exists('key', $_GET)
             )
@@ -22,16 +36,22 @@ class Block {
             if($decoded_key === 'from-first-install') {
                 $user_id = sanitize_text_field($_GET['autologin_user']);
                 wp_set_auth_cookie($user_id, true);
-                wp_redirect(home_url());
+                $dashboard_page_id = get_option('dashboard_page_id');
+                $dashboard_url = get_permalink($dashboard_page_id);
+                wp_redirect($dashboard_url);
                 exit;
             }
         }
+    }
 
-        if($context['action'] === 'forgot-passwd') {
+    private static function _maybe_populate_email($action, &$context) : void {
+        if($action === 'forgot-passwd') {
             $context['email'] = isset($_GET['email']) ? sanitize_text_field($_GET['email']) : null;
         }
+    }
 
-        if ($context['action'] === 'reset-passwd') {
+    private static function _maybe_populate_reset_passwd($action, &$context) : void {
+        if ($action === 'reset-passwd') {
             $context['key'] = isset($_GET['key']) ? sanitize_text_field($_GET['key']) : null;
             $context['email'] = isset($_GET['email']) ? sanitize_user($_GET['email']) : null;
             $context['first_time'] = isset($_GET['first_time']) ? 'yes' : null;
@@ -41,7 +61,5 @@ class Block {
                 exit;
             }
         }
-        $context['template'] = "@app/blocks/auth/{$context['action']}.twig";
-        return $context;
     }
 }

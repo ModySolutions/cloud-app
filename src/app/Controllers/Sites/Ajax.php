@@ -55,6 +55,12 @@ class Ajax {
         $space_name = sanitize_text_field($_POST['space_name']);
         $company_name = sanitize_text_field($_POST['company_name']);
 
+        if(strlen($space_name) > 16) {
+            wp_send_json_error(array(
+                'message' => __('The space name should be 16 characters maximum.'),
+            ));
+        }
+
         if (self::_check_space_name_exists($space_name)) {
             wp_send_json_error(array(
                 'message' => sprintf(
