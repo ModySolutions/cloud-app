@@ -1,6 +1,7 @@
 @use '../helpers/variables';
 
-input {
+input,
+select {
   &:not([type=checkbox], [type=radio]) {
     width: 100%;
     background-color: variables.$white;

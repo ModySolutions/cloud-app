@@ -4,24 +4,33 @@ namespace App\Controllers\Auth;
 
 class Block {
     public static function app_before_render_block(array $context): array {
-        $action = get_query_var('action') ?? 'sign-in';
-        $allowed_actions = ['sign-in', 'sign-up', 'forgot-passwd', 'reset-passwd'];
+        $action = get_query_var('action');
+        if(empty($action)) {
+            wp_redirect(wp_login_url());
+            exit;
+        }
+        $allowed_actions = ['sign-in', 'sign-up', 'forgot-passwd', 'reset-passwd', 'sign-out'];
         $context['action'] = in_array($action, $allowed_actions) ? $action : 'sign-in';
 
         self::_redirect_if_logged_in($context['action']);
         self::_maybe_auto_login($context['action']);
         self::_maybe_populate_email($context['action'], $context);
         self::_maybe_populate_reset_passwd($context['action'], $context);
-
-        $context['template'] = "@app/blocks/auth/{$context['action']}.twig";
         return $context;
     }
 
     private static function _redirect_if_logged_in($action) : void {
         if(in_array($action, array('sign-in', 'sign-up')) && is_user_logged_in()){
-            $dashboard_page_id = get_option('dashboard_page_id');
-            $dashboard_url = get_permalink($dashboard_page_id);
-            wp_redirect($dashboard_url);
+            $user = get_currentuserinfo();
+            $initial_page = app_get_initial_page($user);
+            wp_redirect($initial_page);
+            exit;
+        }
+        if($action === 'sign-out' && is_user_logged_in()) {
+            $user = get_currentuserinfo();
+            app_generate_logout_info($user);
+            wp_logout();
+            wp_redirect(wp_login_url());
             exit;
         }
     }

@@ -10,7 +10,7 @@ web/app/cache/*
 
 # WordPress
 web/wp
-web/app/themes/app/dist
+web/app/themes/app/dist/*
 web/.htaccess
 
 # Logs
@@ -33,7 +33,8 @@ node_modules
 .vscode
 
 # Users
-/config/users
+/config/users/*
+/config/sites/*
 
 # WP-CLI
 wp-cli.local.yml

@@ -7,10 +7,10 @@ DB_HOST='{{ database_host }}'
 DB_PREFIX='{{ database_prefix }}'
 
 WP_ENV='local'
-WP_HOME='http://{{ space_name }}.modycloud.test'
+WP_HOME='{{ wp_home }}'
 WP_SITEURL="${WP_HOME}/wp"
 
-DOMAIN_CURRENT_SITE='{{ space_name }}.modycloud.test'
+DOMAIN_CURRENT_SITE='{{ domain_current_site }}'
 
 WP_DEBUG_LOG='/logs/{{ space_name }}.log'
 WP_POST_REVISIONS=0
@@ -27,4 +27,6 @@ SECURE_AUTH_SALT='{{secure_auth_salt | raw}}'
 LOGGED_IN_SALT='{{logged_in_salt | raw}}'
 NONCE_SALT='{{nonce_salt | raw}}'
 
-CHILD_SITE=true
+CHILD_SITE='true'
+ADMIN_EMAIL='{{ admin_email }}'
+SPACE_PATH='{{ space_path }}'

@@ -192,6 +192,9 @@ Config::apply();
 /**
  * Bootstrap WordPress
  */
+if (!defined('ROOT_DIR')) {
+    define('ROOT_DIR', $webroot_dir);
+}
 if (!defined('ABSPATH')) {
     define('ABSPATH', $webroot_dir.'/wp/');
 }
@@ -208,12 +211,29 @@ if (!defined('LOGS_PATH')) {
     define('LOGS_PATH', $root_dir.'/logs');
 }
 
-const WP_DEFAULT_THEME = 'app';
-$sites_path = __DIR__.'/sites';
-define('MC_SITES_PATH', $sites_path);
+if(!defined('WP_DEFAULT_THEME')) {
+    define('WP_DEFAULT_THEME', 'app');
+}
 
-$users_path = __DIR__.'/users';
-define('MC_USERS_PATH', $users_path);
+if(!defined('MC_SITES_PATH')) {
+    define('MC_SITES_PATH', __DIR__.'/sites');
+}
+
+if(!defined('MC_USERS_PATH')) {
+    define('MC_USERS_PATH', __DIR__.'/users');
+}
+
+if(!defined('MC_AUTOLOGIN_TOKENS_PATH')) {
+    define('MC_AUTOLOGIN_TOKENS_PATH', __DIR__.'/autologin-tokens');
+}
+
+if(!defined('MC_LOGOUT_PATH')) {
+    define('MC_LOGOUT_PATH', __DIR__.'/logout-info');
+}
+
+if(!defined('MC_MIGRATIONS_PATH')) {
+    define('MC_MIGRATIONS_PATH', APP_PATH.'/migrations');
+}
 
 // @todo make database hosts a fetchable object from several databases
 const DEFAULT_DB_HOST = '127.0.0.1';

@@ -13,17 +13,33 @@ class Block {
             return $context;
         }
 
-        $current_user_id = get_current_user_id();
-        $user_has_a_site = get_posts(array(
-            'post_type' => 'site',
-            'author' => $current_user_id,
-            'posts_per_page' => 1,
-        ));
 
-        if(count($user_has_a_site) > 0) {
-            $site = $user_has_a_site[0];
-            $site_uri = get_field('site_uri', $site->ID);
+        $account = include(APP_THEME_DIR.'/dist/site.asset.php');
+        foreach($account['dependencies'] as $dependency) {
+            wp_enqueue_script($dependency);
+        }
+        wp_enqueue_script(
+            'site',
+            APP_THEME_URL.'/dist/site.js',
+            $account['version'],
+            $account['dependencies'],
+            ['in_footer' => true, 'type' => 'module']
+        );
+
+        $current_user_id = get_current_user_id();
+        $site_id = app_user_has_a_site($current_user_id);
+        $site_uri = get_field('site_uri', $site_id);
+        $site_is_active = $site_id && app_site_is_active($site_id);
+
+        if($site_id && $site_is_active) {
             wp_redirect($site_uri);
+            exit;
+        } elseif($site_id && !$site_is_active) {
+            $space_install_setup = add_query_arg(array(
+                'key' => base64_encode(md5(rand(11111,99999))),
+                'installing' => true,
+            ), "{$site_uri}/app/space-install-setup.php");
+            wp_redirect($space_install_setup);
             exit;
         }
         return $context;

@@ -65,64 +65,23 @@ class Post {
                 )
             );
 
-            $install_key = get_field('install_key', $queue_id);
-            $decoded_key = base64_decode($install_key);
-            $exploded_key = explode('|--|', $decoded_key);
+            $site_id = wp_insert_post(array(
+                'post_type' => 'site',
+                'post_title' => esc_html($company_name),
+                'post_name' => $space_name,
+                'post_status' => 'publish',
+                'post_author' => $site_owner->ID,
+            ));
 
-            $admin_user = $site_owner->user_email;
-            $admin_email = $admin_user;
-            $admin_password = $exploded_key[1] ?? wp_generate_password();
-
-            $install = self::_app_install(
-                $company_name,
-                $wp_home,
-                $admin_user,
-                $admin_email
-            );
-
-            if (!is_wp_error($install)) {
-                app_log(
-                    sprintf(
-                        __('save_post_queue: %s install completed at %s'),
-                        $company_name,
-                        $wp_home
-                    )
-                );
-
-                $site_id = wp_insert_post(array(
-                    'post_type' => 'site',
-                    'post_title' => esc_html($company_name),
-                    'post_name' => $space_name,
-                    'post_status' => 'publish',
-                    'post_author' => $site_owner->ID,
-                ));
-
-                update_field('site_uri', $wp_home, $site_id);
-                foreach($variables as $key => $variable) {
-                    update_field($key, $variable, $site_id);
-                }
-
-                $sign_in_url = add_query_arg([
-                    'autologin_user' => 1,
-                    'key' => base64_encode('from-first-install'),
-                ], "{$wp_home}/auth");
-
-                $ping_page = add_query_arg(array(
-                    'initial_page' => urlencode($sign_in_url),
-                ), "{$wp_home}/app/space-install-setup.php");
-
-                update_field('sign_in_url', $sign_in_url, $queue_id);
-                update_field('ping_url', $ping_page, $queue_id);
-                update_field('admin_email', $admin_email, $queue_id);
-                update_field('admin_password', $admin_password, $queue_id);
-                update_field('action', 'finish_site_setup', $queue_id);
-                update_field('api_url', "{$wp_home}/wp-json/app/v1/finish_site_setup", $queue_id);
-            } else {
-                app_log($install->get_error_message());
+            app_log("Site entry for {$company_name} created with ID {$site_id}");
+            update_field('site_uri', $wp_home, $site_id);
+            foreach ($variables as $key => $variable) {
+                app_log("Updating {$key} for site {$company_name}");
+                update_field($key, $variable, $site_id);
             }
         } catch (\PDOException $e) {
             self::_un_publish_queue($queue_id);
-            app_log("save_post_queue: Error al crear la base de datos o el usuario: ".$e->getMessage());
+            app_log("save_post_queue: Error creating database: ".$e->getMessage());
             return;
         }
     }
@@ -134,27 +93,5 @@ class Post {
             'post_status' => 'draft',
         ));
         add_action('save_post_queue', self::save_post_queue(...));
-    }
-
-    private static function _app_install(
-        string $company_name,
-        string $wp_home,
-        string $admin_user,
-        string $admin_email
-    ): array|\WP_Error {
-        $admin_password = wp_generate_password();
-        return wp_remote_post(
-            "{$wp_home}/wp/wp-admin/install.php?step=2",
-            array(
-                'body' => array(
-                    'weblog_title' => $company_name,
-                    'user_name' => $admin_user,
-                    'admin_password' => $admin_password,
-                    'admin_password2' => $admin_password,
-                    'admin_email' => $admin_email,
-                    'blog_public' => 0,
-                ),
-            )
-        );
     }
 }

@@ -172,3 +172,15 @@ ul {
         text-align: #{$text-alignment};
     }
 }
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.lowercase {
+    text-transform: lowercase;
+}

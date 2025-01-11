@@ -184,6 +184,9 @@
     &-lg {
         @include border-radius(variables.$border-radius-lg);
     }
+    &-circle {
+        @include border-radius(variables.$border-circle);
+    }
 }
 
 @mixin animate-display($duration: 0.5s, $easing: ease-in-out) {
@@ -232,5 +235,15 @@
     }
     to {
         transform: rotate(360deg);
+    }
+}
+
+@for $i from 1 through 100 {
+    .w-#{$i * 5} {
+        width: #{$i * 5 / 16}rem;
+    }
+
+    .h-#{$i * 5} {
+        height: #{$i * 5 / 16}rem;
     }
 }

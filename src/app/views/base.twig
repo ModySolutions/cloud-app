@@ -11,9 +11,9 @@
 		</noscript>
 		<!-- End Google Tag Manager (noscript) -->
 	{% endif %}
-	{% include '@app/common/sidebars/static.twig' %}
-	{% include '@app/common/sidebars/dynamic.twig' %}
-	{% include '@app/common/main.twig' %}
+	{% include '@app/common/sidebars/static.twig' with {pages: static_pages} %}
+	{% include '@app/common/sidebars/dynamic.twig' with {routes: routes, main_cta: main_cta} %}
+	{% include '@app/common/main.twig' with {post: post} %}
     {% include '@app/common/foot.twig' %}
 </body>
 </html>

@@ -1,0 +1,56 @@
+@use 'variables';
+:root {
+  --toastify-color-light: #{variables.$text};
+  --toastify-color-dark: #{variables.$text};
+  --toastify-color-info: #{variables.$info};
+  --toastify-color-success: #{variables.$success};
+  --toastify-color-warning: #{variables.$warning};
+  --toastify-color-error: #{variables.$danger};
+  --toastify-color-transparent: rgba(255, 255, 255, 0.7);
+
+  --toastify-icon-color-info: var(--toastify-color-info);
+  --toastify-icon-color-success: var(--toastify-color-success);
+  --toastify-icon-color-warning: var(--toastify-color-warning);
+  --toastify-icon-color-error: var(--toastify-color-error);
+
+  --toastify-container-width: fit-content;
+  --toastify-toast-width: 320px;
+  --toastify-toast-offset: 16px;
+  --toastify-toast-top: max(var(--toastify-toast-offset), env(safe-area-inset-top));
+  --toastify-toast-right: max(var(--toastify-toast-offset), env(safe-area-inset-right));
+  --toastify-toast-left: max(var(--toastify-toast-offset), env(safe-area-inset-left));
+  --toastify-toast-bottom: max(var(--toastify-toast-offset), env(safe-area-inset-bottom));
+  --toastify-toast-background: #{variables.$text};
+  --toastify-toast-padding: 14px;
+  --toastify-toast-min-height: 64px;
+  --toastify-toast-max-height: 800px;
+  --toastify-toast-bd-radius: variables.$border-radius-md;
+  --toastify-toast-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  --toastify-font-family: #{variables.$body-font};
+  --toastify-z-index: 9999;
+  --toastify-text-color-light: #{variables.$text-inverse};
+  --toastify-text-color-dark: #{variables.$text-inverse};
+
+  /* Used only for colored theme */
+  --toastify-text-color-info: #{variables.$info-dark};
+  --toastify-text-color-success: #{variables.$success-dark};
+  --toastify-text-color-warning: #{variables.$warning-dark};
+  --toastify-text-color-error: #{variables.$danger-dark};
+
+  --toastify-spinner-color: #{variables.$text-inverse};
+  --toastify-spinner-color-empty-area: #{variables.$text};
+  --toastify-color-progress-light: linear-gradient(to right, #{variables.$success}, #{variables.$info-light}, #{variables.$info}, #{variables.$info-dark}, #{variables.$accent}, #{variables.$accent-dark});
+  --toastify-color-progress-dark: #{variables.$accent};
+  --toastify-color-progress-info: var(--toastify-color-info);
+  --toastify-color-progress-success: var(--toastify-color-success);
+  --toastify-color-progress-warning: var(--toastify-color-warning);
+  --toastify-color-progress-error: var(--toastify-color-error);
+  /* used to control the opacity of the progress trail */
+  --toastify-color-progress-bgo: 0.2;
+}
+
+.Toastify__close-button {
+  &--light {
+    color: variables.$white;
+  }
+}

@@ -18,10 +18,68 @@
   }
 
   .user {
-    .data {
+    position: relative;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+
+    .photo {
+      width: 2.3125rem;
+      height: 2.3125rem;
+      border-radius: 50%;
+    }
+  }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+
+    .dropdown-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+
       .role {
         font-size: .7rem;
+        text-transform: capitalize;
+        display: block;
       }
+
+      .arrow {
+        margin-left: 5px;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid #005f6b;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      min-width: 10rem;
+      box-shadow: 0 .5rem 1rem rgba(variables.$primary, 0.2);
+      z-index: 1;
+      border-radius: 5px;
+      padding: 5px 0;
+
+      a {
+        padding: 0.625rem 0.9375rem;
+        text-decoration: none;
+        display: block;
+
+        &:hover {
+          background-color: variables.$background;
+        }
+      }
+    }
+
+    &:hover .dropdown-content {
+      display: block;
     }
   }
 }

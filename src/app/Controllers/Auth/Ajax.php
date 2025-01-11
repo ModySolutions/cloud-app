@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Auth;
 
+use App\Controllers\Queue\Post;
 use Timber\Timber;
 use function Env\env;
 
@@ -13,6 +14,7 @@ class Ajax {
 
         $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
         $password = $_POST['password'] ?? '';
+        $remember_me = !!$_POST['remember_me'];
 
         if (empty($email) || empty($password)) {
             wp_send_json_error(array('message' => __('Email and password are required.')));
@@ -56,7 +58,12 @@ class Ajax {
             $failed_attempts = 0;
         }
 
-        $user = wp_authenticate($email, $password);
+        $user = wp_signon(array(
+            'user_login'    => $email,
+            'user_password' => $password,
+            'remember'      => $remember_me,
+        ));
+
         if (is_wp_error($user)) {
             $failed_attempts++;
             update_user_meta($user->ID, '_failed_login_attempts', $failed_attempts);
@@ -78,11 +85,11 @@ class Ajax {
 
         wp_set_auth_cookie($user->ID, true);
 
-        $dashboard_page_id = get_option('dashboard_page_id');
-        $dashboard_url = get_permalink($dashboard_page_id);
+        $initial_page = app_get_initial_page($user);
+
         wp_send_json_success(array(
             'message' => sprintf(__('Login successful, welcome %s'), $userdata->first_name),
-            'initial_page' => user_can($user, 'manage_network') ? network_admin_url() : $dashboard_url,
+            'initial_page' => $initial_page,
         ));
     }
 
@@ -137,11 +144,11 @@ class Ajax {
             $reset_pass_page .= 'reset-passwd';
         }
 
-        $reset_url = add_query_arg([
+        $reset_url = add_query_arg(array(
             'key' => $reset_key,
             'email' => urlencode($user->user_email),
             'first_time' => 'true',
-        ], $reset_pass_page);
+        ), $reset_pass_page);
 
         $button = Timber::compile('@app/mail/button.twig', [
             'link' => $reset_url,
@@ -177,10 +184,87 @@ class Ajax {
         ]);
     }
 
-    public static function reset_password(): void {
-        if (!isset($_POST['key'], $_POST['email'], $_POST['password'])) {
+    public static function forgot_password(): void {
+        if (!isset($_POST['email'])) {
             wp_send_json_error([
                 'message' => __('Invalid request.'),
+            ]);
+        }
+
+        $email = sanitize_email($_POST['email']);
+
+        if (!is_email($email)) {
+            wp_send_json_error([
+                'message' => __('Invalid email address.'),
+            ]);
+        }
+
+        if (!email_exists($email)) {
+            wp_send_json_success([
+                'message' => __('An email is coming your way to help you.'),
+            ]);
+        }
+
+
+        $user = get_user_by('email', $email);
+        $reset_key = get_password_reset_key($user);
+
+        if (is_wp_error($reset_key)) {
+            wp_send_json_error([
+                'message' => __('Unable to generate password reset key.'),
+            ]);
+        }
+
+        $reset_pass_page = wp_login_url();
+        $auth_page_id = get_field('authentication_page', 'option');
+        if ($auth_page_id) {
+            $reset_pass_page = get_permalink($auth_page_id);
+            $reset_pass_page .= 'reset-passwd';
+        }
+
+        $reset_url = add_query_arg([
+            'key' => $reset_key,
+            'email' => urlencode($user->user_email),
+        ], $reset_pass_page);
+
+        $button = Timber::compile('@app/mail/button.twig', [
+            'link' => $reset_url,
+            'text' => __('Reset my password'),
+        ]);
+
+        $subject = __('Did you forget your password?');
+        $message = sprintf(
+            __('Someone asked for a password reset on your account, click on the button below to set a new one:%s %s %s'),
+            '<br><br>',
+            $button,
+            '<br><br>'
+        );
+
+        $message .= sprintf(
+            __('If the button doesn\'t work, please copy the URL below in your browser: %s %s'),
+            '<br><br>',
+            $reset_url
+        );
+
+        $headers = ['Content-Type: text/html; charset=UTF-8'];
+        $mail_sent = wp_mail($email, $subject, nl2br($message), $headers);
+
+        if (!$mail_sent) {
+            wp_send_json_error([
+                'message' => __('Failed to send the email. Please try again.'),
+            ]);
+        }
+
+        wp_send_json_success([
+            'message' => sprintf(__('An email is coming to %s.'), $email),
+            'callback' => 'hide_form'
+        ]);
+    }
+
+    public static function reset_password(): void {
+        if (empty($_POST['key']) ||  empty($_POST['email']) || empty($_POST['password'])) {
+            wp_send_json_error([
+                'message' => __('All fields are required.'),
             ]);
         }
 
@@ -188,13 +272,13 @@ class Ajax {
         $email = sanitize_user($_POST['email']);
         $password = $_POST['password'];
 
-        if ($_POST['password'] !== $_POST['confirm-password']) {
+        if ($_POST['password'] !== $_POST['confirm_password']) {
             wp_send_json_error([
-                'message' => __('Please confirm your password'),
+                'message' => __('Please confirm your password.'),
             ]);
         }
 
-        if (!self::_is_secure_password($password)) {
+        if (!app_is_secure_password($password)) {
             wp_send_json_error([
                 'message' => __('Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.'),
             ]);
@@ -222,12 +306,11 @@ class Ajax {
         $first_time = $_POST['first_time'] ?? false;
         if ($first_time === 'yes') {
             $initial_page = self::_authenticate_user($email, $password);
-            self::_store_password_hash($email);
         }
 
         wp_send_json_success([
             'message' => __('Password reset successfully. Let\'s make awesome...'),
-            'initial_page' => $initial_page ?? home_url(),
+            'initial_page' => $initial_page ?? 'navigate-to-sign-in',
         ]);
     }
 
@@ -242,20 +325,5 @@ class Ajax {
         $user = wp_authenticate($email, $password);
         wp_set_auth_cookie($user->ID, true);
         return $initial_page;
-    }
-
-    private static function _store_password_hash($email) : void {
-        if(!is_dir(MC_USERS_PATH)) {
-            mkdir(MC_USERS_PATH);
-        }
-
-        $file_name = base64_encode($email) . '.txt';
-        $file_path = MC_USERS_PATH . "/$file_name";
-        if(!is_file($file_path)) {
-            touch($file_path);
-        }
-
-        $user = get_user_by('email', $email);
-        file_put_contents($file_path, $user->user_pass);
     }
 }

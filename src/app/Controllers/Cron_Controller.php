@@ -3,12 +3,16 @@
 namespace App\Controllers;
 
 use App\Controllers\Queue\Cron as Queue;
-use App\Controllers\Sites\Cron as Install;
+use App\Controllers\Migrations\Cron as Migration;
+use App\Controllers\Account\Cron as Account;
+use App\Controllers\Auth\Cron as Auth;
 
 class Cron_Controller {
     public static function init() : void {
         add_action('app_process_queue', Queue::process(...));
-        add_action('app_finish_install', Install::process(...));
+        add_action('app_migrations', Migration::migrate(...));
+        add_filter('sync_password', Account::sync_password(...));
+        add_filter('delete_expired_tokens', Auth::delete_expired_tokens(...));
         add_filter('cron_schedules', self::cron_schedules(...));
 
         self::_schedule();
@@ -18,6 +22,10 @@ class Cron_Controller {
         $schedules['every_minute'] = array(
             'interval' => 60,
             'display' => __('Every minute'),
+        );
+        $schedules['every_five_minutes'] = array(
+            'interval' => 60 * 5,
+            'display' => __('Every five minutes'),
         );
         return $schedules;
     }
@@ -29,6 +37,14 @@ class Cron_Controller {
 
         if(!wp_next_scheduled('app_finish_install')) {
             wp_schedule_event(time(), 'every_minute', 'app_finish_install');
+        }
+
+        if(!wp_next_scheduled('app_migrations')) {
+            wp_schedule_event(time(), 'every_minute', 'app_migrations');
+        }
+
+        if(!wp_next_scheduled('sync_password')) {
+            wp_schedule_event(time(), 'every_minute', 'sync_password');
         }
     }
 }
