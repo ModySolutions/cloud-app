@@ -71,13 +71,12 @@ class Ajax {
             if ($failed_attempts >= 3) {
                 update_user_meta($user->ID, '_failed_login_lockout', time() + (24 * 60 * 60));
                 wp_send_json_error(array(
-                    'message' => __('Incorrect email or password. You have no attempts left. Your account is locked for 24 hours.')
+                    'message' => __('Incorrect email or password.')
                 ));
             }
 
             wp_send_json_error(array(
-                'message' => sprintf(__('Incorrect email or password. You have %d attempts left.'),
-                    (3 - $failed_attempts))
+                'message' => __('Incorrect email or password.')
             ));
         }
 

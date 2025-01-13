@@ -7,7 +7,6 @@ const Links = ({ routes }) => {
     }
 
     const [currentPath, setCurrentPath] = useState(window.location.pathname);
-    console.log(currentPath)
 
     const navigate = (event) => {
         event.preventDefault();
@@ -25,7 +24,6 @@ const Links = ({ routes }) => {
     return (
         <>
             {routesEntries.map(({ link, title }) => {
-                console.log(link)
                 return <a
                     href={link}
                     key={link}

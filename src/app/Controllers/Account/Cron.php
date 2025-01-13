@@ -11,13 +11,17 @@ class Cron {
             return;
         }
 
+        $is_child_site = env('CHILD_SITE');
+        if($is_child_site) {
+            return;
+        }
+
         $site_name = get_bloginfo();
         app_log("Syncing passwords in {$site_name}.");
 
         $sync_files = glob("{$users_pass_sync_path}/*.sync");
         foreach ($sync_files as $sync_file) {
             $user_email = base64_decode(basename($sync_file, '.sync'));
-            app_log("Syncing password email: {$user_email}");
             $user = get_user_by('email',$user_email);
             if(!$user) { continue; }
             $user_id = $user->ID;

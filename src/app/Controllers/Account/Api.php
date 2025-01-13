@@ -4,32 +4,32 @@ namespace App\Controllers\Account;
 
 class Api {
     public static function rest_api_init(): void {
-        register_rest_route('app/v1', '/update-user/', array(
+        register_rest_route('app/v1', '/update-account/', array(
             'methods' => 'POST',
-            'callback' => self::update_user_data(...),
+            'callback' => self::update_account_data(...),
             'permission_callback' => function () {
                 return is_user_logged_in();
             }
         ));
-        register_rest_route('app/v1', '/update-user-settings/', array(
+        register_rest_route('app/v1', '/update-account-settings/', array(
             'methods' => 'POST',
-            'callback' => self::update_user_settings(...),
+            'callback' => self::update_account_settings(...),
             'permission_callback' => function () {
                 return is_user_logged_in();
             }
         ));
-        register_rest_route('app/v1', '/update-user-password/', array(
+        register_rest_route('app/v1', '/update-account-password/', array(
             'methods' => 'POST',
-            'callback' => self::update_user_password(...),
+            'callback' => self::update_account_password(...),
             'permission_callback' => function () {
                 return is_user_logged_in();
             }
         ));
     }
 
-    public static function update_user_data($data): \WP_Error|\WP_REST_Response|\WP_HTTP_Response {
+    public static function update_account_data($data): \WP_Error|\WP_REST_Response|\WP_HTTP_Response {
         $user_id = get_current_user_id();
-        $data_user_id = (int)$data['user_id'];
+        $data_user_id = (int) $data['user_id'];
 
         if (!$user_id || $user_id !== $data_user_id) {
             return new \WP_Error(
@@ -44,14 +44,14 @@ class Api {
         $last_name = isset($data['last_name']) ? sanitize_text_field($data['last_name']) : false;
         $phone = isset($data['phone']) ? sanitize_text_field($data['phone']) : '';
 
-        if(!$email) {
+        if (!$email) {
             return rest_ensure_response(array(
                 'success' => false,
                 'message' => __('Email address is required.'),
             ));
         }
 
-        if(!$name || !$last_name) {
+        if (!$name || !$last_name) {
             return rest_ensure_response(array(
                 'success' => false,
                 'message' => __('Name and last name are required.'),
@@ -73,9 +73,9 @@ class Api {
         ));
     }
 
-    public static function update_user_settings($data): \WP_Error|\WP_REST_Response|\WP_HTTP_Response {
+    public static function update_account_settings($data): \WP_Error|\WP_REST_Response|\WP_HTTP_Response {
         $user_id = get_current_user_id();
-        $data_user_id = (int)$data['user_id'];
+        $data_user_id = (int) $data['user_id'];
 
         if (!$user_id || $user_id !== $data_user_id) {
             return new \WP_Error(
@@ -85,12 +85,12 @@ class Api {
             );
         }
 
-        $opt_in_updates = isset($data['opt_in_updates']) ? (int)$data['opt_in_updates'] : 1;
-        $opt_in_commercial = isset($data['opt_in_commercial']) ? (int)$data['opt_in_commercial'] : 1;
+        $opt_in_updates = isset($data['opt_in_updates']) ? (int) $data['opt_in_updates'] : 1;
+        $opt_in_commercial = isset($data['opt_in_commercial']) ? (int) $data['opt_in_commercial'] : 1;
         $preferred_language = isset($data['preferred_language']) ?
             sanitize_text_field($data['preferred_language']) : false;
 
-        if(!$preferred_language) {
+        if (!$preferred_language) {
             $preferred_language = get_locale();
         }
 
@@ -104,9 +104,9 @@ class Api {
         ));
     }
 
-    public static function update_user_password($data): \WP_Error|\WP_REST_Response|\WP_HTTP_Response {
+    public static function update_account_password($data): \WP_Error|\WP_REST_Response|\WP_HTTP_Response {
         $user_id = get_current_user_id();
-        $data_user_id = (int)$data['user_id'];
+        $data_user_id = (int) $data['user_id'];
 
         if (!$user_id || $user_id !== $data_user_id) {
             return new \WP_Error(
@@ -120,7 +120,7 @@ class Api {
         $new_password = $data['new_password'] ? trim($data['new_password']) : false;
         $confirm_new_password = $data['confirm_new_password'] ? trim($data['confirm_new_password']) : false;
 
-        if(!$current_password || !$new_password || !$confirm_new_password) {
+        if (!$current_password || !$new_password || !$confirm_new_password) {
             return rest_ensure_response(array(
                 'success' => false,
                 'message' => __('All passwords are required.')
@@ -130,14 +130,14 @@ class Api {
         $user = get_user($user_id);
         $stored_password_hash = $user->user_pass;
 
-        if(!wp_check_password($current_password, $stored_password_hash, $user_id)) {
+        if (!wp_check_password($current_password, $stored_password_hash, $user_id)) {
             return rest_ensure_response(array(
                 'success' => false,
                 'message' => __('Current password does not match with stored password.'),
             ));
         }
 
-        if($new_password !== $confirm_new_password) {
+        if ($new_password !== $confirm_new_password) {
             return rest_ensure_response(array(
                 'success' => false,
                 'message' => __('New password should match to password confirmation field.')
@@ -151,11 +151,27 @@ class Api {
             ));
         }
 
-        wp_set_password($new_password, $user_id);
+        global $wpdb;
+
+        $old_user_data = get_userdata($user_id);
+
+        $hash = wp_hash_password($new_password);
+        $wpdb->update(
+            $wpdb->users,
+            array(
+                'user_pass' => $hash,
+                'user_activation_key' => '',
+            ),
+            array('ID' => $user_id)
+        );
+
+        clean_user_cache($user_id);
+        wp_set_auth_cookie($user_id);
+        do_action('wp_set_password', $new_password, $user_id, $old_user_data);
 
         return rest_ensure_response(array(
             'success' => true,
-            'message' => __('User password updated successfully'),
+            'message' => __('Password updated successfully.'),
         ));
     }
 }

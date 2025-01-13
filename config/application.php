@@ -157,10 +157,10 @@ Config::define('CONCATENATE_SCRIPTS', false);
 /**
  * Debugging Settings
  */
-Config::define('WP_DEBUG_DISPLAY', false);
-Config::define('WP_DEBUG_LOG', false);
-Config::define('SCRIPT_DEBUG', false);
-ini_set('display_errors', '0');
+Config::define('WP_DEBUG_DISPLAY', env('WP_DEBUG_DISPLAY') ?? false);
+Config::define('WP_DEBUG_LOG', env('WP_DEBUG_LOG') ?? false);
+Config::define('SCRIPT_DEBUG', env('SCRIPT_DEBUG') ?? false);
+ini_set('display_errors', env('PHP_DISPLAY_ERRORS') ?? '0');
 
 /**
  * Multisite

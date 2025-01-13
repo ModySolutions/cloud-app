@@ -161,7 +161,6 @@ ul {
 // TYPOGRAPHY CLASSES
 //==================================================================
 @each $color_key, $color in variables.$color_list {
-    // To use: apply class (ex) '.text-brand-blue' to apply that color.
     .text-#{'' + $color_key} {
         color: $color;
     }

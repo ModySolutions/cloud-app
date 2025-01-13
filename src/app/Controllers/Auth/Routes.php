@@ -56,9 +56,7 @@ class Routes {
                     wp_redirect(wp_login_url());
                     exit;
                 }
-                $dashboard_page_id = get_option('dashboard_page_id');
-                $dashboard_page = get_permalink($dashboard_page_id);
-                wp_redirect($dashboard_page);
+                wp_redirect(app_get_initial_page($current_user));
                 exit;
             }
         } else {
