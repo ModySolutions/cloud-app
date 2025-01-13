@@ -1,5 +1,5 @@
 {
-  "name": "cwirthy",
+  "name": "modycloud",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,23 +9,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/mediamechanics/c-wirthy-wordpress.git"
+    "url": "https://github.com/ModySolutions/cloud-app"
   },
   "author": "Mody Solutions",
   "license": "ISC",
   "bugs": {
-    "url": "https://bitbucket.org/mediamechanics/c-wirthy-wordpress/issues"
+    "url": "https://github.com/orgs/ModySolutions/projects/2"
   },
-  "homepage": "https://bitbucket.org/mediamechanics/c-wirthy-wordpress#readme",
+  "homepage": "https://github.com/ModySolutions/cloud-app",
   "dependencies": {
-    "@alpinejs/mask": "^3.14.8",
     "@babel/core": "^7.26.0",
     "@babel/preset-react": "^7.26.3",
     "@wordpress/components": "^28.1.0",
     "@wordpress/dom-ready": "^4.15.0",
     "@wordpress/element": "^6.15.1",
     "@wordpress/i18n": "^5.14.0",
-    "alpinejs": "^3.14.8",
     "aos": "^2.3.4",
     "babel-loader": "^9.2.1",
     "css-loader": "^7.1.2",

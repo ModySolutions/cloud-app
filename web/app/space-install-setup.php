@@ -7,10 +7,11 @@ define('WP_INSTALLING', $installing);
 require_once '../wp/wp-load.php';
 
 require_once '../../vendor/autoload.php';
-require_once ABSPATH.'wp-admin/includes/upgrade.php';
+require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 if (!function_exists('app_install_get_subdomain')) {
-    function app_install_get_subdomain(): string {
+    function app_install_get_subdomain(): string
+    {
         $host = parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST) ?? $_SERVER['HTTP_HOST'];
         $parts = explode('.', $host);
 
@@ -43,7 +44,7 @@ if (!is_blog_installed()) {
         false,
         false,
         wp_generate_password(),
-        'es_ES'
+        'es_ES',
     );
 }
 ?>

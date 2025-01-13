@@ -28,15 +28,16 @@ $root_dir = dirname(__DIR__);
  *
  * @var string
  */
-$webroot_dir = $root_dir.'/web';
+$webroot_dir = $root_dir . '/web';
 
 /**
  * Use Dotenv to set required environment variables and load .env file in root
  * .env.local will override .env if it exists
  */
-if (file_exists($root_dir.'/.env')) {
+if (file_exists($root_dir . '/.env')) {
     if (!function_exists('app_get_subdomain')) {
-        function app_get_subdomain(): string {
+        function app_get_subdomain(): string
+        {
             $host = parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST) ?? $_SERVER['HTTP_HOST'];
             $parts = explode('.', $host);
 
@@ -48,7 +49,7 @@ if (file_exists($root_dir.'/.env')) {
         }
     }
 
-    $env_files = file_exists($root_dir.'/.env.local')
+    $env_files = file_exists($root_dir . '/.env.local')
         ? ['.env', '.env.local']
         : ['.env'];
 
@@ -97,8 +98,8 @@ Config::define('WP_SITEURL', env('WP_SITEURL'));
  * Custom Content Directory
  */
 Config::define('CONTENT_DIR', '/app');
-Config::define('WP_CONTENT_DIR', $webroot_dir.Config::get('CONTENT_DIR'));
-Config::define('WP_CONTENT_URL', Config::get('WP_HOME').Config::get('CONTENT_DIR'));
+Config::define('WP_CONTENT_DIR', $webroot_dir . Config::get('CONTENT_DIR'));
+Config::define('WP_CONTENT_URL', Config::get('WP_HOME') . Config::get('CONTENT_DIR'));
 
 /**
  * DB settings
@@ -181,7 +182,7 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
     $_SERVER['HTTPS'] = 'on';
 }
 
-$env_config = __DIR__.'/environments/'.WP_ENV.'.php';
+$env_config = __DIR__ . '/environments/' . WP_ENV . '.php';
 
 if (file_exists($env_config)) {
     require_once $env_config;
@@ -196,43 +197,43 @@ if (!defined('ROOT_DIR')) {
     define('ROOT_DIR', $webroot_dir);
 }
 if (!defined('ABSPATH')) {
-    define('ABSPATH', $webroot_dir.'/wp/');
+    define('ABSPATH', $webroot_dir . '/wp/');
 }
 
 if (!defined('SRC_PATH')) {
-    define('SRC_PATH', $root_dir.'/src');
+    define('SRC_PATH', $root_dir . '/src');
 }
 
 if (!defined('APP_PATH')) {
-    define('APP_PATH', $root_dir.'/src/app');
+    define('APP_PATH', $root_dir . '/src/app');
 }
 
 if (!defined('LOGS_PATH')) {
-    define('LOGS_PATH', $root_dir.'/logs');
+    define('LOGS_PATH', $root_dir . '/logs');
 }
 
-if(!defined('WP_DEFAULT_THEME')) {
+if (!defined('WP_DEFAULT_THEME')) {
     define('WP_DEFAULT_THEME', 'app');
 }
 
-if(!defined('MC_SITES_PATH')) {
-    define('MC_SITES_PATH', __DIR__.'/sites');
+if (!defined('MC_SITES_PATH')) {
+    define('MC_SITES_PATH', __DIR__ . '/sites');
 }
 
-if(!defined('MC_USERS_PATH')) {
-    define('MC_USERS_PATH', __DIR__.'/users');
+if (!defined('MC_USERS_PATH')) {
+    define('MC_USERS_PATH', __DIR__ . '/users');
 }
 
-if(!defined('MC_AUTOLOGIN_TOKENS_PATH')) {
-    define('MC_AUTOLOGIN_TOKENS_PATH', __DIR__.'/autologin-tokens');
+if (!defined('MC_AUTOLOGIN_TOKENS_PATH')) {
+    define('MC_AUTOLOGIN_TOKENS_PATH', __DIR__ . '/autologin-tokens');
 }
 
-if(!defined('MC_LOGOUT_PATH')) {
-    define('MC_LOGOUT_PATH', __DIR__.'/logout-info');
+if (!defined('MC_LOGOUT_PATH')) {
+    define('MC_LOGOUT_PATH', __DIR__ . '/logout-info');
 }
 
-if(!defined('MC_MIGRATIONS_PATH')) {
-    define('MC_MIGRATIONS_PATH', APP_PATH.'/migrations');
+if (!defined('MC_MIGRATIONS_PATH')) {
+    define('MC_MIGRATIONS_PATH', APP_PATH . '/migrations');
 }
 
 // @todo make database hosts a fetchable object from several databases
