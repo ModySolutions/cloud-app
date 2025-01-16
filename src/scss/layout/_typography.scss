@@ -186,11 +186,11 @@ ul {
 
 @for $i from 1 through 100 {
     .w-#{$i * 5} {
-        width: #{$i * 5 / 16}rem;
+        width: calc((#{$i} * 5rem) / 16);
     }
 
     .h-#{$i * 5} {
-        height: #{$i * 5 / 16}rem;
+        height: calc((#{$i} * 5rem) / 16);
     }
 }
 
