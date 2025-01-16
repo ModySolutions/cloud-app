@@ -17,29 +17,29 @@ class PostHooks {
             mkdir(MC_UUID_PATH);
         }
 
-        function uuid_exists(string $uuid_string) : bool {
-            $exists = false;
-            $stored_uuids = glob(MC_UUID_PATH . '/*');
-            if(count($stored_uuids)) {
-                $stored_uuids_basename = array_map(function($uuid_item) use ($uuid_string){
-                    return basename($uuid_item);
-                }, $stored_uuids);
-                $exists = in_array($uuid_string, $stored_uuids_basename);
-            }
-
-            return $exists;
-        }
-
         do {
             $uuid = Uuid::uuid4();
             $uuid_string = $uuid->toString();
-        } while(uuid_exists($uuid_string));
+        } while(self::uuid_exists($uuid_string));
 
         $uuid_file_name = MC_UUID_PATH . "/{$uuid_string}.uuid";
         if(!is_file($uuid_file_name)){
             touch($uuid_file_name);
         }
-        file_put_contents($uuid_file_name, $uuid_string);
+        file_put_contents($uuid_file_name, json_encode($post));
         update_post_meta($post_id, 'uuid', $uuid_string);
+    }
+
+    public static function uuid_exists(string $uuid_string) : bool {
+        $exists = false;
+        $stored_uuids = glob(MC_UUID_PATH . '/*');
+        if(count($stored_uuids)) {
+            $stored_uuids_basename = array_map(function($uuid_item) use ($uuid_string){
+                return basename($uuid_item);
+            }, $stored_uuids);
+            $exists = in_array($uuid_string, $stored_uuids_basename);
+        }
+
+        return $exists;
     }
 }

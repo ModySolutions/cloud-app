@@ -35,6 +35,8 @@ node_modules
 # Users
 /config/users/*
 /config/sites/*
+/config/uuids/*
+/config/autologin-tokens/*
 
 # WP-CLI
 wp-cli.local.yml

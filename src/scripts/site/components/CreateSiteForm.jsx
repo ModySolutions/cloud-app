@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import { __ } from '@wordpress/i18n';
 import {toast} from "react-toastify";
-import toKebabCase from "../../tools/kebabcase";
+import toKebabCase from "@modycloud/tools/kebabcase";
 
 const CreateSiteForm = () => {
     const [companyName, setCompanyName] = useState('');
