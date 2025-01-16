@@ -109,7 +109,7 @@ const CreateSiteForm = () => {
                     clearInterval(intervalId);
                     setTimeout(() => {
                         location.href = initial_page
-                    }, 1000);
+                    }, 3000);
                 }
             }, 3 * 1000);
         } else {

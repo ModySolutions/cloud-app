@@ -2,8 +2,8 @@ import React from 'react';
 import domReady from '@wordpress/dom-ready';
 import {createRoot} from '@wordpress/element';
 import {ToastContainer} from "react-toastify";
-import CreateSiteIntro from "./site/components/CreateSiteIntro";
-import CreateSiteForm from "./site/components/CreateSiteForm";
+import CreateSiteIntro from "@modycloud/site/components/CreateSiteIntro";
+import CreateSiteForm from "@modycloud/site/components/CreateSiteForm";
 
 const AccountContainer = () => {
     return (

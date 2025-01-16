@@ -1,1 +1,1 @@
-import "../scss/editor.scss";
+import "@mcscss/editor.scss";

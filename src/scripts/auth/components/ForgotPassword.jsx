@@ -1,10 +1,10 @@
 import {useState} from 'react';
 import {__} from '@wordpress/i18n';
-import {navigate, useAuth} from "../AuthContext";
+import {navigate, useAuth} from "@modycloud/auth/AuthContext";
 import {toast} from "react-toastify";
 import {useLocation} from "react-router-dom";
 import {useEffect} from "@wordpress/element";
-import AuthLinks from "./AuthLinks";
+import AuthLinks from "@modycloud/auth/components/AuthLinks";
 
 const ForgotPassword = () => {
     const {email, setEmail, loading, error} = useAuth();

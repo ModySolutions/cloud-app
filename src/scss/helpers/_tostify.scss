@@ -24,7 +24,7 @@
   --toastify-toast-padding: 14px;
   --toastify-toast-min-height: 64px;
   --toastify-toast-max-height: 800px;
-  --toastify-toast-bd-radius: variables.$border-radius-md;
+  --toastify-toast-bd-radius: #{variables.$border-radius-md};
   --toastify-toast-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   --toastify-font-family: #{variables.$body-font};
   --toastify-z-index: 9999;

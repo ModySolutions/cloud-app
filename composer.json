@@ -52,7 +52,8 @@
     "timber/timber": "^2.3",
     "wpengine/advanced-custom-fields-pro": "*",
     "wpackagist-plugin/wp-crontrol": "^1.17",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "ramsey/uuid": "^4.7"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",

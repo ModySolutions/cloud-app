@@ -3,7 +3,7 @@
 namespace App\Hooks\User;
 
 class Api {
-    public static function rest_api_init() : void {
+    public static function register_rest_route() : void {
         register_rest_route('app/v1', '/users', array(
             'methods' => \WP_REST_Server::READABLE,
             'callback' => self::get_user_data(...),

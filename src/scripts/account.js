@@ -2,11 +2,11 @@ import React from 'react';
 import domReady from '@wordpress/dom-ready';
 import {createRoot} from '@wordpress/element';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import Account from './account/components/Account';
-import Links from "./account/components/Links";
-import Settings from "./account/components/Settings";
-import Security from "./account/components/Security";
-import {AccountProvider} from "./account/AccountContext";
+import Account from '@modycloud/account/views/Account';
+import Settings from "@modycloud/account/views/Settings";
+import Security from "@modycloud/account/views/Security";
+import Links from "@modycloud/account/components/Links";
+import {AccountProvider} from "@modycloud/account/context/AccountContext";
 import {ToastContainer} from "react-toastify";
 
 const AccountContainer = () => {
@@ -20,7 +20,7 @@ const AccountContainer = () => {
                         <Route path="/account/security" element={<Security/>}/>
                     </Routes>
                 </BrowserRouter>
-                <ToastContainer draggable />
+                <ToastContainer draggable position="bottom-right" />
             </AccountProvider>
         </div>
     )

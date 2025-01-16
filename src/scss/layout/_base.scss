@@ -68,6 +68,19 @@ html.noscroll {
     }
 }
 
+hr {
+    border-bottom: 1px solid variables.$grey-20;
+}
+
+.animate-display {
+    display: none;
+    @include mixins.animate-display();
+
+    &.is-visible {
+        display: block;
+    }
+}
+
 //==================================================================
 // LAYOUT UTILITY
 //==================================================================
@@ -133,6 +146,3 @@ html.noscroll {
     right: 0;
 }
 
-hr {
-    border-bottom: 1px solid variables.$grey-20;
-}

@@ -3,23 +3,23 @@
 namespace App\Hooks\Account;
 
 class Api {
-    public static function rest_api_init(): void {
+    public static function register_rest_route(): void {
         register_rest_route('app/v1', '/update-account/', array(
-            'methods' => 'POST',
+            'methods' => \WP_REST_Server::CREATABLE,
             'callback' => self::update_account_data(...),
             'permission_callback' => function () {
                 return is_user_logged_in();
             }
         ));
         register_rest_route('app/v1', '/update-account-settings/', array(
-            'methods' => 'POST',
+            'methods' => \WP_REST_Server::CREATABLE,
             'callback' => self::update_account_settings(...),
             'permission_callback' => function () {
                 return is_user_logged_in();
             }
         ));
         register_rest_route('app/v1', '/update-account-password/', array(
-            'methods' => 'POST',
+            'methods' => \WP_REST_Server::CREATABLE,
             'callback' => self::update_account_password(...),
             'permission_callback' => function () {
                 return is_user_logged_in();

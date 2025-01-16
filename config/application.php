@@ -232,8 +232,20 @@ if (!defined('MC_LOGOUT_PATH')) {
     define('MC_LOGOUT_PATH', __DIR__ . '/logout-info');
 }
 
+if (!defined('MC_UUID_PATH')) {
+    define('MC_UUID_PATH', __DIR__ . '/uuid');
+}
+
 if (!defined('MC_MIGRATIONS_PATH')) {
     define('MC_MIGRATIONS_PATH', APP_PATH . '/migrations');
+}
+
+if (!defined('MC_PLUGINS_PATH')) {
+    define('MC_PLUGINS_PATH', ROOT_DIR . '/app/plugins');
+}
+
+if (!defined('WP_HTTP_BLOCK_EXTERNAL')) {
+    define('WP_HTTP_BLOCK_EXTERNAL', true);
 }
 
 // @todo make database hosts a fetchable object from several databases

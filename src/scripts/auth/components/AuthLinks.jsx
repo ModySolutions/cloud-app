@@ -1,4 +1,4 @@
-import {navigate} from "../AuthContext";
+import {navigate} from "@modycloud/auth/AuthContext";
 
 const AuthLinks = ({leftLink = '', leftText = '', rightLink = '', rightText = ''}) => {
     return (

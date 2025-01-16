@@ -14,6 +14,18 @@ module.exports = {
         filename: '[name].js',
         path: path.resolve(process.cwd(), 'dist'),
     },
+    resolve: {
+        ...defaults.resolve,
+        ...{
+            alias: {
+                ...defaults.resolve.alias,
+                ...{
+                    '@modycloud': path.resolve(process.cwd(), 'src/scripts'),
+                    '@mcscss': path.resolve(process.cwd(), 'src/scss'),
+                }
+            }
+        }
+    },
     module: {
         ...defaults.module,
         rules: [

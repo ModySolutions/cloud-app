@@ -105,6 +105,12 @@
         .grid-rows-#{$key} { grid-template-rows: #{$value}; }
     }
 
+    @each $key, $value in variables.$grid-columns-custom {
+        .grid-cols-#{$key} {
+            grid-template-columns: #{$value};
+        }
+    }
+
     @each $key, $value in variables.$gap-values {
         .gap-#{$key} { gap: $value; }
         .gap-x-#{$key} { column-gap: $value; }
@@ -133,7 +139,11 @@
     @include generate-grid-classes;
 }
 
-@include generate-flex-grid-utilities;
+@mixin grid-columns($col1, $col2) {
+    display: grid;
+    grid-template-columns: $col1 $col2;
+    gap: 1rem;
+}
 
 @mixin border-radius($radius) {
     &.rounded {
@@ -204,29 +214,8 @@
     }
 }
 
-.animate-display {
-    display: none;
-    @include animate-display();
-
-    &.is-visible {
-        display: block;
-    }
-}
-
 @mixin spin {
     animation: spin 1s linear infinite;
-}
-
-@each $color, $color_value in variables.$loading_color_list {
-    @each $size, $size_value in variables.$loading_icon_sizes {
-        .loading-icon-#{$color}-#{$size} {
-            width: $size_value;
-            height: $size_value;
-            background: url('images/loading-icon-#{$color}.png') no-repeat center;
-            background-size: contain;
-            @include spin;
-        }
-    }
 }
 
 @keyframes spin {
@@ -238,12 +227,9 @@
     }
 }
 
-@for $i from 1 through 100 {
-    .w-#{$i * 5} {
-        width: #{$i * 5 / 16}rem;
-    }
-
-    .h-#{$i * 5} {
-        height: #{$i * 5 / 16}rem;
-    }
+@mixin text-size($size) {
+    font-size: $size;
+    line-height: $size * 1.4;
 }
+
+

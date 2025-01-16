@@ -14,6 +14,7 @@ class Delta {
 CREATE TABLE IF NOT EXISTS $table_name (
     id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     migration_name VARCHAR(255) NOT NULL,
+    module VARCHAR(100) NOT NULL,
     applied_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 ) $charset_collate;

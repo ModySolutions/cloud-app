@@ -1,5 +1,6 @@
 @use "sass:color";
 @use "../helpers/variables";
+@use "../helpers/mixins";
 
 //==================================================================
 // BUTTONS
@@ -19,13 +20,26 @@
     cursor: pointer;
     text-align: center;
 
+    @each $size_key, $size in variables.$text-sizes {
+        &.btn-#{$size_key} {
+            @include mixins.text-size($size);
+            padding: calc(#{$size} * .4rem);
+        }
+    }
+
     @each $color_key, $color in variables.$color_list {
         &.btn-#{'' + $color_key} {
             background-color: $color;
 
-            &[disabled] {
-                background-color: rgba($color, .5);
+            &[disabled],
+            &:hover,
+            &:focus {
+                background-color: color.adjust($color, $lightness: 5%);
             }
+        }
+
+        &.btn-text-#{'' + $color_key} {
+            color: #{$color};
         }
     }
 
@@ -51,7 +65,7 @@
     }
 
     &:hover, &:focus, &[disabled] {
-        background-color: color.adjust(variables.$primary, $lightness: 10%);
+        //background-color: color.adjust(variables.$primary, $lightness: 10%);
     }
 
     > svg {

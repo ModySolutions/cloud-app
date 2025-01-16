@@ -13,3 +13,6 @@
         @include mixins.set-container(variables.$container-lg-width)
     }
 }
+
+@include mixins.generate-flex-grid-utilities();
+

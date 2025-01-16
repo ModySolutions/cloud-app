@@ -3,11 +3,11 @@ import domReady from '@wordpress/dom-ready';
 import {createRoot} from '@wordpress/element';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {ToastContainer} from "react-toastify";
-import SignIn from "./auth/components/SignIn";
-import SignUp from "./auth/components/SignUp";
-import ForgotPassword from "./auth/components/ForgotPassword";
-import ResetPassword from "./auth/components/ResetPassword";
-import {AuthProvider} from "./auth/AuthContext";
+import SignIn from "@modycloud/auth/components/SignIn";
+import SignUp from "@modycloud/auth/components/SignUp";
+import ForgotPassword from "@modycloud/auth/components/ForgotPassword";
+import ResetPassword from "@modycloud/auth/components/ResetPassword";
+import {AuthProvider} from "@modycloud/auth/AuthContext";
 
 const AuthContainer = () => {
     return (

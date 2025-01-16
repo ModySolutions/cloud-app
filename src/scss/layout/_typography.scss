@@ -183,3 +183,19 @@ ul {
 .lowercase {
     text-transform: lowercase;
 }
+
+@for $i from 1 through 100 {
+    .w-#{$i * 5} {
+        width: #{$i * 5 / 16}rem;
+    }
+
+    .h-#{$i * 5} {
+        height: #{$i * 5 / 16}rem;
+    }
+}
+
+@each $label, $size in variables.$text-sizes {
+    .text-#{$label} {
+        @include mixins.text-size($size);
+    }
+}

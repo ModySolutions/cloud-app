@@ -5,6 +5,60 @@ namespace App\Hooks\Queue;
 use function Env\env;
 
 class Post {
+    public static function register_post_type() : void {
+        register_post_type( 'queue', array(
+            'labels' => array(
+                'name' => __('Queues'),
+                'singular_name' => __('Queue'),
+                'menu_name' => __('Queues'),
+                'all_items' => __('All Queues'),
+                'edit_item' => __('Edit Queue'),
+                'view_item' => __('View Queue'),
+                'view_items' => __('View Queues'),
+                'add_new_item' => __('Add New Queue'),
+                'add_new' => __('Add New Queue'),
+                'new_item' => __('New Queue'),
+                'parent_item_colon' => __('Parent Queue:'),
+                'search_items' => __('Search Queues'),
+                'not_found' => __('No queues found'),
+                'not_found_in_trash' => __('No queues found in Trash'),
+                'archives' => __('Queue Archives'),
+                'attributes' => __('Queue Attributes'),
+                'insert_into_item' => __('Insert into queue'),
+                'uploaded_to_this_item' => __('Uploaded to this queue'),
+                'filter_items_list' => __('Filter queues list'),
+                'filter_by_date' => __('Filter queues by date'),
+                'items_list_navigation' => __('Queues list navigation'),
+                'items_list' => __('Queues list'),
+                'item_published' => __('Queue published.'),
+                'item_published_privately' => __('Queue published privately.'),
+                'item_reverted_to_draft' => __('Queue reverted to draft.'),
+                'item_scheduled' => __('Queue scheduled.'),
+                'item_updated' => __('Queue updated.'),
+                'item_link' => __('Queue Link'),
+                'item_link_description' => __('A link to a queue.'),
+            ),
+            'public' => false,
+            'publicly_queryable' => true,
+            'show_ui' => true,
+            'show_in_admin_bar' => false,
+            'show_in_rest' => true,
+            'menu_position' => 7,
+            'menu_icon' => 'dashicons-editor-ul',
+            'supports' => array(
+                0 => 'title',
+                1 => 'author',
+                2 => 'custom-fields',
+            ),
+            'rewrite' => array(
+                'with_front' => false,
+                'pages' => false,
+            ),
+            'can_export' => false,
+            'delete_with_user' => true,
+        ) );
+    }
+
     public static function save_post_queue(int $queue_id, \WP_Post $post, bool $update): void {
         if ($post->post_type !== 'queue') {
             return;

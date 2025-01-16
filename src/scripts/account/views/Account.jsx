@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import {useUser} from "../AccountContext";
+import {useUser} from "@modycloud/account/context/AccountContext";
 import {toast} from "react-toastify";
 
 const Account = () => {
@@ -45,7 +45,7 @@ const Account = () => {
         };
 
         apiFetch({
-            path: '/app/v1/update-user/',
+            path: '/app/v1/update-account/',
             method: 'POST',
             data: userData
         })
