@@ -46,7 +46,7 @@ const Security = () => {
                 const {success, message} = response;
                 if (success) {
                     toast.success(
-                        message || __('Password changed successfully.'),
+                        message || __('Password changed successfully.', 'app'),
                         {
                             autoClose: 3000,
                         }
@@ -56,7 +56,7 @@ const Security = () => {
                     }, 3000)
                 } else {
                     toast.error(
-                        message || __('Error updating user password.'),
+                        message || __('Error updating user password.', 'app'),
                         {
                             autoClose: 3000,
                         }
@@ -66,7 +66,7 @@ const Security = () => {
             .catch(error => {
                 console.error('Error updating user password:', error);
                 toast.error(
-                    __('Error updating user password.'),
+                    __('Error updating user password.', 'app'),
                     {
                         autoClose: 10000,
                     }
@@ -88,13 +88,13 @@ const Security = () => {
             {user ? (
                 <form className={'container'} onSubmit={handleSubmit}>
                     <div className="col-6">
-                        <h3>{__('Change your password')}</h3>
+                        <h3>{__('Change your password', 'app')}</h3>
                     </div>
                     <div className="col-6 justify-end items-start p-relative">
                         {updating && <div className="loading-icon-primary-2 p-absolute top right"></div>}
                     </div>
                     <div className="form-group col-12">
-                        <label htmlFor="current-password">{__('Current password')}</label>
+                        <label htmlFor="current-password">{__('Current password', 'app')}</label>
                         <input
                             type={showCurrentPassword ? 'text' : 'password'}
                             className="input-lg"
@@ -122,7 +122,7 @@ const Security = () => {
                     </div>
                     <hr className='my-3 col-12'/>
                     <div className="form-group col-12">
-                        <label htmlFor="new-password">{__('New password')}</label>
+                        <label htmlFor="new-password">{__('New password', 'app')}</label>
                         <input
                             type={showNewPassword ? 'text' : 'password'}
                             className="input-lg"
@@ -149,7 +149,7 @@ const Security = () => {
                         </span>
                     </div>
                     <div className="form-group col-12">
-                        <label htmlFor="confirm-new-password">{__('Confirm new password')}</label>
+                        <label htmlFor="confirm-new-password">{__('Confirm new password', 'app')}</label>
                         <input
                             type={showConfirmNewPassword ? 'text' : 'password'}
                             className="input-lg"
@@ -179,12 +179,12 @@ const Security = () => {
 
                     <div className="form-group col-12">
                         <button type="submit" className="btn btn-primary text-white" disabled={updating}>
-                            {__('Change my password')}
+                            {__('Change my password', 'app')}
                         </button>
                     </div>
                 </form>
             ) : (
-                <p>{__('User not found')}</p>
+                <p>{__('Security settings not found', 'app')}</p>
             )}
         </>
     );

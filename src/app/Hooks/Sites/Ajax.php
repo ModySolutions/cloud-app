@@ -12,7 +12,7 @@ class Ajax {
         if (get_post_status($queue_id) === 'publish') {
             wp_send_json_success(array(
                 'message' => sprintf(
-                    __('%s complete'),
+                    __('%s complete', APP_THEME_LOCALE),
                     get_the_title($queue_id)
                 ),
                 'done' => get_post_status($queue_id) === 'publish',
@@ -27,7 +27,7 @@ class Ajax {
         if (empty($_POST['space_name'])) {
             wp_send_json_error(array(
                 'exists' => true,
-                'message' => __('The space name is required.')
+                'message' => __('The space name is required., APP_THEME_LOCALE')
             ));
         }
         $space_name = sanitize_text_field($_POST['space_name']);
@@ -35,7 +35,7 @@ class Ajax {
         wp_send_json_success(array(
             'exists' => $exists,
             'message' => sprintf(
-                __('The space name <strong>%s</strong> is already taken. Please try another.'),
+                __('The space name <strong>%s</strong> is already taken. Please try another.', APP_THEME_LOCALE),
                 $space_name
             )
         ));
@@ -44,13 +44,13 @@ class Ajax {
     public static function create_space(): void {
         if (empty($_POST['space_name'])) {
             wp_send_json_error(array(
-                'message' => __('The space name is required.')
+                'message' => __('The space name is required., APP_THEME_LOCALE')
             ));
         }
 
         if (empty($_POST['company_name'])) {
             wp_send_json_error(array(
-                'message' => __('The company name is required.')
+                'message' => __('The company name is required., APP_THEME_LOCALE')
             ));
         }
 
@@ -59,14 +59,14 @@ class Ajax {
 
         if (strlen($space_name) > 16) {
             wp_send_json_error(array(
-                'message' => __('The space name should be 16 characters maximum.'),
+                'message' => __('The space name should be 16 characters maximum.', APP_THEME_LOCALE),
             ));
         }
 
         if (self::_check_space_name_exists($space_name)) {
             wp_send_json_error(array(
                 'message' => sprintf(
-                    __('The space name <strong>%s</strong> is already taken. Please try another.'),
+                    __('The space name <strong>%s</strong> is already taken. Please try another.', APP_THEME_LOCALE),
                     $space_name
                 )
             ));
@@ -75,7 +75,7 @@ class Ajax {
         $queue_id = wp_insert_post(array(
             'post_type' => 'queue',
             'post_title' => sprintf(
-                __('Create space %s'),
+                __('Create space %s', APP_THEME_LOCALE),
                 $company_name
             ),
             'post_status' => 'draft',
@@ -92,7 +92,7 @@ class Ajax {
         $env_file_data = app_generate_env_file_info($queue_id, $space_name, $company_name);
         if (count($env_file_data) === 0) {
             wp_send_json_error(array(
-                'message' => __('There was an error generating the configuration file. Please contact with support'),
+                'message' => __('There was an error generating the configuration file. Please contact with support', APP_THEME_LOCALE),
             ));
         }
         $env_file = Timber::compile('@provision/env-template.twig', $env_file_data);
@@ -122,7 +122,7 @@ class Ajax {
         app_log(".env\n".print_r($env_file, 1));
 
         wp_send_json_success([
-            'message' => __('We are provisioning your space, please wait, this could take a while'),
+            'message' => __('We are provisioning your space, please wait, this could take a while', APP_THEME_LOCALE),
             'initial_page' => add_query_arg(array(
                 'autologin_user' => base64_encode(md5(rand(111111, 999999))),
             ), "{$env_file_data['wp_home']}/app/space-install-setup.php"),

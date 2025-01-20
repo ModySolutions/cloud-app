@@ -1,4 +1,5 @@
 @use '../../helpers/variables';
+@use '../../helpers/media-queries';
 
 .header {
   display: flex;
@@ -40,6 +41,12 @@
       background: none;
       border: none;
       cursor: pointer;
+
+      .name {
+        @include media-queries.for-laptop-down {
+          display: none;
+        }
+      }
 
       .role {
         font-size: .7rem;

@@ -13,7 +13,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding homepage on {$site_name}");
     $home_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => 'Home',
+        'post_title' => __('Home'), APP_THEME_LOCALE,
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => '',
@@ -25,7 +25,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding auth page on {$site_name}");
     $auth_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => 'Auth',
+        'post_title' => __('Auth'), APP_THEME_LOCALE,
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'auth',
@@ -37,7 +37,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding dashboard page on {$site_name}");
     $dashboard_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Dashboard'),
+        'post_title' => __('Dashboard'), APP_THEME_LOCALE,
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'dashboard',
@@ -48,7 +48,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding apps page on {$site_name}");
     $apps_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Apps'),
+        'post_title' => __('Apps'), APP_THEME_LOCALE,
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'apps',
@@ -59,7 +59,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding users page on {$site_name}");
     $users_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Users'),
+        'post_title' => __('Users'), APP_THEME_LOCALE,
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'users',
@@ -70,7 +70,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding settings page on {$site_name}");
     $settings_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Settings'),
+        'post_title' => __('Settings'), APP_THEME_LOCALE,
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'settings',
@@ -81,7 +81,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding activity page on {$site_name}");
     $activity_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Activity'),
+        'post_title' => __('Activity'), APP_THEME_LOCALE,
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'activity',
@@ -92,7 +92,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding support page on {$site_name}");
     $support_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Support'),
+        'post_title' => __('Support'), APP_THEME_LOCALE,
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'support',
@@ -139,13 +139,13 @@ return function (\wpdb $wpdb) {
 
     $main_cta = array(
         'route' => "/apps/market",
-        'title' => __('Add your first app'),
+        'title' => __('Add your first app', APP_THEME_LOCALE),
     );
     update_option('main_cta', $main_cta);
 
     $account_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Account'),
+        'post_title' => __('Account'), APP_THEME_LOCALE,
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'account',
@@ -159,28 +159,28 @@ return function (\wpdb $wpdb) {
 
     $pages_slugs = array(
         'dashboard' => array(
-            '/apps/market' => __('Add your first app'),
+            '/apps/market' => __('Add your , APP_THEME_LOCALEfirst app'),
         ),
         'apps' => array(
-            'all' => __('All apps'),
-            'installed' => __('Installed'),
-            'market' => __('Market'),
+            'all' => __('All apps', APP_THEME_LOCALE),
+            'installed' => __('Installed'), APP_THEME_LOCALE,
+            'market' => __('Market'), APP_THEME_LOCALE,
         ),
         'users' => array(
-            'all' => __('All users'),
-            'add' => __('Add user'),
-            $account_permalink => __('My account'),
+            'all' => __('All users', APP_THEME_LOCALE),
+            'add' => __('Add user', APP_THEME_LOCALE),
+            $account_permalink => __('My account', APP_THEME_LOCALE),
         ),
         'account' => array(
-            '/account/' => __('Account'),
-            '/account/settings' => __('Settings'),
-            '/account/security' => __('Security'),
+            '/account/' => __('Account'), APP_THEME_LOCALE,
+            '/account/settings' => __('Settings'), APP_THEME_LOCALE,
+            '/account/security' => __('Security'), APP_THEME_LOCALE,
         ),
         'settings' => array(
-            'company-info' => __('Company info'),
+            'company-info' => __('Company info', APP_THEME_LOCALE),
         ),
         'activity' => array(
-            'all' => __('All activity')
+            'all' => __('All activity', APP_THEME_LOCALE)
         )
     );
 

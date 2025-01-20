@@ -34,9 +34,9 @@ const SignUp = () => {
 
     const authLinks = <AuthLinks
         leftLink='/auth/forgot-passwd'
-        leftText={__('Forgot password')}
+        leftText={__('Forgot password', 'app')}
         rightLink='/auth/sign-in'
-        rightText={__('Sign in')}
+        rightText={__('Sign in', 'app')}
     />;
 
     const handleSubmit = async (e) => {
@@ -60,22 +60,27 @@ const SignUp = () => {
 
         if (!response.ok) {
             toast.error(
-                __('Error signing up.'),
+                __('Error signing up.', 'app'),
                 {
                     autoClose: 3000,
                 }
             )
-            console.error(__('Error signing up. Code: ' + response.statusText))
+            console.error(
+                sprintf(
+                    __('Error signing up. Code: %s', 'app'),
+                    response.statusText
+                )
+            );
             setSigningUp(false);
         }
 
-        const {success, data: {initial_page, message}} = await response.json();
+        const {success, data: {message}} = await response.json();
 
         if (success) {
             setSignedUp(true);
             setSuccessMessage(message)
             toast.success(
-                successMessage || __('Sign up successful.'),
+                successMessage || __('Sign up successful.', 'app'),
                 {
                     autoClose: 3000,
                 }
@@ -83,7 +88,7 @@ const SignUp = () => {
         } else {
             setSigningUp(false);
             toast.error(
-                message || __('Error signing up.'),
+                message || __('Error signing up.', 'app'),
                 {
                     autoClose: 3000,
                 }
@@ -106,7 +111,7 @@ const SignUp = () => {
                 (
                     <form className={'sign-up'} onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="email">{__('Email')}</label>
+                            <label htmlFor="email">{__('Email', 'app')}</label>
                             <input
                                 type="email"
                                 className="input-lg"
@@ -122,7 +127,7 @@ const SignUp = () => {
                             <button type="submit" className="btn btn-primary text-white btn-wide d-flex"
                                     disabled={signingUp || !email}>
                                 {signingUp && <div className="loading-icon-white-1 mr-2"></div>}
-                                {signingUp && __('Signing up')}
+                                {signingUp && __('Signing up', 'app')}
                                 {!signingUp && __('Sign up')}
                             </button>
                         </div>

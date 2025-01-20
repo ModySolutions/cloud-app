@@ -55,7 +55,7 @@ if (file_exists($root_dir . '/.env')) {
 
     $paths = [$root_dir];
 
-    $sub_domain = app_get_subdomain();
+    $sub_domain = php_sapi_name() !== 'cli' ? app_get_subdomain() : false;
     if ($sub_domain && file_exists("{$root_dir}/config/sites/{$sub_domain}/.env")) {
         $paths[] = "{$root_dir}/config/sites/{$sub_domain}";
     }
@@ -246,6 +246,10 @@ if (!defined('MC_PLUGINS_PATH')) {
 
 if (!defined('WP_HTTP_BLOCK_EXTERNAL')) {
     define('WP_HTTP_BLOCK_EXTERNAL', true);
+}
+
+if (!defined('APP_THEME_DOMAIN')) {
+    define('APP_THEME_DOMAIN', 'app');
 }
 
 // @todo make database hosts a fetchable object from several databases

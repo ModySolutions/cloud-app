@@ -35,6 +35,7 @@ EOF;
         }
 
         $user = wp_get_current_user();
+        $post_id = get_the_ID();
         $context['title'] = get_the_title();
         $context['display_name'] = self::_get_user_display_name($user);
         $context['sign_out_link'] = wp_logout_url('/auth/sign-in');
@@ -44,7 +45,8 @@ EOF;
         $context['site_url'] = get_bloginfo('url');
         $context['images_url'] = get_template_directory_uri() . '/images';
         $context['site_name'] = get_bloginfo();
-        $context['main_cta'] = get_option('main_cta');
+        $main_cta = get_post_meta($post_id, 'main_cta', true) ?? get_option('main_cta');
+        $context['main_cta'] = $main_cta;
         $context['static_pages'] = self::_get_static_pages();
         $context['network_url'] = network_home_url();
         $context['routes'] = self::_get_page_routes();

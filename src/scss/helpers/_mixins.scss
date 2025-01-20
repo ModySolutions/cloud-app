@@ -1,5 +1,6 @@
 @use "sass:map";
 @use '../helpers/variables';
+@use '../helpers/media-queries';
 //=================================================================
 // MIXINS
 //=================================================================
@@ -108,6 +109,12 @@
     @each $key, $value in variables.$grid-columns-custom {
         .grid-cols-#{$key} {
             grid-template-columns: #{$value};
+            @include media-queries.for-laptop-down {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            @include media-queries.for-tablet-down {
+                grid-template-columns: 1fr;
+            }
         }
     }
 
@@ -180,22 +187,6 @@
     &.rounded-right {
         border-top-right-radius: $radius;
         border-bottom-right-radius: $radius;
-    }
-}
-
-.radius {
-    @include border-radius(variables.$border-radius-xs);
-    &-sm {
-        @include border-radius(variables.$border-radius-sm);
-    }
-    &-md {
-        @include border-radius(variables.$border-radius-md);
-    }
-    &-lg {
-        @include border-radius(variables.$border-radius-lg);
-    }
-    &-circle {
-        @include border-radius(variables.$border-circle);
     }
 }
 

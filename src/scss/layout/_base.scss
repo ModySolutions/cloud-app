@@ -16,6 +16,7 @@
 
 html {
     background-color: variables.$background;
+    overflow: hidden;
 }
 
 body {
@@ -23,6 +24,10 @@ body {
         display: grid;
         grid-template-columns: 64px 264px 1fr;
         grid-template-rows: auto;
+
+        @include media-queries.for-laptop-down {
+            grid-template-columns: 1fr;
+        }
     }
 
     &.page-template-auth-template {
@@ -128,6 +133,10 @@ hr {
 
 .p-relative {
     position: relative;
+}
+
+.p-sticky {
+    position: sticky;
 }
 
 .top {

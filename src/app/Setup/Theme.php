@@ -48,6 +48,7 @@ class Theme {
     public static function after_setup_theme(): void {
         add_theme_support('post-thumbnails');
         add_theme_support('title-tag');
+        load_theme_textdomain(APP_THEME_DOMAIN, SRC_PATH . '/languages');
     }
 
     public static function wp_enqueue_scripts(): void {

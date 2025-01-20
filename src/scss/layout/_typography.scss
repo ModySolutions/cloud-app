@@ -192,6 +192,22 @@ ul {
     .h-#{$i * 5} {
         height: calc((#{$i} * 5rem) / 16);
     }
+
+    .w-#{$i}-p {
+        width: #{$i}#{'%'};
+    }
+
+    .h-#{$i}-p {
+        height: #{$i}#{'%'};
+    }
+
+    .max-width-#{$i * 10} {
+        max-width: calc((#{$i * 10}#{'px'}));
+    }
+
+    .max-height-#{$i * 10} {
+        max-height: calc((#{$i * 10}#{'px'}));
+    }
 }
 
 @each $label, $size in variables.$text-sizes {

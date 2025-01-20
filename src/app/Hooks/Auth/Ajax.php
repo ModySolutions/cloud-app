@@ -9,7 +9,7 @@ use function Env\env;
 class Ajax {
     public static function sign_in(): void {
         if (!defined('DOING_AJAX') || !DOING_AJAX) {
-            wp_send_json_error(array('message' => __('Invalid request.')));
+            wp_send_json_error(array('message' => __('Invalid request.')), APP_THEME_LOCALE);
         }
 
         $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
@@ -17,13 +17,13 @@ class Ajax {
         $remember_me = !!$_POST['remember_me'];
 
         if (empty($email) || empty($password)) {
-            wp_send_json_error(array('message' => __('Email and password are required.')));
+            wp_send_json_error(array('message' => __('Email and password are required.')), APP_THEME_LOCALE);
         }
 
         $userdata = get_user_by('email', $email);
 
         if (!$userdata) {
-            wp_send_json_error(array('message' => __('Incorrect email or password.')));
+            wp_send_json_error(array('message' => __('Incorrect email or password.')), APP_THEME_LOCALE);
         }
 
         if ($userdata) {
@@ -46,9 +46,9 @@ class Ajax {
             if ($lockout_time && $lockout_time > time()) {
                 $remaining_time = $lockout_time - time();
                 wp_send_json_error(array(
-                    'message' => __('Account locked. Try again in ').
+                    'message' => __('Account locked. Try again in ', APP_THEME_LOCALE).
                         round($remaining_time / 60).
-                        __(' minutes.')
+                        __(' minutes., APP_THEME_LOCALE')
                 ));
             }
         }
@@ -71,12 +71,12 @@ class Ajax {
             if ($failed_attempts >= 3) {
                 update_user_meta($user->ID, '_failed_login_lockout', time() + (24 * 60 * 60));
                 wp_send_json_error(array(
-                    'message' => __('Incorrect email or password.')
+                    'message' => __('Incorrect email or password., APP_THEME_LOCALE')
                 ));
             }
 
             wp_send_json_error(array(
-                'message' => __('Incorrect email or password.')
+                'message' => __('Incorrect email or password., APP_THEME_LOCALE')
             ));
         }
 
@@ -87,7 +87,7 @@ class Ajax {
         $initial_page = app_get_initial_page($user);
 
         wp_send_json_success(array(
-            'message' => sprintf(__('Login successful, welcome %s'), $userdata->first_name),
+            'message' => sprintf(__('Login successful, welcome %s'), $userdata->first_name, APP_THEME_LOCALE),
             'initial_page' => $initial_page,
         ));
     }
@@ -95,7 +95,7 @@ class Ajax {
     public static function sign_up(): void {
         if (!isset($_POST['email'])) {
             wp_send_json_error([
-                'message' => __('Invalid request.'),
+                'message' => __('Invalid request.', APP_THEME_LOCALE),
             ]);
         }
 
@@ -103,13 +103,13 @@ class Ajax {
 
         if (!is_email($email)) {
             wp_send_json_error([
-                'message' => __('Invalid email address.'),
+                'message' => __('Invalid email address.', APP_THEME_LOCALE),
             ]);
         }
 
         if (email_exists($email)) {
             wp_send_json_error([
-                'message' => __('This email is already registered.'),
+                'message' => __('This email is already registered.', APP_THEME_LOCALE),
             ]);
         }
 
@@ -118,7 +118,7 @@ class Ajax {
 
         if (is_wp_error($user_id)) {
             wp_send_json_error([
-                'message' => __('There was an error creating your account.'),
+                'message' => __('There was an error creating your account.', APP_THEME_LOCALE),
             ]);
         }
 
@@ -132,7 +132,7 @@ class Ajax {
 
         if (is_wp_error($reset_key)) {
             wp_send_json_error([
-                'message' => __('Unable to generate password reset key.'),
+                'message' => __('Unable to generate password reset key.', APP_THEME_LOCALE),
             ]);
         }
 
@@ -151,19 +151,19 @@ class Ajax {
 
         $button = Timber::compile('@app/mail/button.twig', [
             'link' => $reset_url,
-            'text' => __('Activate account'),
+            'text' => __('Activate account', APP_THEME_LOCALE),
         ]);
 
-        $subject = __('Complete your registration');
+        $subject = __('Complete your registration', APP_THEME_LOCALE);
         $message = sprintf(
-            __('To complete your registration, please set your password using the link below:%s %s %s'),
+            __('To complete your registration, please set your password using the link below:%s %s %s', APP_THEME_LOCALE),
             '<br><br>',
             $button,
             '<br><br>'
         );
 
         $message .= sprintf(
-            __('If the button doesn\'t work, please copy the URL below in your browser: %s %s'),
+            __('If the button doesn\'t work, please copy the URL below in your browser: %s %s', APP_THEME_LOCALE),
             '<br><br>',
             $reset_url
         );
@@ -173,12 +173,12 @@ class Ajax {
 
         if (!$mail_sent) {
             wp_send_json_error([
-                'message' => __('Failed to send the email. Please try again.'),
+                'message' => __('Failed to send the email. Please try again.', APP_THEME_LOCALE),
             ]);
         }
 
         wp_send_json_success([
-            'message' => __('Registration successful! Please check your email to complete the process.'),
+            'message' => __('Registration successful! Please check your email to complete the process.', APP_THEME_LOCALE),
             'callback' => 'hide_form'
         ]);
     }
@@ -186,7 +186,7 @@ class Ajax {
     public static function forgot_password(): void {
         if (!isset($_POST['email'])) {
             wp_send_json_error([
-                'message' => __('Invalid request.'),
+                'message' => __('Invalid request.', APP_THEME_LOCALE),
             ]);
         }
 
@@ -194,13 +194,13 @@ class Ajax {
 
         if (!is_email($email)) {
             wp_send_json_error([
-                'message' => __('Invalid email address.'),
+                'message' => __('Invalid email address.', APP_THEME_LOCALE),
             ]);
         }
 
         if (!email_exists($email)) {
             wp_send_json_success([
-                'message' => __('An email is coming your way to help you.'),
+                'message' => __('An email is coming your way to help you.', APP_THEME_LOCALE),
             ]);
         }
 
@@ -210,7 +210,7 @@ class Ajax {
 
         if (is_wp_error($reset_key)) {
             wp_send_json_error([
-                'message' => __('Unable to generate password reset key.'),
+                'message' => __('Unable to generate password reset key.', APP_THEME_LOCALE),
             ]);
         }
 
@@ -228,19 +228,19 @@ class Ajax {
 
         $button = Timber::compile('@app/mail/button.twig', [
             'link' => $reset_url,
-            'text' => __('Reset my password'),
+            'text' => __('Reset my password', APP_THEME_LOCALE),
         ]);
 
-        $subject = __('Did you forget your password?');
+        $subject = __('Did you forget your password?', APP_THEME_LOCALE);
         $message = sprintf(
-            __('Someone asked for a password reset on your account, click on the button below to set a new one:%s %s %s'),
+            __('Someone asked for a password reset on your account, click on the button below to set a new one:%s %s %s', APP_THEME_LOCALE),
             '<br><br>',
             $button,
             '<br><br>'
         );
 
         $message .= sprintf(
-            __('If the button doesn\'t work, please copy the URL below in your browser: %s %s'),
+            __('If the button doesn\'t work, please copy the URL below in your browser: %s %s', APP_THEME_LOCALE),
             '<br><br>',
             $reset_url
         );
@@ -250,12 +250,12 @@ class Ajax {
 
         if (!$mail_sent) {
             wp_send_json_error([
-                'message' => __('Failed to send the email. Please try again.'),
+                'message' => __('Failed to send the email. Please try again.', APP_THEME_LOCALE),
             ]);
         }
 
         wp_send_json_success([
-            'message' => sprintf(__('An email is coming to %s.'), $email),
+            'message' => sprintf(__('An email is coming to %s.'), $email, APP_THEME_LOCALE),
             'callback' => 'hide_form'
         ]);
     }
@@ -263,7 +263,7 @@ class Ajax {
     public static function reset_password(): void {
         if (empty($_POST['key']) ||  empty($_POST['email']) || empty($_POST['password'])) {
             wp_send_json_error([
-                'message' => __('All fields are required.'),
+                'message' => __('All fields are required.', APP_THEME_LOCALE),
             ]);
         }
 
@@ -273,13 +273,13 @@ class Ajax {
 
         if ($_POST['password'] !== $_POST['confirm_password']) {
             wp_send_json_error([
-                'message' => __('Please confirm your password.'),
+                'message' => __('Please confirm your password.', APP_THEME_LOCALE),
             ]);
         }
 
         if (!app_is_secure_password($password)) {
             wp_send_json_error([
-                'message' => __('Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.'),
+                'message' => __('Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.', APP_THEME_LOCALE),
             ]);
         }
 
@@ -287,7 +287,7 @@ class Ajax {
 
         if (!$user) {
             wp_send_json_error([
-                'message' => __('Invalid reset link.'),
+                'message' => __('Invalid reset link.', APP_THEME_LOCALE),
             ]);
         }
 
@@ -295,7 +295,7 @@ class Ajax {
 
         if (is_wp_error($is_valid_key)) {
             wp_send_json_error([
-                'message' => __('Invalid or expired reset link.'),
+                'message' => __('Invalid or expired reset link.', APP_THEME_LOCALE),
             ]);
         }
 
@@ -308,7 +308,7 @@ class Ajax {
         }
 
         wp_send_json_success([
-            'message' => __('Password reset successfully. Let\'s make awesome...'),
+            'message' => __('Password reset successfully. Let\'s make awesome...', APP_THEME_LOCALE),
             'initial_page' => $initial_page ?? 'navigate-to-sign-in',
         ]);
     }

@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {navigate, useAuth} from "@modycloud/auth/AuthContext";
 import {toast} from "react-toastify";
 import {useLocation} from "react-router-dom";
@@ -32,9 +32,9 @@ const ForgotPassword = () => {
 
     const authLinks = <AuthLinks
         leftLink='/auth/sign-in'
-        leftText={__('Sign In')}
+        leftText={__('Sign In', 'app')}
         rightLink='/auth/sign-up'
-        rightText={__('Sign up')}
+        rightText={__('Sign up', 'app')}
     />;
 
     const handleSubmit = async (e) => {
@@ -58,12 +58,12 @@ const ForgotPassword = () => {
 
         if (!response.ok) {
             toast.error(
-                __('Error sending email.'),
+                __('Error sending email.', 'app'),
                 {
                     autoClose: 3000,
                 }
             )
-            console.error(__('Error sending email. Code: ' + response.statusText))
+            console.error(sprintf(__('Error sending email. Code: %s', 'app'), response.statusText))
             setSendingEmail(false);
         }
 
@@ -73,7 +73,7 @@ const ForgotPassword = () => {
             setEmailSent(true);
             setSuccessMessage(message)
             toast.success(
-                successMessage || __(`We sent an email to ${email}.`),
+                successMessage || sprintf(__('We sent an email to %s.', 'app'), email),
                 {
                     autoClose: 3000,
                 }
@@ -81,7 +81,7 @@ const ForgotPassword = () => {
         } else {
             setSendingEmail(false);
             toast.error(
-                message || __('Error sending email.'),
+                message || __('Error sending email.', 'app'),
                 {
                     autoClose: 3000,
                 }
@@ -104,7 +104,7 @@ const ForgotPassword = () => {
                 (
                     <form className={'forgot-password'} onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="email">{__('Email')}</label>
+                            <label htmlFor="email">{__('Email', 'app')}</label>
                             <input
                                 type="email"
                                 className="input-lg"
@@ -120,8 +120,8 @@ const ForgotPassword = () => {
                             <button type="submit" className="btn btn-primary text-white btn-wide d-flex"
                                     disabled={sendingEmail || !email}>
                                 {sendingEmail && <div className="loading-icon-white-1 mr-2"></div>}
-                                {sendingEmail && __('Sending email...')}
-                                {!sendingEmail && __('Reset my password')}
+                                {sendingEmail && __('Sending email...', 'app')}
+                                {!sendingEmail && __('Reset my password', 'app')}
                             </button>
                         </div>
                     </form>

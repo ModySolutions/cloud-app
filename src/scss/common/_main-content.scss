@@ -1,4 +1,6 @@
 @use '../helpers/variables';
+@use '../helpers/media-queries';
+
 .content {
   background-color: variables.$white;
   margin-top: 1.5rem;
@@ -6,9 +8,14 @@
   height: 100vh;
   border-radius: calc(2 * #{variables.$border-radius-md});
 
+  @include media-queries.for-laptop-down {
+    margin: 1.5rem auto;
+    max-width: 95vw;
+  }
+
   main {
     height: 100%;
     overflow-y: auto;
-    padding: 1rem 1.5rem 0.3rem 2rem;
+    padding: 1rem 2rem 5rem 2rem;
   }
 }

@@ -48,9 +48,9 @@ const ResetPassword = () => {
 
     const authLinks = <AuthLinks
         leftLink='/auth/sign-in'
-        leftText={__('Sign In')}
+        leftText={__('Sign In', 'app')}
         rightLink='/auth/sign-up'
-        rightText={__('Sign up')}
+        rightText={__('Sign up', 'app')}
     />;
 
     const handleSubmit = async (e) => {
@@ -83,7 +83,12 @@ const ResetPassword = () => {
                     autoClose: 3000,
                 }
             )
-            console.error(__('Error resetting your password. Code: ' + response.statusText))
+            console.error(
+                sprintf(
+                    __('Error resetting your password. Code: %s', 'app'),
+                    response.statusText
+                )
+            )
             setResettingPassword(false);
         }
 
@@ -92,7 +97,7 @@ const ResetPassword = () => {
         if (success) {
             setSuccessMessage(message)
             toast.success(
-                successMessage || __('Reset password successful.'),
+                successMessage || __('Reset password successful.', 'app'),
                 {
                     autoClose: 3000,
                 }
@@ -106,7 +111,7 @@ const ResetPassword = () => {
         } else {
             setResettingPassword(false);
             toast.error(
-                message || __('Error resetting your password.'),
+                message || __('Error resetting your password.', 'app'),
                 {
                     autoClose: 3000,
                 }
@@ -129,7 +134,7 @@ const ResetPassword = () => {
                 (
                     <form className={'reset-password'} onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="name">{__('Password')}</label>
+                            <label htmlFor="name">{__('Password', 'app')}</label>
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 className="input-lg"
@@ -158,7 +163,7 @@ const ResetPassword = () => {
                             </span>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="name">{__('Confirm password')}</label>
+                            <label htmlFor="name">{__('Confirm password', 'app')}</label>
                             <input
                                 type={showConfirmPassword ? 'text' : 'password'}
                                 className="input-lg"
@@ -190,8 +195,8 @@ const ResetPassword = () => {
                             <button type="submit" className="btn btn-primary text-white btn-wide d-flex"
                                     disabled={resettingPassword}>
                                 {resettingPassword && <div className="loading-icon-white-1 mr-2"></div>}
-                                {resettingPassword && __('Resetting your password')}
-                                {!resettingPassword && __('Reset password')}
+                                {resettingPassword && __('Resetting your password', 'app')}
+                                {!resettingPassword && __('Reset password', 'app')}
                             </button>
                         </div>
                     </form>

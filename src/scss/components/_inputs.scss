@@ -1,13 +1,14 @@
 @use '../helpers/variables';
 
 input,
+textarea,
 select {
   &:not([type=checkbox], [type=radio]) {
     width: 100%;
     background-color: variables.$white;
     border: 1px solid variables.$light;
     padding: .3rem;
-    border-radius: variables.$border-radius-md;
+    border-radius: variables.$border-radius-sm;
     color: variables.$text-light;
   }
 
@@ -21,5 +22,9 @@ select {
 
   &[disabled] {
     background-color: variables.$background;
+  }
+
+  &.no-resize {
+    resize: none;
   }
 }

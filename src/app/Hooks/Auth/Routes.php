@@ -45,8 +45,8 @@ class Routes {
 
     public static function template_redirect(): void {
         if (is_category() || is_tag() || is_date() || is_author() || is_tax() || is_attachment()) {
-            global $wp_query;
-            $wp_query->set_404();
+//            global $wp_query;
+//            $wp_query->set_404();
         }
 
         if(is_user_logged_in()) {

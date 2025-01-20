@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {navigate, useAuth} from "../AuthContext";
 import {toast} from "react-toastify";
 import AuthLinks from "./AuthLinks";
@@ -33,9 +33,9 @@ const SignIn = () => {
 
     const authLinks = <AuthLinks
         leftLink='/auth/forgot-passwd'
-        leftText={__('Forgot password')}
+        leftText={__('Forgot password', 'app')}
         rightLink='/auth/sign-up'
-        rightText={__('Sign up')}
+        rightText={__('Sign up', 'app')}
     />;
 
     const handleSubmit = async (e) => {
@@ -66,7 +66,12 @@ const SignIn = () => {
                     autoClose: 3000,
                 }
             )
-            console.error(__('Error signing in. Code: ' + response.statusText))
+            console.error(
+                sprintf(
+                    __('Error signing in. Code: %s', 'app'),
+                    response.statusText
+                )
+            );
             setSigningIn(false);
         }
 
@@ -74,7 +79,7 @@ const SignIn = () => {
 
         if (success) {
             toast.success(
-                message || __('Sign in successful. Redirecting...'),
+                message || __('Sign in successful. Redirecting...', 'app'),
                 {
                     autoClose: 3000,
                 }
@@ -85,7 +90,7 @@ const SignIn = () => {
         } else {
             setSigningIn(false);
             toast.error(
-                message || __('Error signing in.'),
+                message || __('Error signing in.', 'app'),
                 {
                     autoClose: 3000,
                 }
@@ -106,7 +111,7 @@ const SignIn = () => {
         <>
             <form className={'sign-in'} onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="email">{__('Email')}</label>
+                    <label htmlFor="email">{__('Email', 'app')}</label>
                     <input
                         type="email"
                         className="input-lg"
@@ -118,7 +123,7 @@ const SignIn = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="name">{__('Password')}</label>
+                    <label htmlFor="name">{__('Password', 'app')}</label>
                     <input
                         type={showPassword ? 'text' : 'password'}
                         className="input-lg"
@@ -155,7 +160,7 @@ const SignIn = () => {
                         disabled={signingIn}
                         onChange={handleRememberMeChange}
                     />
-                    <label htmlFor="remember-me">{__('Remember me')}</label>
+                    <label htmlFor="remember-me">{__('Remember me', 'app')}</label>
                 </div>
                 {authLinks}
                 <div className="form-group col-12">
@@ -163,8 +168,8 @@ const SignIn = () => {
                             className="btn btn-primary text-white btn-wide d-flex"
                             disabled={signingIn || !email || !password}>
                         {signingIn && <div className="loading-icon-white-1 mr-2"></div>}
-                        {signingIn && __('Signing in')}
-                        {!signingIn && __('Sign in')}
+                        {signingIn && __('Signing in', 'app')}
+                        {!signingIn && __('Sign in', 'app')}
                     </button>
                 </div>
             </form>

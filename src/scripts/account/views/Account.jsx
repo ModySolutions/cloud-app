@@ -55,7 +55,7 @@ const Account = () => {
 
                 if(response.success) {
                     toast.success(
-                        response.message || __('User data updated successfully.'),
+                        response.message || __('User data updated successfully.', 'app'),
                         {
                             autoClose: 3000,
                         }
@@ -64,7 +64,7 @@ const Account = () => {
                         .innerText = capitalize(`${name} ${lastName}`);
                 } else {
                     toast.error(
-                        response.message || __('Error updating user data.'),
+                        response.message || __('Error updating user data.', 'app'),
                         {
                             autoClose: 3000,
                         }
@@ -74,7 +74,7 @@ const Account = () => {
             .catch(error => {
                 console.error('Error updating user data:', error);
                 toast.error(
-                    __('Error updating user data.'),
+                    __('Error updating user data.', 'app'),
                     {
                         autoClose: 3000,
                     }
@@ -103,7 +103,7 @@ const Account = () => {
                         {updating && <div className="loading-icon-primary-2 p-absolute top right"></div>}
                     </div>
                     <div className="form-group col-12">
-                        <label htmlFor="email">{__('Email')}</label>
+                        <label htmlFor="email">{__('Email', 'app')}</label>
                         <input
                             type="email"
                             className="input-lg"
@@ -114,7 +114,7 @@ const Account = () => {
                         />
                     </div>
                     <div className="form-group col-6">
-                        <label htmlFor="name">{__('Name')}</label>
+                        <label htmlFor="name">{__('Name', 'app')}</label>
                         <input
                             type="text"
                             className="input-lg"
@@ -125,7 +125,7 @@ const Account = () => {
                         />
                     </div>
                     <div className="form-group col-6">
-                        <label htmlFor="last_name">{__('Last name')}</label>
+                        <label htmlFor="last_name">{__('Last name', 'app')}</label>
                         <input
                             type="text"
                             className="input-lg"
@@ -136,7 +136,7 @@ const Account = () => {
                         />
                     </div>
                     <div className="form-group col-6">
-                        <label htmlFor="phone">{__('Phone number')}</label>
+                        <label htmlFor="phone">{__('Phone number', 'app')}</label>
                         <input
                             type="text"
                             className="input-lg"
@@ -148,12 +148,12 @@ const Account = () => {
                     </div>
                     <div className="form-group col-12">
                         <button type="submit" className="btn btn-primary text-white" disabled={updating}>
-                            {__('Save info')}
+                            {__('Save info', 'app')}
                         </button>
                     </div>
                 </form>
             ) : (
-                <p>{__('User not found')}</p>
+                <p>{__('User not found', 'app')}</p>
             )}
         </>
     );

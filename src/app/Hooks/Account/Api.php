@@ -47,14 +47,14 @@ class Api {
         if (!$email) {
             return rest_ensure_response(array(
                 'success' => false,
-                'message' => __('Email address is required.'),
+                'message' => __('Email address is required.', APP_THEME_LOCALE),
             ));
         }
 
         if (!$name || !$last_name) {
             return rest_ensure_response(array(
                 'success' => false,
-                'message' => __('Name and last name are required.'),
+                'message' => __('Name and last name are required.', APP_THEME_LOCALE),
             ));
         }
 
@@ -69,7 +69,7 @@ class Api {
 
         return rest_ensure_response(array(
             'success' => true,
-            'message' => __('User data updated successfully.'),
+            'message' => __('User data updated successfully.', APP_THEME_LOCALE),
         ));
     }
 
@@ -100,7 +100,7 @@ class Api {
 
         return rest_ensure_response(array(
             'success' => true,
-            'message' => __('User settings updated successfully.'),
+            'message' => __('User settings updated successfully.', APP_THEME_LOCALE),
         ));
     }
 
@@ -123,7 +123,7 @@ class Api {
         if (!$current_password || !$new_password || !$confirm_new_password) {
             return rest_ensure_response(array(
                 'success' => false,
-                'message' => __('All passwords are required.')
+                'message' => __('All passwords are required., APP_THEME_LOCALE')
             ));
         }
 
@@ -133,21 +133,21 @@ class Api {
         if (!wp_check_password($current_password, $stored_password_hash, $user_id)) {
             return rest_ensure_response(array(
                 'success' => false,
-                'message' => __('Current password does not match with stored password.'),
+                'message' => __('Current password does not match with stored password.', APP_THEME_LOCALE),
             ));
         }
 
         if ($new_password !== $confirm_new_password) {
             return rest_ensure_response(array(
                 'success' => false,
-                'message' => __('New password should match to password confirmation field.')
+                'message' => __('New password should match to password confirmation field., APP_THEME_LOCALE')
             ));
         }
 
         if (!app_is_secure_password($new_password)) {
             return rest_ensure_response(array(
                 'success' => false,
-                'message' => __('Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.'),
+                'message' => __('Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.', APP_THEME_LOCALE),
             ));
         }
 
@@ -171,7 +171,7 @@ class Api {
 
         return rest_ensure_response(array(
             'success' => true,
-            'message' => __('Password updated successfully.'),
+            'message' => __('Password updated successfully.', APP_THEME_LOCALE),
         ));
     }
 }

@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf} from '@wordpress/i18n';
 import {toast} from "react-toastify";
 import toKebabCase from "@modycloud/tools/kebabcase";
 
@@ -23,14 +23,14 @@ const CreateSiteForm = () => {
     const handleSpaceName = (event) => setSpaceName(event.target.value);
 
     const messages = [
-        __('Chopping some bananas...'),
-        __('Grabbing oranges from the tree...'),
-        __('Measuring a cup of flour...'),
-        __('Making sure everything is correct...'),
-        __('Were not we doing a cake?...'),
-        __('Huh! It\'s been a long time...'),
-        __('I got somewhere to be man...'),
-        __('Oh! You\'re still here? Man what am I doing...'),
+        __('Chopping some bananas...', 'app'),
+        __('Grabbing oranges from the tree...', 'app'),
+        __('Measuring a cup of flour...', 'app'),
+        __('Making sure everything is correct...', 'app'),
+        __('Were not we doing a cake?...', 'app'),
+        __('Huh! It\'s been a long time...', 'app'),
+        __('I got somewhere to be man...', 'app'),
+        __('Oh! You\'re still here? Man what am I doing...', 'app'),
     ]
 
     const checkInstallFinished = async(queue_ui) => {
@@ -83,7 +83,12 @@ const CreateSiteForm = () => {
                     autoClose: 3000,
                 }
             )
-            console.error(__('Error creating site. Code: ' + response.statusText))
+            console.error(
+                sprintf(
+                    __('Error creating site. Code: %s', 'app'),
+                    response.statusText
+                )
+            );
             setIsCreating(false);
         }
 
@@ -91,7 +96,7 @@ const CreateSiteForm = () => {
 
         if (success) {
             toast.success(
-                message || __('Site queued for creation... Please wait...'),
+                message || __('Site queued for creation... Please wait...', 'app'),
                 {
                     autoClose: 3000,
                 }
@@ -115,7 +120,7 @@ const CreateSiteForm = () => {
         } else {
             setIsCreating(false);
             toast.error(
-                message || __('Error creating site.'),
+                message || __('Error creating site.', 'app'),
                 {
                     autoClose: 3000,
                 }
@@ -128,7 +133,7 @@ const CreateSiteForm = () => {
             <div className="message animate-display is-hidden"></div>
             <div className="form-group">
                 <label htmlFor="company_name" className="mb-1">
-                    { __('Company name') } <span className="text-danger">*</span>
+                    { __('Company name', 'app') } <span className="text-danger">*</span>
                 </label>
                 <input type="text"
                        tabIndex="1"
@@ -142,7 +147,7 @@ const CreateSiteForm = () => {
             </div>
             <div className="form-group">
                 <label htmlFor="space_name" className="mb-1">
-                    { __('Site name') } <span className="text-danger">*</span>
+                    { __('Site name', 'app') } <span className="text-danger">*</span>
                 </label>
                 <input
                     type="text"
@@ -159,7 +164,7 @@ const CreateSiteForm = () => {
                 />
                     <div className="mt-2 text-charcoal-light">
                         <div className="my-2">
-                            https://<strong>{spaceName || 'mysite'}</strong>.mody.cloud
+                            https://<strong>{spaceName ?? 'mysite'}</strong>.mody.cloud
                         </div>
                         <em>
                             { __('This will be the URL where you\'ll use to access your Space') }
@@ -170,9 +175,8 @@ const CreateSiteForm = () => {
                 <button type="submit" className="btn btn-wide d-flex" tabIndex="3" disabled={isCreating}>
                     {isCreating && <div className="loading-icon-white-1 mr-2"></div>}
                     {isCreating && message}
-                    {!isCreating && __('Create my Space')}
+                    {!isCreating && __('Create my Space', 'app')}
                 </button>
-                <a href="" id="go-to-space" className="btn btn-wide d-none">{ __('Go to my new space') }</a>
             </div>
         </form>
     )

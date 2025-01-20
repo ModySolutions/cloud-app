@@ -44,14 +44,14 @@ const Settings = () => {
                 setUpdating(false);
                 if(response.success) {
                     toast.success(
-                        response.message || __('User settings updated successfully.'),
+                        response.message || __('User settings updated successfully.', 'app'),
                         {
                             autoClose: 3000,
                         }
                     )
                 } else {
                     toast.error(
-                        response.message || __('Error updating user settings.'),
+                        response.message || __('Error updating user settings.', 'app'),
                         {
                             autoClose: 3000,
                         }
@@ -61,7 +61,7 @@ const Settings = () => {
             .catch(error => {
                 console.error('Error updating user settings:', error);
                 toast.error(
-                    __('Error updating user settings.'),
+                    __('Error updating user settings.', 'app'),
                     {
                         autoClose: 10000,
                     }
@@ -98,7 +98,7 @@ const Settings = () => {
                             onChange={handleOptInUpdatesChange}
                         />
                         <label htmlFor="opt-in-updates" className={''}>
-                            {__('Get update notifications from Mody Cloud')}
+                            {__('Get update notifications from Mody Cloud', 'app')}
                         </label>
                     </div>
                     <div className="form-group col-12 ">
@@ -111,13 +111,13 @@ const Settings = () => {
                             onChange={handleOptInCommercialChange}
                         />
                         <label htmlFor="opt-in-commercial" className={''}>
-                            {__('Get commercial notifications for new products or features')}
+                            {__('Get commercial notifications for new products or features', 'app')}
                         </label>
                     </div>
                     <hr className='my-3 col-12'/>
                     <h3>{__('Localization')}</h3>
                     <div className="form-group col-12">
-                        <label htmlFor="preferred-language">{__('Preferred language')}</label>
+                        <label htmlFor="preferred-language">{__('Preferred language', 'app')}</label>
                         <select
                             id="preferred-language"
                             value={preferredLanguage}
@@ -131,12 +131,12 @@ const Settings = () => {
                     </div>
                     <div className="form-group col-12">
                         <button type="submit" className="btn btn-primary text-white" disabled={updating}>
-                            {__('Save settings')}
+                            {__('Save settings', 'app')}
                         </button>
                     </div>
                 </form>
             ) : (
-                <p>{__('User not found')}</p>
+                <p>{__('Settings not found', 'app')}</p>
             )}
         </>
     );

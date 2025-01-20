@@ -8,35 +8,35 @@ class Post {
     public static function register_post_type() : void {
         register_post_type( 'queue', array(
             'labels' => array(
-                'name' => __('Queues'),
-                'singular_name' => __('Queue'),
-                'menu_name' => __('Queues'),
-                'all_items' => __('All Queues'),
-                'edit_item' => __('Edit Queue'),
-                'view_item' => __('View Queue'),
-                'view_items' => __('View Queues'),
-                'add_new_item' => __('Add New Queue'),
-                'add_new' => __('Add New Queue'),
-                'new_item' => __('New Queue'),
-                'parent_item_colon' => __('Parent Queue:'),
-                'search_items' => __('Search Queues'),
-                'not_found' => __('No queues found'),
-                'not_found_in_trash' => __('No queues found in Trash'),
-                'archives' => __('Queue Archives'),
-                'attributes' => __('Queue Attributes'),
-                'insert_into_item' => __('Insert into queue'),
-                'uploaded_to_this_item' => __('Uploaded to this queue'),
-                'filter_items_list' => __('Filter queues list'),
-                'filter_by_date' => __('Filter queues by date'),
-                'items_list_navigation' => __('Queues list navigation'),
-                'items_list' => __('Queues list'),
-                'item_published' => __('Queue published.'),
-                'item_published_privately' => __('Queue published privately.'),
-                'item_reverted_to_draft' => __('Queue reverted to draft.'),
-                'item_scheduled' => __('Queue scheduled.'),
-                'item_updated' => __('Queue updated.'),
-                'item_link' => __('Queue Link'),
-                'item_link_description' => __('A link to a queue.'),
+                'name' => __('Queues', APP_THEME_LOCALE),
+                'singular_name' => __('Queue', APP_THEME_LOCALE),
+                'menu_name' => __('Queues', APP_THEME_LOCALE),
+                'all_items' => __('All Queues', APP_THEME_LOCALE),
+                'edit_item' => __('Edit Queue', APP_THEME_LOCALE),
+                'view_item' => __('View Queue', APP_THEME_LOCALE),
+                'view_items' => __('View Queues', APP_THEME_LOCALE),
+                'add_new_item' => __('Add New Queue', APP_THEME_LOCALE),
+                'add_new' => __('Add New Queue', APP_THEME_LOCALE),
+                'new_item' => __('New Queue', APP_THEME_LOCALE),
+                'parent_item_colon' => __('Parent Queue:', APP_THEME_LOCALE),
+                'search_items' => __('Search Queues', APP_THEME_LOCALE),
+                'not_found' => __('No queues found', APP_THEME_LOCALE),
+                'not_found_in_trash' => __('No queues found in Trash', APP_THEME_LOCALE),
+                'archives' => __('Queue Archives', APP_THEME_LOCALE),
+                'attributes' => __('Queue Attributes', APP_THEME_LOCALE),
+                'insert_into_item' => __('Insert into queue', APP_THEME_LOCALE),
+                'uploaded_to_this_item' => __('Uploaded to this queue', APP_THEME_LOCALE),
+                'filter_items_list' => __('Filter queues list', APP_THEME_LOCALE),
+                'filter_by_date' => __('Filter queues by date', APP_THEME_LOCALE),
+                'items_list_navigation' => __('Queues list navigation', APP_THEME_LOCALE),
+                'items_list' => __('Queues list', APP_THEME_LOCALE),
+                'item_published' => __('Queue published.', APP_THEME_LOCALE),
+                'item_published_privately' => __('Queue published privately.', APP_THEME_LOCALE),
+                'item_reverted_to_draft' => __('Queue reverted to draft.', APP_THEME_LOCALE),
+                'item_scheduled' => __('Queue scheduled.', APP_THEME_LOCALE),
+                'item_updated' => __('Queue updated.', APP_THEME_LOCALE),
+                'item_link' => __('Queue Link', APP_THEME_LOCALE),
+                'item_link_description' => __('A link to a queue.', APP_THEME_LOCALE),
             ),
             'public' => false,
             'publicly_queryable' => true,
@@ -72,7 +72,7 @@ class Post {
         $queue_info = get_field('queue_info', $queue_id, false);
         if (empty($queue_info)) {
             self::_un_publish_queue($queue_id);
-            app_log(sprintf(__('save_post_queue: queue_info not found for %s.'), $queue_id));
+            app_log(sprintf(__('save_post_queue: queue_info not found for %s.'), $queue_id), APP_THEME_LOCALE);
             return;
         }
 
@@ -81,7 +81,7 @@ class Post {
             self::_un_publish_queue($queue_id);
             app_log(
                 sprintf(
-                    __('save_post_queue: variables not extracted from queue_info for %s.'),
+                    __('save_post_queue: variables not extracted from queue_info for %s.', APP_THEME_LOCALE),
                     $queue_id
                 )
             );
@@ -95,7 +95,7 @@ class Post {
             self::_un_publish_queue($queue_id);
             app_log(
                 sprintf(
-                    __('save_post_queue: required fields not present in queue_info variables for %s.'),
+                    __('save_post_queue: required fields not present in queue_info variables for %s.', APP_THEME_LOCALE),
                     $queue_id
                 )
             );
@@ -113,7 +113,7 @@ class Post {
 
             app_log(
                 sprintf(
-                    __('save_post_queue: Database %s and user %s created.'),
+                    __('save_post_queue: Database %s and user %s created.', APP_THEME_LOCALE),
                     $db_name,
                     $db_user
                 )
