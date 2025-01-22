@@ -47,6 +47,7 @@ EOF;
         $context['site_name'] = get_bloginfo();
         $main_cta = get_post_meta($post_id, 'main_cta', true) ?? get_option('main_cta');
         $context['main_cta'] = $main_cta;
+        $context['site']->favicon = get_stylesheet_directory_uri() . '/images/logo-black-square.png';
         $context['static_pages'] = self::_get_static_pages();
         $context['network_url'] = network_home_url();
         $context['routes'] = self::_get_page_routes();

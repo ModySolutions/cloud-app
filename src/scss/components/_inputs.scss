@@ -3,7 +3,7 @@
 input,
 textarea,
 select {
-  &:not([type=checkbox], [type=radio]) {
+  &:not([type=checkbox], [type=radio], [type=file]) {
     width: 100%;
     background-color: variables.$white;
     border: 1px solid variables.$light;
