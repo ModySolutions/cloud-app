@@ -53,7 +53,9 @@
     "wpengine/advanced-custom-fields-pro": "*",
     "wpackagist-plugin/wp-crontrol": "^1.17",
     "ext-pdo": "*",
-    "ramsey/uuid": "^4.7"
+    "ramsey/uuid": "^4.7",
+    "wpackagist-plugin/user-role-editor": "^4.64",
+    "wpackagist-plugin/loco-translate": "^2.7"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
@@ -73,7 +75,8 @@
     "installer-paths": {
       "web/app/mu-plugins/{$name}/": [
         "type:wordpress-muplugin",
-        "wpengine/advanced-custom-fields-pro"
+        "wpengine/advanced-custom-fields-pro",
+        "wpackagist-plugin/user-role-editor"
       ],
       "web/app/plugins/{$name}/": ["type:wordpress-plugin"],
       "web/app/themes/{$name}/": ["type:wordpress-theme"]

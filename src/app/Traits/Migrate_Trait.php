@@ -45,7 +45,6 @@ trait Migrate_Trait {
             try {
                 $wpdb->query('START TRANSACTION');
                 $migration_function($wpdb);
-                sleep(1);
                 $wpdb->insert($table_name, [
                     'migration_name' => $migration_name,
                     'applied_at' => current_time('mysql'),

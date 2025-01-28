@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "36012cc4ef1e699c97b08c80f58c5db4",
+    "content-hash": "25f50716553251221c45293e96d8905b",
     "packages": [
         {
             "name": "brick/math",
@@ -1671,6 +1671,42 @@
                 }
             ],
             "time": "2024-07-20T21:52:34+00:00"
+        },
+        {
+            "name": "wpackagist-plugin/loco-translate",
+            "version": "2.7.1",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/loco-translate/",
+                "reference": "tags/2.7.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/loco-translate.2.7.1.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/loco-translate/"
+        },
+        {
+            "name": "wpackagist-plugin/user-role-editor",
+            "version": "4.64.4",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/user-role-editor/",
+                "reference": "tags/4.64.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/user-role-editor.4.64.4.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/user-role-editor/"
         },
         {
             "name": "wpackagist-plugin/wp-crontrol",

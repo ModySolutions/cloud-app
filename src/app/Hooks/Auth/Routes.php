@@ -45,8 +45,25 @@ class Routes {
 
     public static function template_redirect(): void {
         if (is_category() || is_tag() || is_date() || is_author() || is_tax() || is_attachment()) {
-//            global $wp_query;
-//            $wp_query->set_404();
+            global $wp_query;
+            $wp_query->set_404();
+        }
+
+        $allowed_pages = ['invoices', 'account'];
+        $current_page_id = get_queried_object_id();
+
+        $is_allowed_page = false;
+        foreach ($allowed_pages as $slug) {
+            $page = get_page_by_path($slug);
+            if ($page && ($current_page_id == $page->ID || wp_get_post_parent_id($current_page_id) == $page->ID)) {
+                $is_allowed_page = true;
+                break;
+            }
+        }
+
+        if (!$is_allowed_page) {
+            wp_redirect(home_url('/invoices'));
+            exit;
         }
 
         if(is_user_logged_in()) {
