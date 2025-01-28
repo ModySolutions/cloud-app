@@ -19,6 +19,7 @@ jobs:
           cp sample-auth.json auth.json
           sed -i 's|"ENTER YOUR LICENSE KEY"|"${{ secrets.ACF_AUTH }}"|g' auth.json
           sed -i 's|"ENTER YOUR WEBSITE URL"|"${{ vars.SITE_URL }}"|g' auth.json
+          cat auth.json
 
       - name: Cache Vendors
         id: cache-vendors
@@ -61,9 +62,9 @@ jobs:
           cache-name: cache-node_modules
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          key: node_modules
           restore-keys: |
-            ${{ runner.os }}-node-modules-
+            node_modules
 
       - name: Install Dependencies :-)
         if: steps.cache-node_modules.outputs.cache-hit != 'true'
