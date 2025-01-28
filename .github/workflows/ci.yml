@@ -14,6 +14,41 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v3
 
+      - name: ACF Auth
+        run: |
+          cp sample-auth.json auth.json
+          sed -i 's/"ENTER YOUR LICENSE KEY"/"${{ secrets.ACF_AUTH }}"/g' auth.json
+          sed -i 's/"ENTER YOUR WEBSITE URL"/"${{ vars.SITE_URL }}"/g' auth.json
+
+      - name: Cache Vendors
+        id: cache-vendors
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-vendors
+        with:
+          path: vendors
+          key: vendors
+          restore-keys: |
+            vendors
+
+      - name: Plugins
+        id: cache-plugins
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-plugins
+        with:
+          path: plugins
+          key: plugins
+          restore-keys: |
+            plugins
+
+      - name: Composer Install
+        run: composer install --no-dev
+
+      - name: Install backend dependencies
+        uses: php-actions/composer@v6
+        if: steps.cache
+
       - name: Use Node.js 20
         uses: actions/setup-node@v2
         with:
