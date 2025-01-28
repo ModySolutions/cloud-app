@@ -17,8 +17,8 @@ jobs:
       - name: ACF Auth
         run: |
           cp sample-auth.json auth.json
-          sed -i 's/"ENTER YOUR LICENSE KEY"/"${{ secrets.ACF_AUTH }}"/g' auth.json
-          sed -i 's/"ENTER YOUR WEBSITE URL"/"${{ vars.SITE_URL }}"/g' auth.json
+          sed -i 's|"ENTER YOUR LICENSE KEY"|"${{ secrets.ACF_AUTH }}"|g' auth.json
+          sed -i 's|"ENTER YOUR WEBSITE URL"|"${{ vars.SITE_URL }}"|g' auth.json
 
       - name: Cache Vendors
         id: cache-vendors
