@@ -48,6 +48,7 @@ class Theme {
             global $wpdb;
             $migration = include MC_MIGRATIONS_PATH . '1736518306-first-migration-for-all-sites-migration.php';
             $migration($wpdb);
+            update_option('first_migration_ran', 'yes');
         }
     }
 
