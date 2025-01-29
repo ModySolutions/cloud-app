@@ -2,7 +2,7 @@
 
 return function (\wpdb $wpdb) {
     $site_name = get_bloginfo();
-    if(!\Env\env('CHILD_SITE')){ return; }
+//    if(!\Env\env('CHILD_SITE')){ return; }
     app_log("Starting installation for {$site_name}");
     app_log("\t->Deleting default content on {$site_name}");
 
