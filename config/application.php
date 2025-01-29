@@ -252,5 +252,9 @@ if (!defined('APP_THEME_DOMAIN')) {
     define('APP_THEME_DOMAIN', 'app');
 }
 
+if (!defined('DISABLE_WP_CRON')) {
+    define('DISABLE_WP_CRON', true);
+}
+
 // @todo make database hosts a fetchable object from several databases
 const DEFAULT_DB_HOST = '127.0.0.1';
