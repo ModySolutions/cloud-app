@@ -88,7 +88,7 @@ jobs:
 
       - name: 📂 Sync files to VPS using SSH
         run: |
-          rsync -e "ssh -o StrictHostKeyChecking=no" -avz --no-times --delete  ./* ${{ vars.SSH_USER_SERVER }}:${{ env.TARGET_DIR }} --verbose
+          rsync -e "ssh -o StrictHostKeyChecking=no" -avz --no-times --delete --exclude='node_modules'  ./* ${{ vars.SSH_USER_SERVER }}:${{ env.TARGET_DIR }} --verbose
         env:
           TARGET_DIR: "/var/www/html/mody.cloud/"
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
