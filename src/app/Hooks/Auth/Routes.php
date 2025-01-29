@@ -49,7 +49,7 @@ class Routes {
             $wp_query->set_404();
         }
 
-        $allowed_pages = ['invoices', 'account'];
+        $allowed_pages = ['invoices', 'account', 'auth'];
         $current_page_id = get_queried_object_id();
 
         $is_allowed_page = false;
