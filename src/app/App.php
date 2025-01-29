@@ -5,7 +5,7 @@ namespace App;
 class App
 {
     public static function start() : void {
-        self::loader(SRC_PATH . '/app/setup/*.php', 'App\\Setup\\');
+        self::loader(SRC_PATH . '/app/Setup/*.php', 'App\\Setup\\');
         self::loader(SRC_PATH . '/app/Hooks/*.php', 'App\\Hooks\\');
     }
 

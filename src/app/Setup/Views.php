@@ -8,7 +8,7 @@ class Views {
         if (\Timber::class) {
             add_action('timber/context', self::timber_context(...));
             add_filter('timber/twig', self::timber_twig(...));
-            add_filter('timber/locations', self::timber_locations(...), 1);
+            add_filter('timber/locations', self::timber_locations(...), 100);
         } else {
             add_action('admin_notices', self::admin_notice(...));
         }
