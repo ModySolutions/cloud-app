@@ -44,7 +44,7 @@ jobs:
             plugins
 
       - name: Composer Install
-        run: composer install --no-dev --o
+        run: composer install --no-dev -o
 
       - name: Install backend dependencies
         uses: php-actions/composer@v6
