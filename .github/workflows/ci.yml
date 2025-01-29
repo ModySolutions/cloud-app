@@ -77,6 +77,7 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+        run: pnpm build
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -85,7 +86,7 @@ jobs:
 
       - name: 📂 Sync files to VPS using SSH
         run: |
-          rsync -e "ssh -o StrictHostKeyChecking=no" -avz --no-times --delete --exclude='src/blocks' --exclude='src/scripts' --exclude='src/scss' --exclude='.git*' --exclude='node_modules/' --exclude='sample-auth.json' --exclude='pint.json' --exclude='*.yaml'  --exclude='composer.lock' --exclude='create-migration.php' --exclude='extract-twig.mjs' --exclude='wp-cli.yml' --exclude='*.md' ./* ${{ vars.SSH_USER_SERVER }}:${{ env.TARGET_DIR }} --verbose
+          rsync -e "ssh -o StrictHostKeyChecking=no" -avz --no-times --delete --exclude='src/blocks' --exclude='src/scripts' --exclude='src/scss' --exclude='.git*' --exclude='node_modules/' --exclude='sample-auth.json' --exclude='sample.env' --exclude='pint.json' --exclude='*.yaml' --exclude='composer.lock' --exclude='create-migration.php' --exclude='extract-twig.mjs' --exclude='wp-cli.yml' --exclude='*.md' ./* ${{ vars.SSH_USER_SERVER }}:${{ env.TARGET_DIR }} --verbose
         env:
           TARGET_DIR: "/var/www/html/mody.cloud/"
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
