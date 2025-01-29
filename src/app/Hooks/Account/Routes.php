@@ -12,10 +12,10 @@ class Routes {
 
         $login_page = basename($_SERVER['PHP_SELF']);
         if ($login_page === 'wp-login.php' && !current_user_can('manage_network')) {
-//            status_header(404);
-//            nocache_headers();
-//            include get_404_template();
-//            exit;
+            status_header(404);
+            nocache_headers();
+            include get_404_template();
+            exit;
         }
     }
 
