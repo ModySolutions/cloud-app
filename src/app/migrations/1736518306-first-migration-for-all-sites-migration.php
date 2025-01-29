@@ -2,7 +2,6 @@
 
 return function (\wpdb $wpdb) {
     $site_name = get_bloginfo();
-//    if(!\Env\env('CHILD_SITE')){ return; }
     app_log("Starting installation for {$site_name}");
     app_log("\t->Deleting default content on {$site_name}");
 
@@ -159,35 +158,34 @@ return function (\wpdb $wpdb) {
     $account_permalink = get_permalink($account_page_id);
 
     $pages_slugs = array(
-        'dashboard' => array(
+        $dashboard_page_id => array(
             '/apps/market' => __('Add your , APP_THEME_LOCALEfirst app'),
         ),
-        'apps' => array(
+        $apps_page_id => array(
             'all' => __('All apps', APP_THEME_LOCALE),
             'installed' => __('Installed'), APP_THEME_LOCALE,
             'market' => __('Market'), APP_THEME_LOCALE,
         ),
-        'users' => array(
+        $users_page_id => array(
             'all' => __('All users', APP_THEME_LOCALE),
             'add' => __('Add user', APP_THEME_LOCALE),
             $account_permalink => __('My account', APP_THEME_LOCALE),
         ),
-        'account' => array(
-            '/account/' => __('Account'), APP_THEME_LOCALE,
-            '/account/settings' => __('Settings'), APP_THEME_LOCALE,
-            '/account/security' => __('Security'), APP_THEME_LOCALE,
+        $account_page_id => array(
+            '/account/' => __('Account', APP_THEME_LOCALE),
+            '/account/settings' => __('Settings', APP_THEME_LOCALE),
+            '/account/security' => __('Security', APP_THEME_LOCALE),
         ),
-        'settings' => array(
+        $settings_page_id => array(
             'company-info' => __('Company info', APP_THEME_LOCALE),
         ),
-        'activity' => array(
+        $activity_page_id => array(
             'all' => __('All activity', APP_THEME_LOCALE)
         )
     );
 
-    foreach ($pages_slugs as $slug => $routes) {
-        $page = get_page_by_path($slug);
-        update_post_meta($page->ID, 'routes', $routes);
+    foreach ($pages_slugs as $page_id => $routes) {
+        update_post_meta($page_id, 'routes', $routes);
     }
 
     app_log("\t->Flushing rewrite rules on {$site_name}");
