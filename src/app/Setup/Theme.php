@@ -43,6 +43,12 @@ class Theme {
         if(env('CHILD_SITE') || (!env('CHILD_SITE') && !current_user_can('administrator'))) {
             show_admin_bar(false);
         }
+
+        if(get_option('first_migration_ran') !== 'yes') {
+            global $wpdb;
+            $migration = include MC_MIGRATIONS_PATH . '1736518306-first-migration-for-all-sites-migration.php';
+            $migration($wpdb);
+        }
     }
 
     public static function after_setup_theme(): void {
