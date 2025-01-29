@@ -21,7 +21,7 @@ trait Migrate_Trait {
         $site_name = get_bloginfo();
 
         if(!env('CHILD_SITE')) {
-            return;
+//            return;
         }
 
         $last_migration = app_get_last_migration_from_code();
