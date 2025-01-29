@@ -77,6 +77,8 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+
+      - name: Build frontend
         run: pnpm build
 
       - name: Set up SSH
