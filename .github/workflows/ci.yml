@@ -66,12 +66,17 @@ jobs:
           restore-keys: |
             node_modules
 
-      - name: Install Dependencies :-)
-        if: steps.cache-node_modules.outputs.cache-hit != 'true'
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - name: Install dependencies
         run: pnpm install
-
-      - name: 🔨 Build Project
-        run: pnpm run build
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
