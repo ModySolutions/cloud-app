@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "25f50716553251221c45293e96d8905b",
+    "content-hash": "b06cee249857ad91e997f4785b0a6b8f",
     "packages": [
         {
             "name": "brick/math",
@@ -1725,6 +1725,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/wp-crontrol/"
+        },
+        {
+            "name": "wpackagist-plugin/wp-mail-logging",
+            "version": "1.14.0",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wp-mail-logging/",
+                "reference": "tags/1.14.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wp-mail-logging.1.14.0.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wp-mail-logging/"
         },
         {
             "name": "wpengine/advanced-custom-fields-pro",

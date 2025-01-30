@@ -55,7 +55,8 @@
     "ext-pdo": "*",
     "ramsey/uuid": "^4.7",
     "wpackagist-plugin/user-role-editor": "^4.64",
-    "wpackagist-plugin/loco-translate": "^2.7"
+    "wpackagist-plugin/loco-translate": "^2.7",
+    "wpackagist-plugin/wp-mail-logging": "^1.14"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
