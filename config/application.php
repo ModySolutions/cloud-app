@@ -155,6 +155,14 @@ Config::define('WP_POST_REVISIONS', env('WP_POST_REVISIONS') ?? true);
 // Disable script concatenation
 Config::define('CONCATENATE_SCRIPTS', false);
 
+// SMTP
+Config::define('SMTP_HOST', env('SMTP_HOST') ?? 'localhost');
+Config::define('SMTP_AUTH', env('SMTP_AUTH') ?? null);
+Config::define('SMTP_SECURE', env('SMTP_SECURE') ?? null);
+Config::define('SMTP_PORT', env('SMTP_PORT') ?? 25);
+Config::define('SMTP_USERNAME', env('SMTP_USERNAME') ?? null);
+Config::define('SMTP_PASSWORD', env('SMTP_PASSWORD') ?? null);
+
 /**
  * Debugging Settings
  */
