@@ -65,7 +65,7 @@ class Block {
             $context['email'] = isset($_GET['email']) ? sanitize_user($_GET['email']) : null;
             $context['first_time'] = isset($_GET['first_time']) ? 'yes' : null;
 
-            if(!$context['key'] &&!$context['email']) {
+            if(!$context['key'] && !$context['email']) {
                 wp_redirect(wp_lostpassword_url());
                 exit;
             }
