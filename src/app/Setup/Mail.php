@@ -18,6 +18,7 @@ class Mail {
         $phpmailer->isSMTP();
         $phpmailer->Host = Config::get('SMTP_HOST');
         $phpmailer->SMTPAuth = Config::get('SMTP_AUTH');
+        $phpmailer->SMTPSecure = Config::get('SMTP_SECURE');
         $phpmailer->Port = Config::get('SMTP_PORT');
         $phpmailer->Username = Config::get('SMTP_USERNAME');
         $phpmailer->Password = Config::get('SMTP_PASSWORD');
