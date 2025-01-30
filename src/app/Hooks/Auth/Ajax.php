@@ -137,7 +137,7 @@ class Ajax {
         }
 
         $reset_pass_page = wp_login_url();
-        $auth_page_id = get_field('authentication_page', 'option');
+        $auth_page_id = get_option('authentication_page_id');
         if ($auth_page_id) {
             $reset_pass_page = get_permalink($auth_page_id);
             $reset_pass_page .= 'reset-passwd';
