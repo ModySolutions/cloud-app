@@ -9,9 +9,9 @@ use function Env\env;
 class Mail {
     public static function init(): void {
 //        add_action('phpmailer_init', self::phpmailer_init(...), 100);
-        add_filter('wp_mail', self::wp_mail(...));
-        add_filter( 'wp_mail_content_type', self::wp_mail_content_type(...));
-        add_filter( 'wp_mail_from_name', self::wp_mail_from_name(...));
+//        add_filter('wp_mail', self::wp_mail(...));
+//        add_filter( 'wp_mail_content_type', self::wp_mail_content_type(...));
+//        add_filter( 'wp_mail_from_name', self::wp_mail_from_name(...));
     }
 
     public static function phpmailer_init($phpmailer): void {
