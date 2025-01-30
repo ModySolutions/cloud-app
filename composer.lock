@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f70cdcbbcf42232f78319320353bdf43",
+    "content-hash": "25f50716553251221c45293e96d8905b",
     "packages": [
         {
             "name": "brick/math",
@@ -1689,24 +1689,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/loco-translate/"
-        },
-        {
-            "name": "wpackagist-plugin/post-smtp",
-            "version": "3.0.2",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/post-smtp/",
-                "reference": "tags/3.0.2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/post-smtp.3.0.2.zip"
-            },
-            "require": {
-                "composer/installers": "^1.0 || ^2.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/post-smtp/"
         },
         {
             "name": "wpackagist-plugin/user-role-editor",
