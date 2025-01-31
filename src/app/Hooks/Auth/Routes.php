@@ -61,8 +61,8 @@ class Routes {
             }
         }
 
-        if (!$is_allowed_page) {
-//            wp_redirect(home_url('/invoices'));
+        if (!$is_allowed_page && env('CHILD_SITE')) {
+            wp_redirect(home_url('/invoices'));
             exit;
         }
 
