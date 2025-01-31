@@ -27,10 +27,10 @@ jobs:
         env:
           cache-name: cache-vendors
         with:
-          path: vendors
-          key: vendors
+          path: vendor
+          key: vendor
           restore-keys: |
-            vendors
+            vendor
 
       - name: Plugins
         id: cache-plugins
@@ -38,10 +38,10 @@ jobs:
         env:
           cache-name: cache-plugins
         with:
-          path: plugins
-          key: plugins
+          path: web/app/plugins/
+          key: web/app/plugins/
           restore-keys: |
-            plugins
+            web/app/plugins/
 
       - name: Composer Install
         run: composer install --no-dev -o
