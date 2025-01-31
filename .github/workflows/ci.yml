@@ -94,4 +94,5 @@ jobs:
 
       - name: 🛠 Change ownership on VPS
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ vars.SSH_USER_SERVER }} "sudo /home/deploy/chown"
+          rsync -e "ssh -o StrictHostKeyChecking=no" -avz --chown=www-data:www-data --chmod=D775,F664 --no-times --exclude='node_modules' ./* ${{ vars.SSH_USER_SERVER }}:${{ vars.TARGET_DIR }} --verbose
+
