@@ -66,8 +66,8 @@ class Block {
             $context['first_time'] = isset($_GET['first_time']) ? 'yes' : null;
 
             if(!$context['key'] && !$context['email']) {
-                wp_redirect(wp_lostpassword_url());
-                exit;
+//                wp_redirect(wp_lostpassword_url());
+//                exit;
             }
         }
     }

@@ -211,7 +211,7 @@ if (!defined('SRC_PATH')) {
 }
 
 if (!defined('APP_PATH')) {
-    define('APP_PATH', $root_dir . '/src/app');
+    define('APP_PATH', SRC_PATH . '/app');
 }
 
 if (!defined('LOGS_PATH')) {
