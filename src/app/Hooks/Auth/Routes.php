@@ -62,7 +62,7 @@ class Routes {
         }
 
         if (!$is_allowed_page) {
-            wp_redirect(home_url('/invoices'));
+//            wp_redirect(home_url('/invoices'));
             exit;
         }
 
