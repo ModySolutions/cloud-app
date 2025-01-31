@@ -302,7 +302,7 @@ class Ajax {
         wp_set_password($password, $user->ID);
         update_user_meta($user->ID, '_user_is_active', 1);
 
-        $first_time = $_POST['first_time'] ?? false;
+        $first_time = sanitize_text_field($_POST['first_time']) ?? false;
         if ($first_time === 'yes') {
             $initial_page = self::_authenticate_user($email, $password);
         }
