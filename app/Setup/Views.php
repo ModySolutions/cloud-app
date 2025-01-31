@@ -71,10 +71,10 @@ EOF;
 
     public static function timber_locations(array $paths): array {
         $paths['app'] = [
-            SRC_PATH.'/app/views',
+            APP_PATH.'/views',
         ];
         $paths['provision'] = [
-            SRC_PATH . '/app/provision',
+            APP_PATH . '/provision',
         ];
 
         return $paths;
