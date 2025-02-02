@@ -88,7 +88,7 @@ jobs:
 
       - name: 📂 Sync files to VPS using SSH
         run: |
-          rsync -e "ssh -o StrictHostKeyChecking=no" -avz --no-times --update --delete --exclude='node_modules' --exclude='package.json' --exclude='.git*' --exclude='src/scripts' --exclude='src/scss' --exclude='pint.json' --exclude='composer.lock' --exclude='sample*' --exclude='*.md' --exclude='create-migration*' --exclude='extract-twig*' --exclude='pnpm*' --exclude='wp-cli*' ./* ${{ vars.SSH_USER_SERVER }}:${{ vars.TARGET_DIR }} --verbose
+          rsync -e "ssh -o StrictHostKeyChecking=no" -avz --no-times --update --exclude='node_modules' --exclude='package.json' --exclude='.git*' --exclude='src/scripts' --exclude='src/scss' --exclude='pint.json' --exclude='composer.lock' --exclude='sample*' --exclude='*.md' --exclude='create-migration*' --exclude='extract-twig*' --exclude='pnpm*' --exclude='wp-cli*' ./* ${{ vars.SSH_USER_SERVER }}:${{ vars.TARGET_DIR }} --verbose
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
