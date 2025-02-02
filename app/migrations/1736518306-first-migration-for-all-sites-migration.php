@@ -190,7 +190,7 @@ return function (\wpdb $wpdb) {
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'invoices',
-        'post_content' => APP_INVOICE_BLOCK_CONTENT
+        'post_content' => '<!-- wp:app/invoice {"name":"app/invoice","data":array(),"mode":"edit"} /-->'
     ));
     update_option('invoice_page_id', $invoice_page_id);
 
