@@ -24,13 +24,13 @@ if (!function_exists('app_install_get_subdomain')) {
 }
 
 $sub_domain = app_install_get_subdomain();
-$env_file_path = "../../config/sites/{$sub_domain}/.env";
+$env_file_path = MC_SITES_PATH . "/{$sub_domain}/.env";
 if (!$sub_domain && !file_exists($env_file_path)) {
     wp_die(__('There was an error creating your site.'));
 }
 
 $env_file = file_get_contents($env_file_path);
-require_once '../../src/app/helpers/parse.php';
+require_once APP_PATH . '/helpers/parse.php';
 $parsed_env_file = parse_env_text($env_file);
 if (count($parsed_env_file) === 0) {
     return '';
