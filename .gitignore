@@ -33,10 +33,10 @@ node_modules
 .DS_Store
 
 # Users
-/config/users/*
-/config/sites/*
-/config/uuid/*
-/config/autologin-tokens/*
+/config/users/
+/config/sites/
+/config/uuid/
+/config/autologin-tokens/
 
 # WP-CLI
 wp-cli.local.yml
