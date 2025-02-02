@@ -97,12 +97,29 @@ if (!is_blog_installed()) {
 </div>
 <script>
     let i = 0;
+    $messages = [
+        'Creating database...',
+        'Creating admin user...',
+        'Creating default pages...',
+        'Creating creating frontend routes...',
+        'Setting up permalinks...',
+        'Huh! It\s been a long time...',
+        'I got somewhere to be man...',
+        'Oh! You\re still here? Man, what am I doing?...',
+    ];
     const checkSignIn = setInterval(async () => {
         const response = await fetch(`ping.php?i=${i}`, {'method': 'GET'});
         if (response.ok) {
             const {data: {done, initial_page, message}} = await response.json();
             if (done) {
                 clearInterval(checkSignIn);
+                const interval = setInterval(async () => {
+                    const auto_install_plugins = await fetch('/invoices', {'method': 'GET'})
+                    await document.getElementById('loading-container')
+                        .innerText += `${message}\n`;
+                    i++;
+                }, 1500)
+                clearInterval(interval);
                 location.href = initial_page;
             }
 
