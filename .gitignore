@@ -30,6 +30,7 @@ node_modules
 # Editor
 .idea
 .vscode
+.DS_Store
 
 # Users
 /config/users/*
