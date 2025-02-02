@@ -114,7 +114,7 @@ if (!is_blog_installed()) {
             if (done) {
                 clearInterval(checkSignIn);
                 const interval = setInterval(async () => {
-                    const auto_install_plugins = await fetch('/invoices', {'method': 'GET'})
+                    const auto_install_plugins = await fetch('/wp/wp-admin', {'method': 'GET'})
                     document.getElementById('loading-container')
                         .innerText += `${message}\n`;
                     if(i === 7) {
