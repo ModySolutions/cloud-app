@@ -62,19 +62,19 @@ class Routes {
         }
 
         if (!$is_allowed_page && env('CHILD_SITE')) {
-            wp_redirect(home_url('/invoices'));
-            exit;
+//            wp_redirect(home_url('/invoices'));
+//            exit;
         }
 
         if(is_user_logged_in()) {
             if (is_front_page() && !is_admin()) {
                 $current_user = get_user(get_current_user_id());
                 if(app_maybe_logout($current_user)) {
-                    wp_redirect(wp_login_url());
-                    exit;
+//                    wp_redirect(wp_login_url());
+//                    exit;
                 }
-                wp_redirect(app_get_initial_page($current_user));
-                exit;
+//                wp_redirect(app_get_initial_page($current_user));
+//                exit;
             }
         } else {
             $autologin_token = array_key_exists('autologin_key', $_GET) ?
