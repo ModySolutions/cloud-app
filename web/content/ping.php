@@ -13,6 +13,7 @@ $site_name = get_bloginfo();
 
 if($has_last_migration_run) {
     wp_set_auth_cookie(1,1);
+    do_action('admin_init');
 }
 
 $messages = array(

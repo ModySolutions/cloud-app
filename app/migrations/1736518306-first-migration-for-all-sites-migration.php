@@ -184,6 +184,16 @@ return function (\wpdb $wpdb) {
         )
     );
 
+    $invoice_page_id = wp_insert_post(array(
+        'post_type' => 'page',
+        'post_title' => __('Invoices'),
+        'post_status' => 'publish',
+        'post_author' => 1,
+        'post_name' => 'invoices',
+        'post_content' => APP_INVOICE_BLOCK_CONTENT
+    ));
+    update_option('invoice_page_id', $invoice_page_id);
+
     foreach ($pages_slugs as $page_id => $routes) {
         update_post_meta($page_id, 'routes', $routes);
     }
