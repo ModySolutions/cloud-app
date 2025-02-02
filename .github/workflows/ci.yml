@@ -38,10 +38,10 @@ jobs:
         env:
           cache-name: cache-plugins
         with:
-          path: web/app/plugins/
-          key: web/app/plugins/
+          path: web/content/plugins/
+          key: web/content/plugins/
           restore-keys: |
-            web/app/plugins/
+            web/content/plugins/
 
       - name: Composer Install
         run: composer install --no-dev -o
