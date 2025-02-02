@@ -1,7 +1,7 @@
 <?php
 
 require_once '../wp/wp-load.php';
-require_once '../../src/app/helpers/migrations.php';
+require_once '../../app/helpers/migrations.php';
 
 $last_migration = app_get_last_migration_from_code();
 $has_last_migration_run = app_has_last_migration_run($last_migration);
