@@ -37,6 +37,7 @@ node_modules
 /config/sites/
 /config/uuid/
 /config/autologin-tokens/
+/config/logout-info/
 
 # WP-CLI
 wp-cli.local.yml
