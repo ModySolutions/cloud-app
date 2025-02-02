@@ -119,7 +119,7 @@ if (!function_exists('app_get_initial_page')) {
                     $initial_page = add_query_arg(array(
                         'autologin_key' => urlencode($autologin_token),
                         'installing' => true,
-                    ), "{$site_uri}/app/space-install-setup.php");
+                    ), "{$site_uri}/content/space-install-setup.php");
                 } else {
                     $create_page_id = get_option('create_page_id');
                     $initial_page = get_permalink($create_page_id);

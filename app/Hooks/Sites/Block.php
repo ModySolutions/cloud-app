@@ -38,7 +38,7 @@ class Block {
             $space_install_setup = add_query_arg(array(
                 'key' => base64_encode(md5(rand(11111,99999))),
                 'installing' => true,
-            ), "{$site_uri}/app/space-install-setup.php");
+            ), "{$site_uri}/content/space-install-setup.php");
             wp_redirect($space_install_setup);
             exit;
         }

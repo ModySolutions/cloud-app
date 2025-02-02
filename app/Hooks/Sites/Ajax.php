@@ -125,7 +125,7 @@ class Ajax {
             'message' => __('We are provisioning your space, please wait, this could take a while', APP_THEME_LOCALE),
             'initial_page' => add_query_arg(array(
                 'autologin_user' => base64_encode(md5(rand(111111, 999999))),
-            ), "{$env_file_data['wp_home']}/app/space-install-setup.php"),
+            ), "{$env_file_data['wp_home']}/content/space-install-setup.php"),
             'queue_id' => $queue_id,
         ]);
     }
