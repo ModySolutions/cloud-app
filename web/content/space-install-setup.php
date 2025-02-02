@@ -115,9 +115,13 @@ if (!is_blog_installed()) {
                 clearInterval(checkSignIn);
                 const interval = setInterval(async () => {
                     const auto_install_plugins = await fetch('/invoices', {'method': 'GET'})
-                    await document.getElementById('loading-container')
+                    document.getElementById('loading-container')
                         .innerText += `${message}\n`;
-                    i++;
+                    if(i === 7) {
+                        i = 0;
+                    } else {
+                        i++;
+                    }
                 }, 1500)
                 clearInterval(interval);
                 location.href = initial_page;
