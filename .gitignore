@@ -1,16 +1,15 @@
 # Application
-web/app/plugins/*
-!web/app/plugins/.gitkeep
-web/app/mu-plugins/*/
-web/app/themes/theme/dist
-web/app/upgrade
-web/app/uploads/*
-!web/app/uploads/.gitkeep
-web/app/cache/*
+web/content/plugins/*
+!web/content/plugins/.gitkeep
+web/content/mu-plugins/*/
+web/content/upgrade
+web/content/uploads/*
+!web/content/uploads/.gitkeep
+web/content/cache/*
+web/content/themes/cloud/dist
 
 # WordPress
 web/wp
-web/app/themes/app/dist/*
 web/.htaccess
 
 # Logs

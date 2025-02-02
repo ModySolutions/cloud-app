@@ -73,13 +73,13 @@
   "prefer-stable": true,
   "extra": {
     "installer-paths": {
-      "web/app/mu-plugins/{$name}/": [
+      "web/content/mu-plugins/{$name}/": [
         "type:wordpress-muplugin",
         "wpengine/advanced-custom-fields-pro",
         "wpackagist-plugin/user-role-editor"
       ],
-      "web/app/plugins/{$name}/": ["type:wordpress-plugin"],
-      "web/app/themes/{$name}/": ["type:wordpress-theme"]
+      "web/content/plugins/{$name}/": ["type:wordpress-plugin"],
+      "web/content/themes/{$name}/": ["type:wordpress-theme"]
     },
     "wordpress-install-dir": "web/wp"
   },

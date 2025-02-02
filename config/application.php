@@ -97,7 +97,7 @@ Config::define('WP_SITEURL', env('WP_SITEURL'));
 /**
  * Custom Content Directory
  */
-Config::define('CONTENT_DIR', '/app');
+Config::define('CONTENT_DIR', '/content');
 Config::define('WP_CONTENT_DIR', $webroot_dir . Config::get('CONTENT_DIR'));
 Config::define('WP_CONTENT_URL', Config::get('WP_HOME') . Config::get('CONTENT_DIR'));
 
@@ -219,7 +219,7 @@ if (!defined('LOGS_PATH')) {
 }
 
 if (!defined('WP_DEFAULT_THEME')) {
-    define('WP_DEFAULT_THEME', 'app');
+    define('WP_DEFAULT_THEME', 'cloud');
 }
 
 if (!defined('MC_SITES_PATH')) {
@@ -247,7 +247,7 @@ if (!defined('MC_MIGRATIONS_PATH')) {
 }
 
 if (!defined('MC_PLUGINS_PATH')) {
-    define('MC_PLUGINS_PATH', ROOT_DIR . '/app/plugins');
+    define('MC_PLUGINS_PATH', ROOT_DIR . '/content/plugins');
 }
 
 if (!defined('WP_HTTP_BLOCK_EXTERNAL')) {
