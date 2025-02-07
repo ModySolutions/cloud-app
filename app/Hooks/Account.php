@@ -8,7 +8,7 @@ use App\Hooks\Account\Meta;
 use App\Hooks\Account\Routes;
 use App\Hooks\Account\Scripts;
 
-class AccountHooks {
+class Account {
     public static function init() : void {
         add_action('init', Routes::wp_init(...));
         add_action('wp_enqueue_scripts', Scripts::wp_enqueue_scripts(...), 100);

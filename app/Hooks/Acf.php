@@ -2,7 +2,7 @@
 
 namespace App\Hooks;
 
-class AcfHooks {
+class Acf {
     public static function init() : void {
         add_filter('acf/prepare_field/name=queue_info', self::acf_prepare_field(...));
         add_filter('acf/prepare_field/name=queue_type', self::acf_prepare_field(...));

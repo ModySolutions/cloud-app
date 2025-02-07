@@ -2,11 +2,12 @@
 
 namespace App;
 
+use Roots\WPConfig\Config;
+
 class App
 {
     public static function start() : void {
-        self::loader(APP_PATH . '/Setup/*.php', 'App\\Setup\\');
-        self::loader(APP_PATH . '/Hooks/*.php', 'App\\Hooks\\');
+        self::loader(Config::get('APP_PATH') . '/Hooks/*.php', 'App\\Hooks\\');
     }
 
     public static function loader(string $path, string $namespace = 'App\\') : void {

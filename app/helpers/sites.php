@@ -1,5 +1,6 @@
 <?php
 
+use Roots\WPConfig\Config;
 use function Env\env;
 
 if (!function_exists('app_user_has_a_site')) {
@@ -60,7 +61,7 @@ if (!function_exists('app_generate_env_file_info')) {
             'database_name' => "{$space_name}_db",
             'database_user' => "{$space_name}_user",
             'database_password' => wp_generate_password(16),
-            'database_host' => DEFAULT_DB_HOST,
+            'database_host' => Config::get('DEFAULT_DB_HOST'),
             'database_prefix' => app_generate_db_prefix(4),
             'auth_key' => wp_generate_password(64),
             'logged_in_key' => wp_generate_password(64),
@@ -71,7 +72,7 @@ if (!function_exists('app_generate_env_file_info')) {
             'logged_in_salt' => wp_generate_password(64),
             'nonce_salt' => wp_generate_password(64),
             'admin_email' => $user_data->user_email,
-            'space_path' => MC_SITES_PATH.'/'.$space_name
+            'space_path' => Config::get('MC_SITES_PATH').'/'.$space_name
         );
     }
 }

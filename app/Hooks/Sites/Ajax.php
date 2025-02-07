@@ -2,6 +2,7 @@
 
 namespace App\Hooks\Sites;
 
+use Roots\WPConfig\Config;
 use Timber\Timber;
 use function Env\env;
 
@@ -104,8 +105,8 @@ class Ajax {
         update_field('queue_info', $env_file, $queue_id);
         update_field('queue_type', 'install', $queue_id);
 
-        if (!is_dir(MC_SITES_PATH)) {
-            mkdir(MC_SITES_PATH, 0755, true);
+        if (!is_dir(Config::get('MC_SITES_PATH'))) {
+            mkdir(Config::get('MC_SITES_PATH'), 0755, true);
         }
 
         $new_site_dir = $env_file_data['space_path'];

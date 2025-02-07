@@ -1,5 +1,7 @@
 <?php
 
+use Roots\WPConfig\Config;
+
 return function (\wpdb $wpdb) {
     $site_name = get_bloginfo();
     app_log("Starting installation for {$site_name}");
@@ -105,7 +107,7 @@ return function (\wpdb $wpdb) {
     $user = get_user($user_id);
     $email = $user->user_email;
     $file_name = base64_encode($email).'.txt';
-    $file_path = MC_USERS_PATH."/$file_name";
+    $file_path = Config::get('MC_USERS_PATH')."/$file_name";
     global $wpdb;
     if (is_file($file_path)) {
         $password_hash = file_get_contents($file_path);

@@ -1,8 +1,10 @@
 <?php
 
+use Roots\WPConfig\Config;
+
 if (!function_exists('app_get_last_migration_from_code')) {
     function app_get_last_migration_from_code(): ?string {
-        $migration_files = glob(MC_MIGRATIONS_PATH.'/*.php');
+        $migration_files = glob(Config::get('MC_MIGRATIONS_PATH').'/*.php');
 
         if (!$migration_files) {
             return null;

@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Setup;
+namespace App\Hooks;
 
+
+use Roots\WPConfig\Config;
 
 class Views {
     static function init(): void {
@@ -71,10 +73,10 @@ EOF;
 
     public static function timber_locations(array $paths): array {
         $paths['app'] = [
-            SRC_PATH.'/views',
+            Config::get('SRC_PATH').'/views',
         ];
         $paths['provision'] = [
-            APP_PATH . '/provision',
+            Config::get('APP_PATH') . '/provision',
         ];
 
         return $paths;

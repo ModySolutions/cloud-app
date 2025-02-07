@@ -2,11 +2,12 @@
 
 namespace App\Hooks\Account;
 
+use Roots\WPConfig\Config;
 use function Env\env;
 
 class Cron {
     public static function sync_password(): void {
-        $users_pass_sync_path = MC_USERS_PATH;
+        $users_pass_sync_path = Config::get('MC_USERS_PATH');
         if (!is_dir($users_pass_sync_path)) {
             return;
         }

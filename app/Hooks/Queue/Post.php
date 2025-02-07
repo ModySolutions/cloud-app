@@ -89,7 +89,7 @@ class Post {
         }
 
         extract($variables);
-        $db_host = $variables['db_host'] ?? DEFAULT_DB_HOST;
+        $db_host = $variables['db_host'] ?? Config::get('DEFAULT_DB_HOST');
 
         if (!$db_name || !$db_user || !$db_password || !$wp_home || !$domain_current_site) {
             self::_un_publish_queue($queue_id);

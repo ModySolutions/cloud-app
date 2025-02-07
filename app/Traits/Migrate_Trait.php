@@ -6,7 +6,7 @@ use function Env\env;
 
 trait Migrate_Trait {
     public static function migrate() : void {
-        $migration_files = glob(MC_MIGRATIONS_PATH . '/*.php');
+        $migration_files = glob(Config::get('MC_MIGRATIONS_PATH') . '/*.php');
 
         if (!$migration_files) {
             return;

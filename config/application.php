@@ -173,12 +173,25 @@ ini_set('display_errors', env('PHP_DISPLAY_ERRORS') ?? '0');
  * Multisite
  */
 Config::define('WP_ALLOW_MULTISITE', false);
-Config::define('MULTISITE', false);
-Config::define('SUBDOMAIN_INSTALL', false);
-Config::define('DOMAIN_CURRENT_SITE', env('DOMAIN_CURRENT_SITE'));
-Config::define('PATH_CURRENT_SITE', env('PATH_CURRENT_SITE') ?: '/');
-Config::define('SITE_ID_CURRENT_SITE', env('SITE_ID_CURRENT_SITE') ?: 1);
-Config::define('BLOG_ID_CURRENT_SITE', env('BLOG_ID_CURRENT_SITE') ?: 1);
+
+/**
+ * Mody CLoud
+ */
+Config::define('ROOT_DIR', $webroot_dir);
+Config::define('WP_HTTP_BLOCK_EXTERNAL', true);
+Config::define('SRC_PATH', $root_dir . '/resources');
+Config::define('APP_PATH', $root_dir . '/app');
+Config::define('LOGS_PATH', $root_dir . '/logs');
+Config::define('WP_DEFAULT_THEME', 'cloud');
+Config::define('MC_SITES_PATH', __DIR__ . '/sites');
+Config::define('MC_USERS_PATH', __DIR__ . '/users');
+Config::define('MC_AUTOLOGIN_TOKENS_PATH', __DIR__ . '/autologin-tokens');
+Config::define('MC_LOGOUT_PATH', __DIR__ . '/logout-info');
+Config::define('MC_UUID_PATH', __DIR__ . '/uuid');
+Config::define('MC_MIGRATIONS_PATH', $root_dir . '/app/migrations');
+Config::define('MC_PLUGINS_PATH', $root_dir . '/content/plugins');
+Config::define('APP_THEME_DOMAIN', 'app');
+Config::define('DEFAULT_DB_HOST', '127.0.0.1');
 
 /**
  * Allow WordPress to detect HTTPS when used behind a reverse proxy or a load balancer
@@ -199,68 +212,6 @@ Config::apply();
 /**
  * Bootstrap WordPress
  */
-if (!defined('ROOT_DIR')) {
-    define('ROOT_DIR', $webroot_dir);
-}
 if (!defined('ABSPATH')) {
     define('ABSPATH', $webroot_dir . '/wp/');
 }
-
-if (!defined('SRC_PATH')) {
-    define('SRC_PATH', $root_dir . '/resources');
-}
-
-if (!defined('APP_PATH')) {
-    define('APP_PATH', $root_dir . '/app');
-}
-
-if (!defined('LOGS_PATH')) {
-    define('LOGS_PATH', $root_dir . '/logs');
-}
-
-if (!defined('WP_DEFAULT_THEME')) {
-    define('WP_DEFAULT_THEME', 'cloud');
-}
-
-if (!defined('MC_SITES_PATH')) {
-    define('MC_SITES_PATH', __DIR__ . '/sites');
-}
-
-if (!defined('MC_USERS_PATH')) {
-    define('MC_USERS_PATH', __DIR__ . '/users');
-}
-
-if (!defined('MC_AUTOLOGIN_TOKENS_PATH')) {
-    define('MC_AUTOLOGIN_TOKENS_PATH', __DIR__ . '/autologin-tokens');
-}
-
-if (!defined('MC_LOGOUT_PATH')) {
-    define('MC_LOGOUT_PATH', __DIR__ . '/logout-info');
-}
-
-if (!defined('MC_UUID_PATH')) {
-    define('MC_UUID_PATH', __DIR__ . '/uuid');
-}
-
-if (!defined('MC_MIGRATIONS_PATH')) {
-    define('MC_MIGRATIONS_PATH', APP_PATH . '/migrations');
-}
-
-if (!defined('MC_PLUGINS_PATH')) {
-    define('MC_PLUGINS_PATH', ROOT_DIR . '/content/plugins');
-}
-
-if (!defined('WP_HTTP_BLOCK_EXTERNAL')) {
-    define('WP_HTTP_BLOCK_EXTERNAL', true);
-}
-
-if (!defined('APP_THEME_DOMAIN')) {
-    define('APP_THEME_DOMAIN', 'app');
-}
-
-if (!defined('DISABLE_WP_CRON')) {
-    define('DISABLE_WP_CRON', true);
-}
-
-// @todo make database hosts a fetchable object from several databases
-const DEFAULT_DB_HOST = '127.0.0.1';

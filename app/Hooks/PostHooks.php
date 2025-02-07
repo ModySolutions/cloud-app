@@ -3,6 +3,7 @@
 namespace App\Hooks;
 
 use Ramsey\Uuid\Uuid;
+use Roots\WPConfig\Config;
 use function Env\env;
 
 class PostHooks {
@@ -20,10 +21,10 @@ class PostHooks {
             } while(self::uuid_exists($uuid_string));
         }
         $space_name = env('SPACE_NAME') ?? 'modycloud';
-        $uuid_file_name = MC_UUID_PATH . "/{$uuid_string}.{$space_name}.{$post_id}.{$post->post_type}.uuid.json";
+        $uuid_file_name = Config::get('MC_UUID_PATH') . "/{$uuid_string}.{$space_name}.{$post_id}.{$post->post_type}.uuid.json";
 
-        if(!is_dir(MC_UUID_PATH)) {
-            mkdir(MC_UUID_PATH);
+        if(!is_dir(Config::get('MC_UUID_PATH'))) {
+            mkdir(Config::get('MC_UUID_PATH'));
         }
 
         if($uuid_string && !is_file($uuid_file_name)){
@@ -48,7 +49,7 @@ class PostHooks {
     
     public static function uuid_exists(string $uuid_string) : bool {
         $exists = false;
-        $stored_uuids = glob(MC_UUID_PATH . '/*.uuid.json');
+        $stored_uuids = glob(Config::get('MC_UUID_PATH') . '/*.uuid.json');
         if(count($stored_uuids)) {
             $stored_uuids_basename = array_map(function($uuid_item) use ($uuid_string){
                 $basename = basename($uuid_item, '.uuid.json');

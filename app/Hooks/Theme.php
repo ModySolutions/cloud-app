@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Setup;
+namespace App\Hooks;
 
+use Roots\WPConfig\Config;
 use function Env\env;
 
 class Theme {
@@ -49,7 +50,7 @@ class Theme {
         add_theme_support('post-thumbnails');
         add_theme_support('title-tag');
         add_theme_support( 'custom-logo');
-        load_theme_textdomain(APP_THEME_DOMAIN, APP_PATH . '/languages');
+        load_theme_textdomain(Config::get('APP_THEME_DOMAIN'), Config::get('APP_PATH') . '/languages');
     }
 
     public static function wp_enqueue_scripts(): void {

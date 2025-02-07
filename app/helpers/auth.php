@@ -1,13 +1,15 @@
 <?php
 
+use Roots\WPConfig\Config;
+
 if (!function_exists('app_generate_autologin_token')) {
     function app_generate_autologin_token(WP_User $user): string {
-        if (!is_dir(MC_AUTOLOGIN_TOKENS_PATH)) {
-            mkdir(MC_AUTOLOGIN_TOKENS_PATH);
+        if (!is_dir(Config::get('MC_AUTOLOGIN_TOKENS_PATH'))) {
+            mkdir(Config::get('MC_AUTOLOGIN_TOKENS_PATH'));
         }
 
         $hashed_email = base64_encode($user->user_email);
-        $filename = MC_AUTOLOGIN_TOKENS_PATH."/{$hashed_email}.token";
+        $filename = Config::get('MC_AUTOLOGIN_TOKENS_PATH')."/{$hashed_email}.token";
         if (!file_exists($filename)) {
             touch($filename);
         }
@@ -19,12 +21,12 @@ if (!function_exists('app_generate_autologin_token')) {
 
 if (!function_exists('app_validate_autologin_token')) {
     function app_validate_autologin_token(WP_User $user, string $token): bool {
-        if (!is_dir(MC_AUTOLOGIN_TOKENS_PATH)) {
-            mkdir(MC_AUTOLOGIN_TOKENS_PATH, 0755, true);
+        if (!is_dir(Config::get('MC_AUTOLOGIN_TOKENS_PATH'))) {
+            mkdir(Config::get('MC_AUTOLOGIN_TOKENS_PATH'), 0755, true);
         }
 
         $hashed_email = base64_encode($user->user_email);
-        $filename = MC_AUTOLOGIN_TOKENS_PATH."/{$hashed_email}.token";
+        $filename = Config::get('MC_AUTOLOGIN_TOKENS_PATH')."/{$hashed_email}.token";
 
         if (!file_exists($filename)) {
             return false;
@@ -51,12 +53,12 @@ if (!function_exists('app_validate_autologin_token')) {
 
 if(!function_exists('app_generate_logout_info')) {
     function app_generate_logout_info(WP_User $user) : void {
-        if (!is_dir(MC_LOGOUT_PATH)) {
-            mkdir(MC_LOGOUT_PATH, 0755, true);
+        if (!is_dir(Config::get('MC_LOGOUT_PATH'))) {
+            mkdir(Config::get('MC_LOGOUT_PATH'), 0755, true);
         }
 
         $hashed_email = base64_encode($user->user_email);
-        $filename = MC_LOGOUT_PATH."/{$hashed_email}";
+        $filename = Config::get('MC_LOGOUT_PATH')."/{$hashed_email}";
         if(!file_exists($filename)) {
             touch($filename);
         }
@@ -66,7 +68,7 @@ if(!function_exists('app_generate_logout_info')) {
 if (!function_exists('app_maybe_logout')) {
     function app_maybe_logout(WP_User $user) : bool {
         $hashed_email = base64_encode($user->user_email);
-        $filename = MC_LOGOUT_PATH."/{$hashed_email}";
+        $filename = Config::get('MC_LOGOUT_PATH')."/{$hashed_email}";
         if(!file_exists($filename)) {
             return false;
         }

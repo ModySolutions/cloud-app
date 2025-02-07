@@ -1,8 +1,10 @@
 <?php
 
+use Roots\WPConfig\Config;
+
 if(!function_exists('app_log')) {
     function app_log($message): void {
-        $log_file = LOGS_PATH . '/app.log';
+        $log_file = Config::get('LOGS_PATH') . '/app.log';
 
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $caller = $backtrace[0] ?? null;
