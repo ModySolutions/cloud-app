@@ -20,7 +20,7 @@ $messages = array(
     __('Creating database...'),
     __('Creating admin user...'),
     __('Creating default pages...'),
-    __('Creating creating frontend routes...'),
+    __('Creating frontend routes...'),
     __('Setting up permalinks...'),
     __('Huh! It\s been a long time...'),
     __('I got somewhere to be man...'),

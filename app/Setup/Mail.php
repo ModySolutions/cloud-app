@@ -8,11 +8,23 @@ use function Env\env;
 
 class Mail {
     public static function init(): void {
-        add_filter('wp_mail', self::wp_mail(...));
+        if(WP_ENV === 'local') {
+            add_action('phpmailer_init', self::phpmailer_init(...), 100);
+            add_action('wp_mail', self::wp_mail_smtp(...), 100);
+        } else {
+            add_filter('wp_mail', self::wp_mail_sendgrid(...), 100);
+        }
         add_filter( 'wp_mail_content_type', self::wp_mail_content_type(...));
     }
 
-    public static function wp_mail(array $args): bool {
+    public static function phpmailer_init($phpmailer): void {
+        $phpmailer->isSMTP();
+        $phpmailer->Host = Config::get('SMTP_HOST');
+        $phpmailer->Port = Config::get('SMTP_PORT');
+        add_filter( 'wp_mail_content_type', self::wp_mail_content_type(...));
+    }
+
+    public static function wp_mail_sendgrid(array $args): bool {
         $context = Timber::context([
             'site_url' => home_url(),
             'year' => gmdate('Y'),
@@ -28,6 +40,18 @@ class Mail {
         $headers = $args['headers'] ?? [];
 
         return self::sendgrid_send_mail($to, $subject, $message, $headers);
+    }
+
+    public static function wp_mail_smtp(array $args) : array {
+        $context = Timber::context([
+            'site_url' => home_url(),
+            'year' => gmdate('Y'),
+            'lang' => get_language_attributes('html'),
+            'message' => $args['message'],
+        ]);
+        $context['logo'] = Timber::compile('@app/common/logos/email-logo.twig', $context + ['link' => home_url()]);
+        $args['message'] = Timber::compile('@app/mail/template.twig', $context);
+        return $args;
     }
 
     public static function wp_mail_content_type() : string {

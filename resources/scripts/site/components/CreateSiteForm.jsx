@@ -133,7 +133,7 @@ const CreateSiteForm = () => {
             <div className="message animate-display is-hidden"></div>
             <div className="form-group">
                 <label htmlFor="company_name" className="mb-1">
-                    { __('Company name', 'app') } <span className="text-danger">*</span>
+                    { __('Business Name (Legal name for individuals or company)', 'app') } <span className="text-danger">*</span>
                 </label>
                 <input type="text"
                        tabIndex="1"

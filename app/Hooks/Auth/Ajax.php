@@ -169,9 +169,15 @@ class Ajax {
         );
 
         $headers = ['Content-Type: text/html; charset=UTF-8'];
-        $mail_sent = wp_mail($email, $subject, nl2br($message), $headers);
+        $mail_sent = wp_mail($email, $subject, $message, $headers);
 
         if (!$mail_sent) {
+            global $wpdb;
+            $wpdb->delete(
+                $wpdb->usermeta,
+                array('user_id' => $user_id)
+            );
+            wp_delete_user($user_id);
             wp_send_json_error([
                 'message' => __('Failed to send the email. Please try again.', APP_THEME_LOCALE),
             ]);

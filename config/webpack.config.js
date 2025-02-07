@@ -4,11 +4,11 @@ const defaults = require('@wordpress/scripts/config/webpack.config.js');
 module.exports = {
     ...defaults,
     entry: {
-        'app': path.resolve(process.cwd(), 'src/scripts', 'app.js'),
-        'editor': path.resolve(process.cwd(), 'src/scripts', 'editor.js'),
-        'auth': path.resolve(process.cwd(), 'src/scripts', 'auth.js'),
-        'site': path.resolve(process.cwd(), 'src/scripts', 'site.js'),
-        'account': path.resolve(process.cwd(), 'src/scripts', 'account.js'),
+        'app': path.resolve(process.cwd(), 'resources/scripts', 'app.js'),
+        'editor': path.resolve(process.cwd(), 'resources/scripts', 'editor.js'),
+        'auth': path.resolve(process.cwd(), 'resources/scripts', 'auth.js'),
+        'site': path.resolve(process.cwd(), 'resources/scripts', 'site.js'),
+        'account': path.resolve(process.cwd(), 'resources/scripts', 'account.js'),
     },
     output: {
         filename: '[name].js',

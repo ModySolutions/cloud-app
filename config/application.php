@@ -207,7 +207,7 @@ if (!defined('ABSPATH')) {
 }
 
 if (!defined('SRC_PATH')) {
-    define('SRC_PATH', $root_dir . '/src');
+    define('SRC_PATH', $root_dir . '/resources');
 }
 
 if (!defined('APP_PATH')) {
