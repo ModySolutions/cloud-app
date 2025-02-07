@@ -2,6 +2,7 @@
 
 namespace App\Hooks\Auth;
 
+use Roots\WPConfig\Config;
 use function Env\env;
 
 class Routes {
@@ -61,7 +62,7 @@ class Routes {
             }
         }
 
-        if (!$is_allowed_page && env('CHILD_SITE')) {
+        if (!$is_allowed_page && Config::get('CHILD_SITE')) {
             wp_redirect(home_url('/invoices'));
             exit;
         }

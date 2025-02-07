@@ -41,7 +41,7 @@ class Theme {
 
         wp_deregister_script('heartbeat');
 
-        if(env('CHILD_SITE') || (!env('CHILD_SITE') && !current_user_can('administrator'))) {
+        if(env('CHILD_SITE') || (!Config::get('CHILD_SITE') && !current_user_can('administrator'))) {
             show_admin_bar(false);
         }
     }

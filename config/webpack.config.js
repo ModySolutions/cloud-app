@@ -20,8 +20,8 @@ module.exports = {
             alias: {
                 ...defaults.resolve.alias,
                 ...{
-                    '@modycloud': path.resolve(process.cwd(), 'src/scripts'),
-                    '@mcscss': path.resolve(process.cwd(), 'src/scss'),
+                    '@modycloud': path.resolve(process.cwd(), 'resources/scripts'),
+                    '@mcscss': path.resolve(process.cwd(), 'resources/scss'),
                 }
             }
         }

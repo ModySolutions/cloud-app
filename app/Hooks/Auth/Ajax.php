@@ -3,6 +3,7 @@
 namespace App\Hooks\Auth;
 
 use App\Hooks\Queue\Post;
+use Ramsey\Uuid\Uuid;
 use Timber\Timber;
 use function Env\env;
 
@@ -311,6 +312,13 @@ class Ajax {
         $first_time = sanitize_text_field($_POST['first_time']) ?? false;
         if ($first_time === 'yes') {
             $initial_page = self::_authenticate_user($email, $password);
+            $application_password = \WP_Application_Passwords::create_new_application_password(
+                $user->ID,
+                array(
+                    'name' => 'mody.cloud.passwd.connect',
+                    'uuid' => Uuid::uuid4(),
+                )
+            );
         }
 
         wp_send_json_success([
@@ -325,10 +333,8 @@ class Ajax {
     }
 
     private static function _authenticate_user($email, $password) : string {
-        $create_page_id = get_option('create_page_id');
-        $initial_page = get_permalink($create_page_id);
         $user = wp_authenticate($email, $password);
         wp_set_auth_cookie($user->ID, true);
-        return $initial_page;
+        return app_get_initial_page($user);
     }
 }

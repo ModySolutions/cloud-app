@@ -2,8 +2,14 @@
 
 namespace App\Hooks\Auth;
 
+use Roots\WPConfig\Config;
+
 class Block {
     public static function app_before_render_block(array $context): array {
+        if(Config::get('CHILD_SITE')) {
+            wp_redirect(Config::get('APP_MAIN_SITE') . '/auth/sign-in');
+            exit;
+        }
         $action = get_query_var('action');
         if(empty($action)) {
             wp_redirect(wp_login_url());

@@ -6,7 +6,7 @@ use Ramsey\Uuid\Uuid;
 use Roots\WPConfig\Config;
 use function Env\env;
 
-class PostHooks {
+class Post {
     public static function init() : void {
         add_action('save_post', self::save_post(...), 10, 3);
         add_filter('home_url', self::filter_the_permalink(...));

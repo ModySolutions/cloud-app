@@ -12,7 +12,7 @@ class Cron {
             return;
         }
 
-        $is_child_site = env('CHILD_SITE');
+        $is_child_site = Config::get('CHILD_SITE');
         if($is_child_site) {
             return;
         }

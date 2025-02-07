@@ -7,7 +7,7 @@ use App\Hooks\Sites\Block;
 use App\Hooks\Sites\Post;
 use App\Hooks\Sites\Routes;
 
-class SitesHooks {
+class Sites {
     public static function init() : void {
         add_action('init', Routes::permalink_structure(...));
         add_action('init', Post::register_post_type(...));

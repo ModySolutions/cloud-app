@@ -94,7 +94,7 @@ if (!function_exists('app_get_initial_page')) {
     function app_get_initial_page(\WP_User $user): string {
         $dashboard_page_id = get_option('invoice_page_id');
         $dashboard_url = get_permalink($dashboard_page_id);
-        $is_child_site = env('CHILD_SITE');
+        $is_child_site = Config::get('CHILD_SITE');
 
         $initial_page = $dashboard_url;
         if (!$is_child_site) {

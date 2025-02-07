@@ -76,7 +76,7 @@ EOF;
             Config::get('SRC_PATH').'/views',
         ];
         $paths['provision'] = [
-            Config::get('APP_PATH') . '/provision',
+            Config::get('SRC_PATH') . '/provision',
         ];
 
         return $paths;

@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Roots\WPConfig\Config;
 use function Env\env;
 
 trait Migrate_Trait {
@@ -20,7 +21,7 @@ trait Migrate_Trait {
 
         $site_name = get_bloginfo();
 
-        if(!env('CHILD_SITE')) {
+        if(!Config::get('CHILD_SITE')) {
 //            return;
         }
 

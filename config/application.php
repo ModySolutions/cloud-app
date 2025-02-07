@@ -177,6 +177,7 @@ Config::define('WP_ALLOW_MULTISITE', false);
 /**
  * Mody CLoud
  */
+Config::define('APP_MAIN_SITE', env('APP_MAIN_SITE') ?? '');
 Config::define('ROOT_DIR', $webroot_dir);
 Config::define('WP_HTTP_BLOCK_EXTERNAL', true);
 Config::define('SRC_PATH', $root_dir . '/resources');
@@ -192,7 +193,9 @@ Config::define('MC_MIGRATIONS_PATH', $root_dir . '/app/migrations');
 Config::define('MC_PLUGINS_PATH', $root_dir . '/content/plugins');
 Config::define('APP_THEME_DOMAIN', 'app');
 Config::define('DEFAULT_DB_HOST', '127.0.0.1');
-
+Config::define('CHILD_SITE', env('CHILD_SITE') ?? false);
+Config::define('ADMIN_EMAIL', env('ADMIN_EMAIL') ?? false);
+Config::define('SPACE_PATH', env('SPACE_PATH') ?? false);
 /**
  * Allow WordPress to detect HTTPS when used behind a reverse proxy or a load balancer
  * See https://codex.wordpress.org/Function_Reference/is_ssl#Notes
