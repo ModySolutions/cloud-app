@@ -190,7 +190,8 @@ Config::define('MC_AUTOLOGIN_TOKENS_PATH', __DIR__ . '/autologin-tokens');
 Config::define('MC_LOGOUT_PATH', __DIR__ . '/logout-info');
 Config::define('MC_UUID_PATH', __DIR__ . '/uuid');
 Config::define('MC_MIGRATIONS_PATH', $root_dir . '/app/migrations');
-Config::define('MC_PLUGINS_PATH', $root_dir . '/content/plugins');
+Config::define('MC_PLUGINS_PATH', $webroot_dir . '/content/plugins');
+Config::define('MC_APP_PASSWD_NAME', 'app.passwd.mody.cloud');
 Config::define('APP_THEME_DOMAIN', 'app');
 Config::define('DEFAULT_DB_HOST', '127.0.0.1');
 Config::define('CHILD_SITE', env('CHILD_SITE') ?? false);
@@ -217,4 +218,8 @@ Config::apply();
  */
 if (!defined('ABSPATH')) {
     define('ABSPATH', $webroot_dir . '/wp/');
+}
+
+if(!defined('COOKIE_DOMAIN')) {
+    define('COOKIE_DOMAIN', env('COOKIE_DOMAIN') ?? null);
 }

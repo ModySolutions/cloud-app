@@ -6,9 +6,13 @@ DB_PASSWORD='{{ database_password | raw }}'
 DB_HOST='{{ database_host }}'
 DB_PREFIX='{{ database_prefix }}'
 
+# WP Settings
 WP_ENV='local'
 WP_HOME='{{ wp_home }}'
 WP_SITEURL="${WP_HOME}/wp"
+WP_POST_REVISIONS=0
+DISABLE_WP_CRON=true
+# End WP Settings
 
 DOMAIN_CURRENT_SITE='{{ domain_current_site }}'
 
@@ -30,3 +34,11 @@ NONCE_SALT='{{nonce_salt | raw}}'
 CHILD_SITE='true'
 ADMIN_EMAIL='{{ admin_email }}'
 SPACE_PATH='{{ space_path }}'
+
+APP_COMPANY='{{ app_company }}'
+APP_MAIN_SITE='{{ app_main_site }}'
+
+SENDGRID_API_KEY='{{ app_sendgrid_api_key }}'
+SENDGRID_API_URL='{{ app_sendgrid_api_url }}'
+EMAIL_FROM='{{ app_email_from }}'
+EMIL_FROM_NAME='{{ app_email_from_name }}'

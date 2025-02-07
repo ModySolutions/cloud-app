@@ -7,7 +7,7 @@ use App\Hooks\Migrations\Cron as Migration;
 use App\Hooks\Account\Cron as Account;
 use App\Hooks\Auth\Cron as Auth;
 
-class CronHooks {
+class Cron {
     public static function init() : void {
         add_action('app_process_queue', Queue::process(...));
         add_action('app_migrations', Migration::migrate(...));

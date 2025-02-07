@@ -26,23 +26,21 @@ const AccountContainer = () => {
     )
 }
 
-wp.api.loadPromise.done(function () {
-    const accountPage = new wp.api.models.Page({id: App.account_page_id});
-    accountPage.fetch()
-        .done((post) => {
-            if (post.routes) {
-                const nav = createRoot(
-                    document.getElementById('dynamic-sidebar-nav')
-                )
-                nav.render(<Links routes={post.routes}/>);
-            }
-        })
-})
-
 domReady(() => {
     const root = createRoot(
         document.getElementById('app-account-container')
     );
 
     root.render(<AccountContainer/>);
+
+    const accountPage = new wp.api.models.Page({id: App.account_page_id});
+    accountPage.fetch()
+    .done((post) => {
+        if (post.routes) {
+            const nav = createRoot(
+                document.getElementById('dynamic-sidebar-nav')
+            )
+            nav.render(<Links routes={post.routes}/>);
+        }
+    })
 });

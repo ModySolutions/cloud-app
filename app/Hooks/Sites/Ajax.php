@@ -9,7 +9,7 @@ use function Env\env;
 class Ajax {
     public static function check_setup_finished(): void {
         $queue_id = sanitize_text_field($_POST['queue_id']);
-        $user = get_currentuserinfo();
+        $user = wp_get_current_user();
         if (get_post_status($queue_id) === 'publish') {
             wp_send_json_success(array(
                 'message' => sprintf(

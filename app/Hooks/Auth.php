@@ -5,10 +5,11 @@ namespace App\Hooks;
 use App\Hooks\Account\Password;
 use App\Hooks\Auth\Ajax;
 use App\Hooks\Auth\Block;
+use App\Hooks\Auth\Logout;
 use App\Hooks\Auth\Routes;
 use App\Hooks\Auth\Scripts;
 
-class AuthHooks {
+class Auth {
     public static function init(): void {
         add_action('init', Routes::wp_init(...));
         add_action('admin_init', Routes::admin_init(...));
@@ -19,6 +20,7 @@ class AuthHooks {
         add_action('wp_ajax_nopriv_sign_up', Ajax::sign_up(...));
         add_action('wp_ajax_nopriv_forgot_password', Ajax::forgot_password(...));
         add_action('wp_ajax_nopriv_reset_password', Ajax::reset_password(...));
+        add_action('wp_logout', Logout::wp_logout(...));
 
         add_filter('query_vars', Routes::query_vars(...));
         add_filter('login_url', Routes::login_url(...), 10, 3);

@@ -97,10 +97,6 @@ class Routes {
                     exit;
                 }
             }
-            if(!is_page('auth') || $autologin_token) {
-                wp_redirect(wp_login_url());
-                exit;
-            }
         }
     }
 
@@ -110,9 +106,7 @@ class Routes {
     }
 
     public static function login_url(string $login, string $redirect, bool $force_re_auth): string {
-        $auth_page = get_option('authentication_page_id');
-        $page_permalink = get_permalink($auth_page);
-        $login_page = trailingslashit("{$page_permalink}sign-in");
+        $login_page = Config::get('APP_MAIN_SITE') . '/auth/sign-in';
         return $redirect ? add_query_arg('initial_page', $redirect, $login_page) : $login_page;
     }
 
@@ -122,16 +116,12 @@ class Routes {
         return trailingslashit("{$page_permalink}sign-out");
     }
 
-    public static function register_url(string $register): string {
-        $auth_page = get_option('authentication_page_id');
-        $page_permalink = get_permalink($auth_page);
-        return trailingslashit("{$page_permalink}sign-up");
+    public static function register_url(string $register_url): string {
+        return trailingslashit(Config::get('APP_MAIN_SITE') . '/auth/sign-up');
     }
 
     public static function lostpassword_url(string $lostpassword_url, string $redirect): string {
-        $auth_page = get_option('authentication_page_id');
-        $page_permalink = get_permalink($auth_page);
-        $lostpassword_page = trailingslashit("{$page_permalink}forgot-passwd");
-        return $redirect ? add_query_arg('initial_page', $redirect, $lostpassword_page) : $lostpassword_page;
+        $lostpassword_url = Config::get('APP_MAIN_SITE') . '/auth/forgot-passwd';
+        return $redirect ? add_query_arg('initial_page', $redirect, $lostpassword_url) : $lostpassword_url;
     }
 }

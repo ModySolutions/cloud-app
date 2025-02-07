@@ -6,10 +6,6 @@ use Roots\WPConfig\Config;
 
 class Block {
     public static function app_before_render_block(array $context): array {
-        if(Config::get('CHILD_SITE')) {
-            wp_redirect(Config::get('APP_MAIN_SITE') . '/auth/sign-in');
-            exit;
-        }
         $action = get_query_var('action');
         if(empty($action)) {
             wp_redirect(wp_login_url());
@@ -22,21 +18,31 @@ class Block {
         self::_maybe_auto_login($context['action']);
         self::_maybe_populate_email($context['action'], $context);
         self::_maybe_populate_reset_passwd($context['action'], $context);
+
+        if(Config::get('CHILD_SITE')) {
+            wp_redirect(Config::get('APP_MAIN_SITE') . "/auth/{$context['action']}");
+            exit;
+        }
+
         return $context;
     }
 
     private static function _redirect_if_logged_in($action) : void {
         if(in_array($action, array('sign-in', 'sign-up')) && is_user_logged_in()){
-            $user = get_currentuserinfo();
+            $user = wp_get_current_user();
             $initial_page = app_get_initial_page($user);
             wp_redirect($initial_page);
             exit;
         }
         if($action === 'sign-out' && is_user_logged_in()) {
-            $user = get_currentuserinfo();
+            $user = wp_get_current_user();
             app_generate_logout_info($user);
             wp_logout();
-            wp_redirect(wp_login_url());
+            if(Config::get('CHILD_SITE')) {
+                wp_redirect(Config::get('APP_MAIN_SITE') . '/auth/sign-out');
+            } else {
+                wp_redirect(wp_login_url());
+            }
             exit;
         }
     }

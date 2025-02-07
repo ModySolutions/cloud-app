@@ -15,7 +15,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding homepage on {$site_name}");
     $home_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Home'), APP_THEME_LOCALE,
+        'post_title' => __('Home', APP_THEME_LOCALE),
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => '',
@@ -27,7 +27,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding auth page on {$site_name}");
     $auth_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Auth'), APP_THEME_LOCALE,
+        'post_title' => __('Auth', APP_THEME_LOCALE),
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'auth',
@@ -39,7 +39,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding dashboard page on {$site_name}");
     $dashboard_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Dashboard'), APP_THEME_LOCALE,
+        'post_title' => __('Dashboard', APP_THEME_LOCALE),
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'dashboard',
@@ -50,7 +50,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding apps page on {$site_name}");
     $apps_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Apps'), APP_THEME_LOCALE,
+        'post_title' => __('Apps', APP_THEME_LOCALE),
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'apps',
@@ -61,7 +61,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding users page on {$site_name}");
     $users_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Users'), APP_THEME_LOCALE,
+        'post_title' => __('Users', APP_THEME_LOCALE),
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'users',
@@ -72,7 +72,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding settings page on {$site_name}");
     $settings_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Settings'), APP_THEME_LOCALE,
+        'post_title' => __('Settings', APP_THEME_LOCALE),
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'settings',
@@ -83,7 +83,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding activity page on {$site_name}");
     $activity_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Activity'), APP_THEME_LOCALE,
+        'post_title' => __('Activity', APP_THEME_LOCALE),
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'activity',
@@ -94,7 +94,7 @@ return function (\wpdb $wpdb) {
     app_log("\t->Adding support page on {$site_name}");
     $support_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Support'), APP_THEME_LOCALE,
+        'post_title' => __('Support', APP_THEME_LOCALE),
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'support',
@@ -140,14 +140,14 @@ return function (\wpdb $wpdb) {
     update_post_meta($support_page_id, 'icon', '<svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#005f6b"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm-119.33-87.33 58-136.67q-39.34-13.67-69.17-43.17T304-418l-136.67 55.33q28.34 68.67 78.34 119.34 50 50.66 115 76Zm-57.34-374q16.34-41.34 45.84-71.17 29.5-29.83 68.83-43.5l-55.33-136.67Q291.33-764 240.67-713 190-662 167.33-596.67l136 55.34ZM480-360q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Zm119.33 192.67q67-26.67 116.84-76.84 49.83-50.16 76.5-116.5L656-418q-15 42-45 71.17-30 29.16-69 42.83l57.33 136.67ZM656-542.67l136.67-56.66q-26.67-66.34-76.84-116.5-50.16-50.17-116.5-76.84l-56 137.34q39 13.66 67.67 42.83 28.67 29.17 45 69.83Z"/></svg>');
 
     $main_cta = array(
-        'route' => "/apps/market",
-        'title' => __('Add your first app', APP_THEME_LOCALE),
+        'route' => "/invoices/new",
+        'title' => __('New invoice', APP_THEME_LOCALE),
     );
     update_option('main_cta', $main_cta);
 
     $account_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Account'), APP_THEME_LOCALE,
+        'post_title' => __('Account', APP_THEME_LOCALE),
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'account',
@@ -155,6 +155,7 @@ return function (\wpdb $wpdb) {
     ));
 
     update_option('account_page_id', $account_page_id);
+    update_post_meta($account_page_id, 'main_cta', $main_cta);
     update_post_meta($account_page_id, 'icon', '<svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#005f6b"><path d="M480-480.67q-66 0-109.67-43.66Q326.67-568 326.67-634t43.66-109.67Q414-787.33 480-787.33t109.67 43.66Q633.33-700 633.33-634t-43.66 109.67Q546-480.67 480-480.67ZM160-160v-100q0-36.67 18.5-64.17T226.67-366q65.33-30.33 127.66-45.5 62.34-15.17 125.67-15.17t125.33 15.5q62 15.5 127.28 45.3 30.54 14.42 48.96 41.81Q800-296.67 800-260v100H160Zm66.67-66.67h506.66V-260q0-14.33-8.16-27-8.17-12.67-20.5-19-60.67-29.67-114.34-41.83Q536.67-360 480-360t-111 12.17Q314.67-335.67 254.67-306q-12.34 6.33-20.17 19-7.83 12.67-7.83 27v33.33ZM480-547.33q37 0 61.83-24.84Q566.67-597 566.67-634t-24.84-61.83Q517-720.67 480-720.67t-61.83 24.84Q393.33-671 393.33-634t24.84 61.83Q443-547.33 480-547.33Zm0-86.67Zm0 407.33Z"/></svg>');
 
     $account_permalink = get_permalink($account_page_id);
@@ -188,7 +189,7 @@ return function (\wpdb $wpdb) {
 
     $invoice_page_id = wp_insert_post(array(
         'post_type' => 'page',
-        'post_title' => __('Invoices'),
+        'post_title' => __('Invoices', APP_THEME_LOCALE),
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'invoices',

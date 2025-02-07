@@ -4,6 +4,7 @@ namespace App\Hooks\Auth;
 
 use App\Hooks\Queue\Post;
 use Ramsey\Uuid\Uuid;
+use Roots\WPConfig\Config;
 use Timber\Timber;
 use function Env\env;
 
@@ -184,6 +185,37 @@ class Ajax {
             ]);
         }
 
+        $uuid = app_get_user_uuid($user_id);
+        $application_password_uuid = Uuid::uuid4();
+
+        $application_password = \WP_Application_Passwords::create_new_application_password(
+            $user_id,
+            array(
+                'uuid' => $application_password_uuid,
+                'name' => Config::get('MC_APP_PASSWD_NAME').".{$user_id}",
+            )
+        );
+
+        if(is_wp_error($application_password)) {
+            global $wpdb;
+            $wpdb->delete(
+                $wpdb->usermeta,
+                array('user_id' => $user_id)
+            );
+            wp_delete_user($user_id);
+            wp_send_json_error([
+                'message' => __('Failed to send the email. Please try again.', APP_THEME_LOCALE),
+            ]);
+        }
+
+        $user_dir = Config::get('MC_USERS_PATH');
+        $file_name = "{$user_dir}/{$uuid}.json";
+        if(file_exists($file_name)) {
+            $user_data = json_decode(file_get_contents($file_name));
+            $user_data->application_password = implode(' ' , $application_password);
+            file_put_contents($file_name, json_encode($user_data));
+        }
+
         wp_send_json_success([
             'message' => __('Registration successful! Please check your email to complete the process.', APP_THEME_LOCALE),
             'callback' => 'hide_form'
@@ -319,6 +351,7 @@ class Ajax {
                     'uuid' => Uuid::uuid4(),
                 )
             );
+
         }
 
         wp_send_json_success([
