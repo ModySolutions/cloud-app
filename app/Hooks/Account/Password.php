@@ -6,19 +6,22 @@ use Roots\WPConfig\Config;
 
 class Password {
     public static function wp_set_password(string $password, int $user_id) : void {
-        if(!is_dir(Config::get('MC_USERS_PATH'))) {
-            mkdir(Config::get('MC_USERS_PATH'), 0755, true);
+        if(Config::get('CHILD_SITE')) {
+            self::propagate_passwd_from_child($password, $user_id);
+        } else {
+            self::propagate_passwd_from_main($password, $user_id);
         }
+    }
 
-        $user = get_user($user_id);
-        $password_hash = $user->user_pass;
+    public static function propagate_passwd_from_child(string $password, int $user_id) : void {
+        $user_uuid = app_get_user_uuid($user_id);
+        $uuid_file_name = app_get_user_uuid_file_name($user_uuid, $user_id);
 
-        $file_name = base64_encode($user->user_email);
-        $file_path = Config::get('MC_USERS_PATH') . "/{$file_name}.sync";
-        if(!is_file($file_path)) {
-            touch($file_path);
-        }
+        $file_data = app_update_sync_data($user_id, $user_uuid, $uuid_file_name);
+        file_put_contents($uuid_file_name, json_encode($file_data));
+    }
 
-        file_put_contents($file_path, $password_hash);
+    public static function propagate_passwd_from_main(string $password, int $user_id) : void {
+
     }
 }

@@ -67,6 +67,9 @@ class Theme {
                 'site_url' => site_url(),
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'account_page_id' => get_option('account_page_id'),
+                'main_site' => Config::get('APP_MAIN_SITE'),
+                'connection_string' => Config::get('APP_MAIN_API_USER') && Config::get('APP_MAIN_API_KEY') ?
+                    base64_encode(Config::get('APP_MAIN_API_USER').':'.Config::get('APP_MAIN_API_KEY')) : false,
             ]);
             wp_enqueue_script($script['handle']);
         }

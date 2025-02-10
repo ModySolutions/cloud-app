@@ -2,6 +2,8 @@
 
 namespace App\Web;
 
+use Roots\WPConfig\Config;
+
 $installing = isset($_GET['installing']);
 define('WP_INSTALLING', $installing);
 require_once '../wp/wp-load.php';
@@ -24,13 +26,13 @@ if (!function_exists('app_install_get_subdomain')) {
 }
 
 $sub_domain = app_install_get_subdomain();
-$env_file_path = MC_SITES_PATH . "/{$sub_domain}/.env";
+$env_file_path = Config::get('MC_SITES_PATH') . "/{$sub_domain}/.env";
 if (!$sub_domain && !file_exists($env_file_path)) {
     wp_die(__('There was an error creating your site.'));
 }
 
 $env_file = file_get_contents($env_file_path);
-require_once APP_PATH . '/helpers/parse.php';
+require_once Config::get('APP_PATH') . '/helpers/parse.php';
 $parsed_env_file = parse_env_text($env_file);
 if (count($parsed_env_file) === 0) {
     return '';
@@ -97,7 +99,7 @@ if (!is_blog_installed()) {
 </div>
 <script>
     let i = 0;
-    $messages = [
+    const messages = [
         'Creating database...',
         'Creating admin user...',
         'Creating default pages...',
@@ -107,9 +109,23 @@ if (!is_blog_installed()) {
         'I got somewhere to be man...',
         'Oh! You\re still here? Man, what am I doing?...',
     ];
+
+    const getCookie = (name) => {
+        const cookies = document.cookie.split("; ");
+        for (let i = 0; i < cookies.length; i++) {
+            let [cookieName, cookieValue] = cookies[i].split("=");
+            if (cookieName === name) {
+                return decodeURIComponent(cookieValue);
+            }
+        }
+        return null;
+    }
+
     const checkSignIn = setInterval(async () => {
-        const response = await fetch(`ping.php?i=${i}`, {'method': 'GET'});
-        if (response.ok) {
+        const uuid = getCookie('uuid');
+        console.log(uuid);
+        const response = await fetch(`ping.php?i=${i}&uuid=${uuid}`, {'method': 'GET'});
+        if (response.ok && uuid) {
             const {data: {done, initial_page, message}} = await response.json();
             if (done) {
                 clearInterval(checkSignIn);
@@ -117,7 +133,7 @@ if (!is_blog_installed()) {
                     const auto_install_plugins = await fetch('/wp/wp-admin', {'method': 'GET'})
                     document.getElementById('loading-container')
                         .innerText += `${message}\n`;
-                    if(i === 7) {
+                    if(i >= 7) {
                         i = 0;
                     } else {
                         i++;

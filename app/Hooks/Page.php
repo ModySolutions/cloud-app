@@ -2,10 +2,10 @@
 
 namespace App\Hooks;
 
-use App\Hooks\Page\Meta;
+use App\Hooks\Page\Service;
 
 class Page {
     public static function init() : void {
-        add_action('rest_api_init', Meta::rest_api_init(...));
+        add_action('rest_api_init', Service::rest_api_init(...));
     }
 }

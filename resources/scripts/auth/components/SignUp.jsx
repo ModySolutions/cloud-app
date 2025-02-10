@@ -11,6 +11,7 @@ const SignUp = () => {
     const [signingUp, setSigningUp] = useState(false);
     const [signedUp, setSignedUp] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
+    const [uuid, setUuid] = useState('');
 
     const emailRef = React.useRef(null);
 
@@ -18,7 +19,10 @@ const SignUp = () => {
         if(!email) {
             emailRef.current.focus();
         }
-    }, []);
+
+        localStorage.setItem('uuid', uuid);
+        document.cookie = `uuid=${uuid}; path=/; domain=.modycloud.test; Secure`;
+    }, [uuid]);
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search)
@@ -74,11 +78,12 @@ const SignUp = () => {
             setSigningUp(false);
         }
 
-        const {success, data: {message}} = await response.json();
+        const {success, data: {message, uuid}} = await response.json();
 
         if (success) {
             setSignedUp(true);
             setSuccessMessage(message)
+            setUuid(uuid)
             toast.success(
                 successMessage || __('Sign up successful.', 'app'),
                 {

@@ -17,7 +17,7 @@ class Ajax {
                     get_the_title($queue_id)
                 ),
                 'done' => get_post_status($queue_id) === 'publish',
-                'initial_page' => app_get_initial_page($user)
+                'initial_page' => app_get_initial_page($user),
             ));
         }
 
@@ -45,13 +45,13 @@ class Ajax {
     public static function create_space(): void {
         if (empty($_POST['space_name'])) {
             wp_send_json_error(array(
-                'message' => __('The space name is required., APP_THEME_LOCALE')
+                'message' => __('The space name is required.', APP_THEME_LOCALE)
             ));
         }
 
         if (empty($_POST['company_name'])) {
             wp_send_json_error(array(
-                'message' => __('The company name is required., APP_THEME_LOCALE')
+                'message' => __('The company name is required.', APP_THEME_LOCALE)
             ));
         }
 
@@ -88,7 +88,12 @@ class Ajax {
             ));
         }
 
-        update_field('install_key', $_POST['install_key'], $queue_id);
+        update_field(
+            'install_key',
+            array_key_exists('install_key', $_POST) ?
+                sanitize_text_field($_POST['install_key']) : null,
+            $queue_id
+        );
 
         $env_file_data = app_generate_env_file_info($queue_id, $space_name, $company_name);
         if (count($env_file_data) === 0) {

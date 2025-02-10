@@ -69,11 +69,7 @@ class Routes {
 
         if(is_user_logged_in()) {
             if (is_front_page() && !is_admin()) {
-                $current_user = get_user(get_current_user_id());
-                if(app_maybe_logout($current_user)) {
-                    wp_redirect(wp_login_url());
-                    exit;
-                }
+                $current_user = wp_get_current_user();
                 wp_redirect(app_get_initial_page($current_user));
                 exit;
             }

@@ -13,18 +13,20 @@ class Post {
     }
 
     public static function save_post(int $post_id, \WP_Post $post, bool $update) : void {
-        $uuid_string = get_post_meta($post_id, 'uuid', true);
+        $uuid_string = app_get_post_uuid($post_id);
         if(!$uuid_string) {
             do {
                 $uuid = Uuid::uuid4();
                 $uuid_string = $uuid->toString();
-            } while(self::uuid_exists($uuid_string));
+            } while(app_uuid_exists($uuid_string));
         }
-        $space_name = env('SPACE_NAME') ?? 'modycloud';
+        $space_name = Config::get('SPACE_NAME') ?? 'modycloud';
         $uuid_file_name = Config::get('MC_UUID_PATH') . "/{$uuid_string}.{$space_name}.{$post_id}.{$post->post_type}.uuid.json";
 
-        if(!is_dir(Config::get('MC_UUID_PATH'))) {
-            mkdir(Config::get('MC_UUID_PATH'));
+        $space_directory = app_get_uuid_path();
+
+        if(!is_dir($space_directory)) {
+            mkdir($space_directory, 0755, true);
         }
 
         if($uuid_string && !is_file($uuid_file_name)){
@@ -45,20 +47,5 @@ class Post {
 //            }
 //        }
         return $url;
-    }
-    
-    public static function uuid_exists(string $uuid_string) : bool {
-        $exists = false;
-        $stored_uuids = glob(Config::get('MC_UUID_PATH') . '/*.uuid.json');
-        if(count($stored_uuids)) {
-            $stored_uuids_basename = array_map(function($uuid_item) use ($uuid_string){
-                $basename = basename($uuid_item, '.uuid.json');
-                $exploded_name = explode('.', $basename);
-                return $exploded_name[0];
-            }, $stored_uuids);
-            $exists = in_array($uuid_string, $stored_uuids_basename);
-        }
-
-        return $exists;
     }
 }

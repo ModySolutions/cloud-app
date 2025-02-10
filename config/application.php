@@ -178,12 +178,16 @@ Config::define('WP_ALLOW_MULTISITE', false);
  * Mody CLoud
  */
 Config::define('APP_MAIN_SITE', env('APP_MAIN_SITE') ?? '');
-Config::define('ROOT_DIR', $webroot_dir);
-Config::define('WP_HTTP_BLOCK_EXTERNAL', true);
-Config::define('SRC_PATH', $root_dir . '/resources');
+Config::define('APP_COMPANY', env('APP_COMPANY') ?? false);
+Config::define('APP_DOMAIN', env('APP_DOMAIN') ?? false);
+Config::define('APP_PROTOCOL', env('APP_PROTOCOL') ?? 'http://');
 Config::define('APP_PATH', $root_dir . '/app');
+Config::define('APP_THEME_DOMAIN', 'app');
+
+Config::define('ROOT_DIR', $webroot_dir);
+Config::define('SRC_PATH', $root_dir . '/resources');
 Config::define('LOGS_PATH', $root_dir . '/logs');
-Config::define('WP_DEFAULT_THEME', 'cloud');
+
 Config::define('MC_SITES_PATH', __DIR__ . '/sites');
 Config::define('MC_USERS_PATH', __DIR__ . '/users');
 Config::define('MC_AUTOLOGIN_TOKENS_PATH', __DIR__ . '/autologin-tokens');
@@ -192,11 +196,18 @@ Config::define('MC_UUID_PATH', __DIR__ . '/uuid');
 Config::define('MC_MIGRATIONS_PATH', $root_dir . '/app/migrations');
 Config::define('MC_PLUGINS_PATH', $webroot_dir . '/content/plugins');
 Config::define('MC_APP_PASSWD_NAME', 'app.passwd.mody.cloud');
-Config::define('APP_THEME_DOMAIN', 'app');
+Config::define('APP_MAIN_API_USER', env('APP_MAIN_API_USER'));
+Config::define('APP_MAIN_API_KEY', env('APP_MAIN_API_KEY'));
+
 Config::define('DEFAULT_DB_HOST', '127.0.0.1');
 Config::define('CHILD_SITE', env('CHILD_SITE') ?? false);
 Config::define('ADMIN_EMAIL', env('ADMIN_EMAIL') ?? false);
 Config::define('SPACE_PATH', env('SPACE_PATH') ?? false);
+
+Config::define('WP_DEFAULT_THEME', 'cloud');
+Config::define('WP_HTTP_BLOCK_EXTERNAL', true);
+
+Config::define('SPACE_NAME', env('SPACE_NAME') ?? null);
 /**
  * Allow WordPress to detect HTTPS when used behind a reverse proxy or a load balancer
  * See https://codex.wordpress.org/Function_Reference/is_ssl#Notes

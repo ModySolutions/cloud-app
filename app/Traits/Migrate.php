@@ -5,10 +5,11 @@ namespace App\Traits;
 use Roots\WPConfig\Config;
 use function Env\env;
 
-trait Migrate_Trait {
+trait Migrate {
     public static function migrate() : void {
         $migration_files = glob(Config::get('MC_MIGRATIONS_PATH') . '/*.php');
 
+        app_log(print_r($migration_files,1));
         if (!$migration_files) {
             return;
         }
@@ -22,7 +23,7 @@ trait Migrate_Trait {
         $site_name = get_bloginfo();
 
         if(!Config::get('CHILD_SITE')) {
-//            return;
+            return;
         }
 
         $last_migration = app_get_last_migration_from_code();

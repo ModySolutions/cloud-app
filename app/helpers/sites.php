@@ -51,8 +51,8 @@ if (!function_exists('app_generate_env_file_info')) {
     function app_generate_env_file_info(int $queue_id, string $space_name, string $company_name): array {
         $user_data = get_user(get_current_user_id());
         if (!$user_data) return array();
-        $domain_current_site = $space_name.'.'.env('APP_DOMAIN');
-        $wp_home = env('APP_PROTOCOL').$domain_current_site;
+        $domain_current_site = $space_name.'.'.Config::get('APP_DOMAIN');
+        $wp_home = Config::get('APP_PROTOCOL').$domain_current_site;
         return array(
             'wp_home' => $wp_home,
             'domain_current_site' => $domain_current_site,
@@ -72,7 +72,13 @@ if (!function_exists('app_generate_env_file_info')) {
             'logged_in_salt' => wp_generate_password(64),
             'nonce_salt' => wp_generate_password(64),
             'admin_email' => $user_data->user_email,
-            'space_path' => Config::get('MC_SITES_PATH').'/'.$space_name
+            'space_path' => Config::get('MC_SITES_PATH').'/'.$space_name,
+            'app_company' => Config::get('APP_COMPANY'),
+            'app_main_site' => Config::get('APP_MAIN_SITE'),
+            'sendgrid_api_key' => Config::get('SENDGRID_API_KEY'),
+            'sendgrid_api_url' => Config::get('SENDGRID_API_URL'),
+            'email_from' => Config::get('EMAIL_FROM'),
+            'email_from_name' => Config::get('EMAIL_FROM_NAME'),
         );
     }
 }
@@ -98,9 +104,6 @@ if (!function_exists('app_get_initial_page')) {
 
         $initial_page = $dashboard_url;
         if (!$is_child_site) {
-            if (app_maybe_logout($user)) {
-                return wp_login_url();
-            }
             if (user_can($user, 'administrator')) {
                 $initial_page = admin_url();
             } else {

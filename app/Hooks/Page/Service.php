@@ -2,7 +2,7 @@
 
 namespace App\Hooks\Page;
 
-class Meta {
+class Service {
     public static function rest_api_init() : void {
         register_rest_field('page', 'routes', array(
             'get_callback' => self::get_routes(...),

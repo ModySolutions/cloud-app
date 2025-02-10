@@ -2,7 +2,7 @@
 
 namespace App\Hooks\Account;
 
-class Meta {
+class Service {
     public static function rest_prepare_user(
         $response,
         $user,

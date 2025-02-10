@@ -6,14 +6,33 @@ require_once '../../app/helpers/migrations.php';
 $last_migration = app_get_last_migration_from_code();
 $has_last_migration_run = app_has_last_migration_run($last_migration);
 
+app_log(sprintf('Last migration is %s', $last_migration));
+app_log(sprintf('Last migration run is %s', $has_last_migration_run));
+
 $dashboard_page_id = get_option('dashboard_page_id');
 $dashboard_page_url = get_permalink($dashboard_page_id);
 
 $site_name = get_bloginfo();
 
-if($has_last_migration_run) {
-    wp_set_auth_cookie(1,1);
+if ($has_last_migration_run) {
     do_action('admin_init');
+    $uuid = array_key_exists('uuid', $_GET) ? sanitize_text_field($_GET['uuid']) : null;
+    $user_id = 1;
+    update_user_meta($user_id, 'uuid', $uuid);
+    $file = "../../config/users/{$uuid}.json";
+    if (file_exists($file)) {
+        $user_data = json_decode(file_get_contents($file));
+        $user_id = $user_data?->wp_user?->ID;
+        $password_hash = get_user_meta($user_id, 'password_hash', true);
+        if ($password_hash !== $user_data?->password_hash && $user_data?->new_password) {
+            global $wpdb;
+            $wpdb->update($wpdb->users, array(
+                'user_pass' => $user_data?->new_password,
+            ), array('ID' => $user_id));
+        }
+    }
+} else {
+    \App\Hooks\Migrations\Cron::migrate();
 }
 
 $messages = array(

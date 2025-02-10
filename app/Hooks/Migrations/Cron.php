@@ -2,8 +2,8 @@
 
 namespace App\Hooks\Migrations;
 
-use App\Traits\Migrate_Trait;
+use App\Traits\Migrate;
 
 class Cron {
-    use Migrate_Trait;
+    use Migrate;
 }
