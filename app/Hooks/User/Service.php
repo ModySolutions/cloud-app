@@ -46,9 +46,7 @@ class Service {
             touch($uuid_file_name);
         }
 
-        $file_data = app_update_sync_data($user_id, $user_uuid, $uuid_file_name);
         update_user_meta($user_id, 'uuid', $user_uuid);
-        file_put_contents($uuid_file_name, json_encode($file_data));
         return $custom_meta;
     }
 }
