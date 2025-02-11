@@ -205,9 +205,10 @@ Config::define('ADMIN_EMAIL', env('ADMIN_EMAIL') ?? false);
 Config::define('SPACE_PATH', env('SPACE_PATH') ?? false);
 
 Config::define('WP_DEFAULT_THEME', 'cloud');
-Config::define('WP_HTTP_BLOCK_EXTERNAL', true);
+Config::define('WP_HTTP_BLOCK_EXTERNAL', false);
 
 Config::define('SPACE_NAME', env('SPACE_NAME') ?? null);
+Config::define('APP_CHILD_SITES_TOKEN', env('APP_CHILD_SITES_TOKEN') ?? null);
 /**
  * Allow WordPress to detect HTTPS when used behind a reverse proxy or a load balancer
  * See https://codex.wordpress.org/Function_Reference/is_ssl#Notes

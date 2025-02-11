@@ -14,6 +14,7 @@ class Block {
         $allowed_actions = ['sign-in', 'sign-up', 'forgot-passwd', 'reset-passwd', 'sign-out'];
         $context['action'] = in_array($action, $allowed_actions) ? $action : 'sign-in';
 
+        self::_maybe_sign_out($context['action']);
         self::_redirect_if_logged_in($context['action']);
         self::_maybe_auto_login($context['action']);
         self::_maybe_populate_email($context['action'], $context);
@@ -27,13 +28,7 @@ class Block {
         return $context;
     }
 
-    private static function _redirect_if_logged_in($action) : void {
-        if(in_array($action, array('sign-in', 'sign-up')) && is_user_logged_in()){
-            $user = wp_get_current_user();
-            $initial_page = app_get_initial_page($user);
-            wp_redirect($initial_page);
-            exit;
-        }
+    private static function _maybe_sign_out($action) : void {
         if($action === 'sign-out' && is_user_logged_in()) {
             $user = wp_get_current_user();
             app_generate_logout_info($user);
@@ -43,6 +38,15 @@ class Block {
             } else {
                 wp_redirect(wp_login_url());
             }
+            exit;
+        }
+    }
+
+    private static function _redirect_if_logged_in($action) : void {
+        if(in_array($action, array('sign-in', 'sign-up')) && is_user_logged_in()){
+            $user = wp_get_current_user();
+            $initial_page = app_get_initial_page($user);
+            wp_redirect($initial_page);
             exit;
         }
     }

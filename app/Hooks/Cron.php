@@ -11,7 +11,6 @@ class Cron {
     public static function init() : void {
         add_action('app_process_queue', Queue::process(...));
         add_action('app_migrations', Migration::migrate(...));
-        add_filter('sync_password', Account::sync_password(...));
         add_filter('delete_expired_tokens', Auth::delete_expired_tokens(...));
         add_filter('cron_schedules', self::cron_schedules(...));
 
@@ -41,10 +40,6 @@ class Cron {
 
         if(!wp_next_scheduled('app_migrations')) {
             wp_schedule_event(time(), 'every_minute', 'app_migrations');
-        }
-
-        if(!wp_next_scheduled('sync_password')) {
-            wp_schedule_event(time(), 'every_minute', 'sync_password');
         }
     }
 }

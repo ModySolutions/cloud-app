@@ -68,6 +68,7 @@ class Theme {
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'account_page_id' => get_option('account_page_id'),
                 'main_site' => Config::get('APP_MAIN_SITE'),
+                'mc_api_key' => Config::get('APP_CHILD_SITES_TOKEN'),
                 'connection_string' => Config::get('APP_MAIN_API_USER') && Config::get('APP_MAIN_API_KEY') ?
                     base64_encode(Config::get('APP_MAIN_API_USER').':'.Config::get('APP_MAIN_API_KEY')) : false,
             ]);

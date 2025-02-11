@@ -22,10 +22,6 @@ const Security = () => {
         setUserId(user?.id);
     }
 
-    useEffect(() => {
-
-    }, [code]);
-
     const handleCurrentPasswordChange = (e) => setCurrentPassword(e.target.value);
     const handleNewPasswordChange = (e) => setNewPassword(e.target.value);
     const handleConfirmNewPassword = (e) => setConfirmNewPassword(e.target.value);
@@ -42,6 +38,7 @@ const Security = () => {
         };
 
         apiFetch({
+            url: App.main_site,
             path: '/app/v1/update-account-password/',
             method: 'POST',
             data: userData
