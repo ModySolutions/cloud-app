@@ -70,8 +70,8 @@ class Routes {
         if(is_user_logged_in()) {
             if (is_front_page() && !is_admin()) {
                 $current_user = wp_get_current_user();
-                wp_redirect(app_get_initial_page($current_user));
-                exit;
+//                wp_redirect(app_get_initial_page($current_user));
+//                exit;
             }
         } else {
             $autologin_token = array_key_exists('autologin_key', $_GET) ?
@@ -80,8 +80,8 @@ class Routes {
                 sanitize_email($_GET['email']) : null;
 
             if((!$autologin_email && !$autologin_token) && !is_page('auth')) {
-                wp_redirect(wp_login_url());
-                exit;
+//                wp_redirect(wp_login_url());
+//                exit;
             }
 
             $user = $autologin_email ? get_user_by('email', $autologin_email) : false;
@@ -89,8 +89,8 @@ class Routes {
                 if(app_validate_autologin_token($user, $autologin_token)) {
                     wp_set_auth_cookie($user->ID);
                     $initial_page = app_get_initial_page($user);
-                    wp_redirect($initial_page);
-                    exit;
+//                    wp_redirect($initial_page);
+//                    exit;
                 }
             }
         }
