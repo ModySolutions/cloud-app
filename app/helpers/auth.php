@@ -51,20 +51,6 @@ if (!function_exists('app_validate_autologin_token')) {
     }
 }
 
-if(!function_exists('app_generate_logout_info')) {
-    function app_generate_logout_info(WP_User $user) : void {
-        if (!is_dir(Config::get('MC_LOGOUT_PATH'))) {
-            mkdir(Config::get('MC_LOGOUT_PATH'), 0755, true);
-        }
-
-        $hashed_email = base64_encode($user->user_email);
-        $filename = Config::get('MC_LOGOUT_PATH')."/{$hashed_email}";
-        if(!file_exists($filename)) {
-            touch($filename);
-        }
-    }
-}
-
 if(!function_exists('app_update_sync_data')){
     function app_update_sync_data(
         int $user_id,
