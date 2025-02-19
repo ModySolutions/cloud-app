@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { __, sprintf} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {toast} from "react-toastify";
 import toKebabCase from "@modycloud/tools/kebabcase";
 
@@ -7,13 +7,13 @@ const CreateSiteForm = () => {
     const [companyName, setCompanyName] = useState('');
     const [spaceName, setSpaceName] = useState('');
     const [isCreating, setIsCreating] = useState(false);
-    const [message, setMessage] = useState('We are creating your space, please wait...');
+    const [loadingMessage, setLoadingMessage] = useState('We are creating your space, please wait...');
     const [counter, setCounter] = useState(0);
 
     const maskSpaceNameInput = (event) => {
         setSpaceName(
             toKebabCase(event.target.value)
-                .substring(0, 24)
+            .substring(0, 24)
         );
     }
 
@@ -33,7 +33,7 @@ const CreateSiteForm = () => {
         __('Oh! You\'re still here? Man what am I doing...', 'app'),
     ]
 
-    const checkInstallFinished = async(queue_ui) => {
+    const checkInstallFinished = async (queue_ui) => {
         const data = new URLSearchParams({
             'action': 'check_setup_finished',
             'queue_id': queue_ui,
@@ -102,16 +102,25 @@ const CreateSiteForm = () => {
                 }
             )
 
-            const intervalId = setInterval(async () => {
-                const {
-                    data: {message, done, initial_page}
-                } = await checkInstallFinished(queue_id);
+            const toastId = toast.loading(message);
 
-                setMessage(messages[counter]);
-                setCounter(counter === 7 ? 0 : counter + 1);
+            const intervalId = setInterval(async () => {
+                setLoadingMessage(messages[Math.floor(Math.random() * 8)]);
+                toast.update(toastId, {render: loadingMessage, type: 'info', isLoading: true});
+                const {
+                    data: {done, initial_page}
+                } = await checkInstallFinished(queue_id);
 
                 if (done) {
                     clearInterval(intervalId);
+                    toast.update(
+                        toastId,
+                        {
+                            render: __('Provision completed, let\'s set your first run'),
+                            type: 'success',
+                            isLoading: false
+                        }
+                    );
                     setTimeout(() => {
                         location.href = initial_page
                     }, 3000);
@@ -129,52 +138,53 @@ const CreateSiteForm = () => {
     };
 
     return (
-        <form id="create-space" onSubmit={handleSubmit} method="post" noValidate>
-            <div className="message animate-display is-hidden"></div>
-            <div className="form-group">
-                <label htmlFor="company_name" className="mb-1">
-                    { __('Business Name (Legal name for individuals or company)', 'app') } <span className="text-danger">*</span>
+        <form id='create-space' onSubmit={handleSubmit} method='post' noValidate>
+            <div className='message animate-display is-hidden'></div>
+            <div className='form-group'>
+                <label htmlFor='company_name' className='mb-1'>
+                    {__('Business Name (Legal name for individuals or company)', 'app')}
+                    <span className='text-danger'>*</span>
                 </label>
-                <input type="text"
-                       tabIndex="1"
-                       className="input-lg"
+                <input type='text'
+                       tabIndex='1'
+                       className='input-lg'
                        value={companyName}
                        onChange={handleCompanyName}
                        onKeyUp={maskSpaceNameInput}
-                       name="company_name"
+                       name='company_name'
                        disabled={isCreating}
-                       id="company_name" />
+                       id='company_name'/>
             </div>
-            <div className="form-group">
-                <label htmlFor="space_name" className="mb-1">
-                    { __('Site name', 'app') } <span className="text-danger">*</span>
+            <div className='form-group'>
+                <label htmlFor='space_name' className='mb-1'>
+                    {__('Site name', 'app')} <span className='text-danger'>*</span>
                 </label>
                 <input
-                    type="text"
-                    tabIndex="2"
-                    maxLength="16"
-                    className="input-lg"
+                    type='text'
+                    tabIndex='2'
+                    maxLength='16'
+                    className='input-lg'
                     value={spaceName}
                     onChange={handleSpaceName}
                     onKeyUp={maskSpaceNameInput}
-                    name="space_name"
+                    name='space_name'
                     disabled={isCreating}
-                    id="space_name"
-                    placeholder={ __('an-awesome-handle') }
+                    id='space_name'
+                    placeholder={__('an-awesome-handle')}
                 />
-                    <div className="mt-2 text-charcoal-light">
-                        <div className="my-2">
-                            https://<strong>{spaceName ?? 'mysite'}</strong>.mody.cloud
-                        </div>
-                        <em>
-                            { __('This will be the URL where you\'ll use to access your Space') }
-                        </em>
+                <div className='mt-2 text-charcoal-light'>
+                    <div className='my-2'>
+                        https://<strong>{spaceName ?? 'mysite'}</strong>.mody.cloud
                     </div>
+                    <em>
+                        {__('This will be the URL where you\'ll use to access your Space')}
+                    </em>
+                </div>
             </div>
-            <div className="form-group">
-                <button type="submit" className="btn btn-wide d-flex" tabIndex="3" disabled={isCreating}>
-                    {isCreating && <div className="loading-icon-white-1 mr-2"></div>}
-                    {isCreating && message}
+            <div className='form-group'>
+                <button type='submit' className='btn btn-wide d-flex' tabIndex='3' disabled={isCreating}>
+                    {isCreating && <div className='loading-icon-white-1 mr-2'></div>}
+                    {isCreating && loadingMessage}
                     {!isCreating && __('Create my Space', 'app')}
                 </button>
             </div>

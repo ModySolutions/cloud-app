@@ -123,9 +123,8 @@ if (!is_blog_installed()) {
 
     const checkSignIn = setInterval(async () => {
         const uuid = getCookie('uuid');
-        console.log(uuid);
         const response = await fetch(`ping.php?i=${i}&uuid=${uuid}`, {'method': 'GET'});
-        if (response.ok && uuid) {
+        if (response.ok) {
             const {data: {done, initial_page, message}} = await response.json();
             if (done) {
                 clearInterval(checkSignIn);

@@ -8,14 +8,11 @@ use function Env\env;
 
 class Ajax {
     public static function check_setup_finished(): void {
+        sleep(1);
         $queue_id = sanitize_text_field($_POST['queue_id']);
         $user = wp_get_current_user();
         if (get_post_status($queue_id) === 'publish') {
             wp_send_json_success(array(
-                'message' => sprintf(
-                    __('%s complete', APP_THEME_LOCALE),
-                    get_the_title($queue_id)
-                ),
                 'done' => get_post_status($queue_id) === 'publish',
                 'initial_page' => app_get_initial_page($user),
             ));
