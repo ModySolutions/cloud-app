@@ -73,6 +73,9 @@ jobs:
         run: pnpm install
         if: steps.cache-node_modules.outputs.cache-hit != 'true'
 
+      - name: pnpm build
+        run: pnpm build
+
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
