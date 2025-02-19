@@ -32,7 +32,7 @@ jobs:
           restore-keys: |
             vendor-${{ runner.os }}-
 
-      - name: Plugins
+      - name: Cache Plugins
         id: cache-plugins
         uses: actions/cache@v3
         env:
@@ -42,18 +42,6 @@ jobs:
           key: plugins-${{ runner.os }}-${{ hashFiles('web/content/plugins/**') }}
           restore-keys: |
             plugins-${{ runner.os }}-
-
-      - name: Composer Install
-        run: composer install --no-dev -o
-
-      - name: Install backend dependencies
-        uses: php-actions/composer@v6
-        if: steps.cache-vendor.outputs.cache-hit != 'true'
-
-      - name: Use Node.js 20
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
 
       - name: Cache Node Modules
         id: cache-node_modules
@@ -66,20 +54,39 @@ jobs:
           restore-keys: |
             node_modules-${{ runner.os }}-
 
+      - name: Cache Build
+        id: cache-build
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-build
+        with:
+          path: web/content/themes/cloud/dist
+          key: build-${{ runner.os }}-${{ hashFiles('web/content/themes/cloud/dist/**') }}
+          restore-keys: |
+            build-${{ runner.os }}-
+
+      - name: Composer Install
+        run: composer install --no-dev -o
+        if: steps.cache-vendor.outputs.cache-hit != 'true'
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10
-      - name: Use Node.js ${{ matrix.node-version }}
+
+      - name: nvm use ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
-      - name: Install dependencies
-        run: pnpm install
 
-      - name: Build frontend
+      - name: pnpm install
+        run: pnpm install
+        if: steps.cache-node_modules.outputs.cache-hit != 'true'
+
+      - name: pnpm build
         run: pnpm build
+        if: steps.cache-build.outputs.cache-hit != 'true'
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
