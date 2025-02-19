@@ -54,17 +54,6 @@ jobs:
           restore-keys: |
             node_modules-${{ runner.os }}-
 
-      - name: Cache Build
-        id: cache-build
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-build
-        with:
-          path: web/content/themes/cloud/dist
-          key: build-${{ runner.os }}-${{ hashFiles('web/content/themes/cloud/dist/**') }}
-          restore-keys: |
-            build-${{ runner.os }}-
-
       - name: Composer Install
         run: composer install --no-dev -o
         if: steps.cache-vendor.outputs.cache-hit != 'true'
@@ -83,10 +72,6 @@ jobs:
       - name: pnpm install
         run: pnpm install
         if: steps.cache-node_modules.outputs.cache-hit != 'true'
-
-      - name: pnpm build
-        run: pnpm build
-        if: steps.cache-build.outputs.cache-hit != 'true'
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
