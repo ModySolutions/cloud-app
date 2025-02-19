@@ -21,16 +21,16 @@ jobs:
           sed -i 's|"ENTER YOUR WEBSITE URL"|"${{ vars.SITE_URL }}"|g' auth.json
           cat auth.json
 
-      - name: Cache Vendors
-        id: cache-vendors
+      - name: Cache Vendor
+        id: cache-vendor
         uses: actions/cache@v3
         env:
           cache-name: cache-vendors
         with:
           path: vendor
-          key: vendor
+          key: vendor-${{ runner.os }}-${{ hashFiles('composer.lock') }}
           restore-keys: |
-            vendor
+            vendor-${{ runner.os }}-
 
       - name: Plugins
         id: cache-plugins
@@ -39,16 +39,16 @@ jobs:
           cache-name: cache-plugins
         with:
           path: web/content/plugins/
-          key: web/content/plugins/
+          key: plugins-${{ runner.os }}-${{ hashFiles('web/content/plugins/**') }}
           restore-keys: |
-            web/content/plugins/
+            plugins-${{ runner.os }}-
 
       - name: Composer Install
         run: composer install --no-dev -o
 
       - name: Install backend dependencies
         uses: php-actions/composer@v6
-        if: steps.cache
+        if: steps.cache-vendor.outputs.cache-hit != 'true'
 
       - name: Use Node.js 20
         uses: actions/setup-node@v2
@@ -62,9 +62,9 @@ jobs:
           cache-name: cache-node_modules
         with:
           path: node_modules
-          key: node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            node_modules
+            node_modules-${{ runner.os }}-
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
