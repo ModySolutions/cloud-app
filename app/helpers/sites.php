@@ -115,7 +115,7 @@ if (!function_exists('app_get_initial_page')) {
                 if ($site_id && $site_is_active) {
                     $autologin_token = app_generate_autologin_token($user);
                     $initial_page = add_query_arg(array(
-                        'email' => urlencode($user->user_email),
+                        'email' => urlencode(base64_encode($user->user_email)),
                         'autologin_key' => urlencode($autologin_token),
                     ), "{$site_uri}/auth/sign-in");
                 } elseif ($site_id && !$site_is_active) {

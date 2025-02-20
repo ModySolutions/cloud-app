@@ -60,7 +60,7 @@ class Routes {
             $autologin_key = array_key_exists('autologin_key', $_GET) ?
                 urldecode($_GET['autologin_key']) : null;
             $autologin_email = array_key_exists('email', $_GET) ?
-                urldecode($_GET['email']) : null;
+                urldecode(base64_decode($_GET['email'])) : null;
 
             if((!$autologin_email && !$autologin_key)) {
                 wp_redirect(Config::get('APP_MAIN_SITE'));
