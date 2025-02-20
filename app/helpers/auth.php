@@ -14,7 +14,6 @@ if (!function_exists('app_generate_autologin_token')) {
             touch($filename);
         }
         $token = \Ramsey\Uuid\Uuid::uuid4();
-        wp_die($filename . ' ' . $token);
         file_put_contents($filename, $token);
         return $token;
     }
