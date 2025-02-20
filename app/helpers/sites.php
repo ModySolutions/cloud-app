@@ -130,6 +130,7 @@ if (!function_exists('app_get_initial_page')) {
                 }
             }
         }
+        wp_die($initial_page);
         return $initial_page;
     }
 }
