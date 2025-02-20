@@ -50,37 +50,20 @@ class Routes {
             $wp_query->set_404();
         }
 
-        $allowed_pages = ['invoices', 'account', 'auth'];
         $current_page_id = get_queried_object_id();
 
-        $is_allowed_page = false;
-        foreach ($allowed_pages as $slug) {
-            $page = get_page_by_path($slug);
-            if ($page && ($current_page_id == $page->ID || wp_get_post_parent_id($current_page_id) == $page->ID)) {
-                $is_allowed_page = true;
-                break;
-            }
-        }
-
-        if (!$is_allowed_page && Config::get('CHILD_SITE')) {
-            wp_redirect(home_url('/invoices'));
-            exit;
-        }
-
-        if(is_user_logged_in()) {
-            if (is_front_page() && !is_admin()) {
-                $current_user = wp_get_current_user();
-                wp_redirect(app_get_initial_page($current_user));
-                exit;
-            }
-        } else {
+        if(Config::get('CHILD_SITE')) {
+            $is_allowed_page = app_is_page_allowed(
+                $current_page_id,
+                ['invoices', 'account', 'auth']
+            );
             $autologin_token = array_key_exists('autologin_key', $_GET) ?
                 urldecode($_GET['autologin_key']) : null;
             $autologin_email = array_key_exists('email', $_GET) ?
                 sanitize_email($_GET['email']) : null;
 
-            if((!$autologin_email && !$autologin_token) && !is_page('auth')) {
-                wp_redirect(wp_login_url());
+            if((!$autologin_email && !$autologin_token) && !is_user_logged_in()) {
+                wp_redirect(Config::get('APP_MAIN_SITE'));
                 exit;
             }
 
@@ -88,10 +71,26 @@ class Routes {
             if($user && $autologin_token) {
                 if(app_validate_autologin_token($user, $autologin_token)) {
                     wp_set_auth_cookie($user->ID);
-                    $initial_page = app_get_initial_page($user);
-                    wp_redirect($initial_page);
+                    wp_redirect(app_get_initial_page($user));
                     exit;
                 }
+            }
+
+            if(!$is_allowed_page) {
+                wp_redirect(home_url('/invoices'));
+                exit;
+            }
+        } else {
+            $is_allowed_page = app_is_page_allowed($current_page_id, ['auth']);
+            if(is_user_logged_in()) {
+                if (!$is_allowed_page) {
+                    $current_user = wp_get_current_user();
+                    wp_redirect(app_get_initial_page($current_user));
+                    exit;
+                }
+            } else {
+                wp_redirect(wp_login_url());
+                exit;
             }
         }
     }
