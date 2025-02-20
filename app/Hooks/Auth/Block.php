@@ -34,7 +34,7 @@ class Block {
             if(Config::get('CHILD_SITE')) {
                 wp_redirect(Config::get('APP_MAIN_SITE') . '/auth/sign-out');
             } else {
-                wp_redirect(wp_login_url());
+                wp_redirect('/auth/sign-out');
             }
             exit;
         }
@@ -56,7 +56,6 @@ class Block {
         $autologin_email = array_key_exists('email', $_GET) ?
             htmlentities(base64_decode($_GET['email'])) : null;
 
-//        wp_die($autologin_email);
         if((!$autologin_email && !$autologin_key)) {
             wp_redirect(Config::get('APP_MAIN_SITE'));
             exit;

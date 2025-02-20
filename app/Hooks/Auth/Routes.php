@@ -52,7 +52,7 @@ class Routes {
             $is_allowed_page = app_is_page_allowed(
                 $current_page_id,
                 ['invoices', 'account', 'auth']);
-            
+
             if (!$is_allowed_page) {
                 wp_redirect(home_url('/invoices'));
                 exit;
@@ -63,11 +63,6 @@ class Routes {
                 if (!$is_allowed_page) {
                     $current_user = wp_get_current_user();
                     wp_redirect(app_get_initial_page($current_user));
-                    exit;
-                }
-            } else {
-                if (!$is_allowed_page) {
-                    wp_redirect(wp_login_url());
                     exit;
                 }
             }
