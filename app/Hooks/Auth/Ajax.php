@@ -27,7 +27,7 @@ class Ajax {
         $userdata = get_user_by('email', $email);
 
         if (!$userdata) {
-            wp_send_json_error(array('message' => __('Incorrect email or password.')), APP_THEME_LOCALE);
+            wp_send_json_error(array('message' => __('Incorrect email or password.', APP_THEME_LOCALE)));
         }
 
         if ($userdata) {
