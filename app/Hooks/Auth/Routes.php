@@ -59,11 +59,10 @@ class Routes {
             );
             $autologin_token = array_key_exists('autologin_key', $_GET) ?
                 urldecode($_GET['autologin_key']) : null;
-            wp_die($autologin_token);
             $autologin_email = array_key_exists('email', $_GET) ?
                 sanitize_email($_GET['email']) : null;
 
-            if((!$autologin_email && !$autologin_token) && !is_user_logged_in()) {
+            if((!$autologin_email && !$autologin_token)) {
                 wp_redirect(Config::get('APP_MAIN_SITE'));
                 exit;
             }
