@@ -68,7 +68,7 @@ class Routes {
             }
 
             $user = $autologin_email ? get_user_by('email', $autologin_email) : false;
-            wp_die(print_r($user, 1));
+            wp_die(print_r($autologin_email, 1));
             if($user && $autologin_key) {
                 if(app_validate_autologin_token($user, $autologin_key)) {
                     wp_set_auth_cookie($user->ID);
