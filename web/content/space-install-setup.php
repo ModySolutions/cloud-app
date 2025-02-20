@@ -139,7 +139,7 @@ if (!is_blog_installed()) {
                     }
                 }, 1500)
                 clearInterval(interval);
-                location.href = initial_page;
+                location.href = '<?php echo Config::get('APP_MAIN_SITE');?>';
             }
 
             document.getElementById('loading-container')
