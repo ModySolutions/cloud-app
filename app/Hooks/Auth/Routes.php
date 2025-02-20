@@ -7,11 +7,7 @@ use function Env\env;
 
 class Routes {
     public static function wp_init(): void {
-        add_rewrite_rule(
-            'auth/([^/]+)/?$',
-            'index.php?pagename=auth&action=$matches[1]',
-            'top'
-        );
+        add_rewrite_rule('auth/([^/]+)/?$', 'index.php?pagename=auth&action=$matches[1]', 'top');
 
         $login_page = basename($_SERVER['PHP_SELF']);
         if ($login_page === 'wp-login.php' && !current_user_can('manage_network')) {
@@ -52,46 +48,28 @@ class Routes {
 
         $current_page_id = get_queried_object_id();
 
-        if(Config::get('CHILD_SITE')) {
+        if (Config::get('CHILD_SITE')) {
             $is_allowed_page = app_is_page_allowed(
                 $current_page_id,
-                ['invoices', 'account', 'auth']
-            );
-            $autologin_key = array_key_exists('autologin_key', $_GET) ?
-                urldecode($_GET['autologin_key']) : null;
-            $autologin_email = array_key_exists('email', $_GET) ?
-                urldecode(base64_decode($_GET['email'])) : null;
-
-            if((!$autologin_email && !$autologin_key)) {
-                wp_redirect(Config::get('APP_MAIN_SITE'));
-                exit;
-            }
-
-            $user = $autologin_email ? get_user_by('email', $autologin_email) : false;
-            wp_die($autologin_email);
-            if($user && $autologin_key) {
-                if(app_validate_autologin_token($user, $autologin_key)) {
-                    wp_set_auth_cookie($user->ID);
-                    wp_redirect(app_get_initial_page($user));
-                    exit;
-                }
-            }
-
-            if(!$is_allowed_page) {
+                ['invoices', 'account', 'auth']);
+            
+            if (!$is_allowed_page) {
                 wp_redirect(home_url('/invoices'));
                 exit;
             }
         } else {
-            $is_allowed_page = app_is_page_allowed($current_page_id, ['auth']);
-            if(is_user_logged_in()) {
+            $is_allowed_page = app_is_page_allowed($current_page_id, ['auth', 'create-site']);
+            if (is_user_logged_in()) {
                 if (!$is_allowed_page) {
                     $current_user = wp_get_current_user();
                     wp_redirect(app_get_initial_page($current_user));
                     exit;
                 }
             } else {
-                wp_redirect(wp_login_url());
-                exit;
+                if (!$is_allowed_page) {
+                    wp_redirect(wp_login_url());
+                    exit;
+                }
             }
         }
     }
@@ -102,7 +80,7 @@ class Routes {
     }
 
     public static function login_url(string $login, string $redirect, bool $force_re_auth): string {
-        $login_page = Config::get('APP_MAIN_SITE') . '/auth/sign-in';
+        $login_page = Config::get('APP_MAIN_SITE').'/auth/sign-in';
         return $redirect ? add_query_arg('initial_page', $redirect, $login_page) : $login_page;
     }
 
@@ -113,11 +91,11 @@ class Routes {
     }
 
     public static function register_url(string $register_url): string {
-        return trailingslashit(Config::get('APP_MAIN_SITE') . '/auth/sign-up');
+        return trailingslashit(Config::get('APP_MAIN_SITE').'/auth/sign-up');
     }
 
     public static function lostpassword_url(string $lostpassword_url, string $redirect): string {
-        $lostpassword_url = Config::get('APP_MAIN_SITE') . '/auth/forgot-passwd';
+        $lostpassword_url = Config::get('APP_MAIN_SITE').'/auth/forgot-passwd';
         return $redirect ? add_query_arg('initial_page', $redirect, $lostpassword_url) : $lostpassword_url;
     }
 }

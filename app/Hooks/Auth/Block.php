@@ -16,7 +16,7 @@ class Block {
 
         self::_maybe_sign_out($context['action']);
         self::_redirect_if_logged_in($context['action']);
-//        self::_maybe_auto_login($context['action']);
+        self::_maybe_auto_login($context['action']);
         self::_maybe_populate_email($context['action'], $context);
         self::_maybe_populate_reset_passwd($context['action'], $context);
 
@@ -50,18 +50,23 @@ class Block {
     }
 
     private static function _maybe_auto_login($action) : void {
-        if($action === 'sign-in' &&
-            (array_key_exists('autologin_user', $_GET) &&
-                array_key_exists('key', $_GET)
-            )
-        ) {
-            $decoded_key = base64_decode($_GET['key']);
-            if($decoded_key === 'from-first-install') {
-                $user_id = sanitize_text_field($_GET['autologin_user']);
-                wp_set_auth_cookie($user_id, true);
-                $dashboard_page_id = get_option('dashboard_page_id');
-                $dashboard_url = get_permalink($dashboard_page_id);
-                wp_redirect($dashboard_url);
+        if($action !== 'sign-in'){ return; }
+        $autologin_key = array_key_exists('autologin_key', $_GET) ?
+            urldecode($_GET['autologin_key']) : null;
+        $autologin_email = array_key_exists('email', $_GET) ?
+            htmlentities(base64_decode($_GET['email'])) : null;
+
+//        wp_die($autologin_email);
+        if((!$autologin_email && !$autologin_key)) {
+            wp_redirect(Config::get('APP_MAIN_SITE'));
+            exit;
+        }
+
+        $user = $autologin_email ? get_user_by('email', $autologin_email) : false;
+        if($user && $autologin_key) {
+            if(app_validate_autologin_token($user, $autologin_key)) {
+                wp_set_auth_cookie($user->ID);
+                wp_redirect(app_get_initial_page($user));
                 exit;
             }
         }
