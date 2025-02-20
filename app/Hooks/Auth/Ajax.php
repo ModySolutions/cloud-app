@@ -11,7 +11,7 @@ use function Env\env;
 class Ajax {
     public static function sign_in(): void {
         if (!defined('DOING_AJAX') || !DOING_AJAX) {
-            wp_send_json_error(array('message' => __('Invalid request.')), APP_THEME_LOCALE);
+            wp_send_json_error(array('message' => __('Invalid request.', APP_THEME_LOCALE)));
         }
 
         $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
@@ -19,7 +19,7 @@ class Ajax {
         $remember_me = !!$_POST['remember_me'];
 
         if (empty($email) || empty($password)) {
-            wp_send_json_error(array('message' => __('Email and password are required.')), APP_THEME_LOCALE);
+            wp_send_json_error(array('message' => __('Email and password are required.', APP_THEME_LOCALE)));
         }
 
         app_log('sign_in: testing');
@@ -50,9 +50,10 @@ class Ajax {
             if ($lockout_time && $lockout_time > time()) {
                 $remaining_time = $lockout_time - time();
                 wp_send_json_error(array(
-                    'message' => __('Account locked. Try again in ', APP_THEME_LOCALE).
-                        round($remaining_time / 60).
-                        __(' minutes., APP_THEME_LOCALE')
+                    'message' => sprintf(
+                        __('Account locked. Try again in %d minutes.', APP_THEME_LOCALE),
+                        round($remaining_time / 60)
+                    )
                 ));
             }
         }
@@ -75,12 +76,12 @@ class Ajax {
             if ($failed_attempts >= 3) {
                 update_user_meta($user->ID, '_failed_login_lockout', time() + (24 * 60 * 60));
                 wp_send_json_error(array(
-                    'message' => __('Incorrect email or password., APP_THEME_LOCALE')
+                    'message' => __('Incorrect email or password.', APP_THEME_LOCALE)
                 ));
             }
 
             wp_send_json_error(array(
-                'message' => __('Incorrect email or password., APP_THEME_LOCALE')
+                'message' => __('Incorrect email or password.', APP_THEME_LOCALE)
             ));
         }
 
@@ -91,7 +92,7 @@ class Ajax {
         $initial_page = app_get_initial_page($user);
 
         wp_send_json_success(array(
-            'message' => sprintf(__('Login successful, welcome %s'), $userdata->first_name, APP_THEME_LOCALE),
+            'message' => sprintf(__('Login successful, welcome %s', APP_THEME_LOCALE), $userdata->first_name),
             'initial_page' => $initial_page,
             'user' => $user,
         ));
@@ -267,7 +268,7 @@ class Ajax {
         }
 
         wp_send_json_success([
-            'message' => sprintf(__('An email is coming to %s.'), $email, APP_THEME_LOCALE),
+            'message' => sprintf(__('An email is coming to %s.', APP_THEME_LOCALE), $email),
             'callback' => 'hide_form'
         ]);
     }
