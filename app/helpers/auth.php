@@ -13,7 +13,8 @@ if (!function_exists('app_generate_autologin_token')) {
         if (!file_exists($filename)) {
             touch($filename);
         }
-        $token = wp_generate_password(64);
+        $token = \Ramsey\Uuid\Uuid::uuid4();
+        wp_die($filename . ' ' . $token);
         file_put_contents($filename, $token);
         return $token;
     }
