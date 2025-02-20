@@ -111,7 +111,7 @@ if (!function_exists('app_get_initial_page')) {
 
                 $site_uri = get_field('site_uri', $site_id);
                 $site_is_active = $site_id && app_site_is_active($site_id);
-
+                
                 if ($site_id && $site_is_active) {
                     $autologin_token = app_generate_autologin_token($user);
                     $initial_page = add_query_arg(array(

@@ -59,6 +59,7 @@ class Routes {
             );
             $autologin_token = array_key_exists('autologin_key', $_GET) ?
                 urldecode($_GET['autologin_key']) : null;
+            wp_die($autologin_token);
             $autologin_email = array_key_exists('email', $_GET) ?
                 sanitize_email($_GET['email']) : null;
 
