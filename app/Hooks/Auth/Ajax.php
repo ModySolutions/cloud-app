@@ -22,6 +22,8 @@ class Ajax {
             wp_send_json_error(array('message' => __('Email and password are required.')), APP_THEME_LOCALE);
         }
 
+        app_log('sign_in: testing');
+
         $userdata = get_user_by('email', $email);
 
         if (!$userdata) {
