@@ -42,10 +42,8 @@ class Block {
 
     private static function _redirect_if_logged_in($action) : void {
         if(in_array($action, array('sign-in', 'sign-up')) && is_user_logged_in()){
-            $user = wp_get_current_user();
-            $initial_page = app_get_initial_page($user);
-//            wp_redirect($initial_page);
-//            exit;
+            wp_redirect(app_get_initial_page(wp_get_current_user()));
+            exit;
         }
     }
 
