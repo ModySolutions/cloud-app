@@ -60,7 +60,7 @@ class Routes {
             $autologin_key = array_key_exists('autologin_key', $_GET) ?
                 urldecode($_GET['autologin_key']) : null;
             $autologin_email = array_key_exists('email', $_GET) ?
-                htmlentities($_GET['email']) : null;
+                htmlentities(urldecode($_GET['email'])) : null;
 
             if((!$autologin_email && !$autologin_key)) {
                 wp_redirect(Config::get('APP_MAIN_SITE'));
@@ -68,7 +68,6 @@ class Routes {
             }
 
             $user = $autologin_email ? get_user_by('email', $autologin_email) : false;
-            wp_die(print_r($autologin_email, 1));
             if($user && $autologin_key) {
                 if(app_validate_autologin_token($user, $autologin_key)) {
                     wp_set_auth_cookie($user->ID);

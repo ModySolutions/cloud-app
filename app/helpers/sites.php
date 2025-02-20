@@ -111,11 +111,11 @@ if (!function_exists('app_get_initial_page')) {
 
                 $site_uri = get_field('site_uri', $site_id);
                 $site_is_active = $site_id && app_site_is_active($site_id);
-                
+
                 if ($site_id && $site_is_active) {
                     $autologin_token = app_generate_autologin_token($user);
                     $initial_page = add_query_arg(array(
-                        'email' => $user->user_email,
+                        'email' => urlencode($user->user_email),
                         'autologin_key' => urlencode($autologin_token),
                     ), "{$site_uri}/auth/sign-in");
                 } elseif ($site_id && !$site_is_active) {
@@ -130,6 +130,7 @@ if (!function_exists('app_get_initial_page')) {
                 }
             }
         }
+        wp_die($initial_page);
         return $initial_page;
     }
 }
