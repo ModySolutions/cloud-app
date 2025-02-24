@@ -65,6 +65,11 @@ class Routes {
                     wp_redirect(app_get_initial_page($current_user));
                     exit;
                 }
+            } else {
+                if (!$is_allowed_page) {
+                    wp_redirect(wp_login_url());
+                    exit;
+                }
             }
         }
     }
