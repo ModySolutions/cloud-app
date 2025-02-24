@@ -119,16 +119,23 @@ class Post {
                 )
             );
 
-            $site_id = wp_insert_post(array(
-                'post_type' => 'site',
-                'post_title' => esc_html($company_name),
-                'post_name' => $space_name,
-                'post_status' => 'publish',
-                'post_author' => $site_owner->ID,
-            ));
+            $site_exists = get_page_by_path($space_name, OBJECT, 'site');
+            if(!$site_exists) {
+                $site_id = wp_insert_post(array(
+                    'post_type' => 'site',
+                    'post_title' => esc_html($company_name),
+                    'post_name' => $space_name,
+                    'post_status' => 'publish',
+                    'post_author' => $site_owner->ID,
+                ));
 
-            app_log("Site entry for {$company_name} created with ID {$site_id}");
+                app_log("Site entry for {$company_name} created with ID {$site_id}");
+            } else {
+                $site_id = $site_exists->ID;
+            }
+
             update_field('site_uri', $wp_home, $site_id);
+
             foreach ($variables as $key => $variable) {
                 app_log("Updating {$key} for site {$company_name}");
                 update_field($key, $variable, $site_id);

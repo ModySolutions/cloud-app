@@ -58,6 +58,7 @@ const CreateSiteForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(isCreating) return;
         setIsCreating(true);
 
         const siteData = {
