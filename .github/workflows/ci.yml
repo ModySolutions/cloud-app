@@ -1,10 +1,8 @@
 name: Build application
 
 on:
-  pull_request:
+  push:
     branches: [ "main" ]
-    types:
-      - closed
 
 jobs:
   web-deploy:
