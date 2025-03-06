@@ -76,3 +76,33 @@
 button, .btn {
     @include button;
 }
+
+.dropdown {
+    .button, .btn {
+        display: grid;
+        grid-template-columns: 2fr .5fr;
+        padding-right: 0;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        z-index: 9;
+        background-color: var(--color-white);
+        width: 20%;
+        margin: 0 .5rem 0;
+
+        li {
+            list-style: none;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--color-primary-light);
+                color: var(--color-white);
+            }
+
+            &:before {
+                content: '';
+            }
+        }
+    }
+}
