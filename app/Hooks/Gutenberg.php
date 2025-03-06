@@ -32,8 +32,8 @@ class Gutenberg {
 		);
 	}
 
-	public static function allowed_block_types_all($allowed_blocks) : array {
-		return [];
+	public static function allowed_block_types_all($allowed_blocks) : array|bool {
+		return $allowed_blocks;
 	}
 
 	public static function block_categories_all(array $categories, $post) : array {
