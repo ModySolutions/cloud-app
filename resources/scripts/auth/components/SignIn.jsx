@@ -12,13 +12,12 @@ const SignIn = () => {
     const [rememberMe, setRememberMe] = useState('');
     const [signingIn, setSigningIn] = useState(false);
     const [initialRender, setInitialRender] = useState(true);
-    const [recaptchaSiteKey, setRecaptchaSiteKey] = useState('');
+    const [recaptchaSiteKey] = useState(App.recaptcha_key);
 
     const emailRef = React.useRef(null);
     const passwordRef = React.useRef(null);
 
     useEffect(() => {
-        setRecaptchaSiteKey(process.env.RECAPTCHA_KEY);
         if(initialRender) {
             if (!email) {
                 emailRef.current.focus();

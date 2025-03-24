@@ -17,7 +17,7 @@ const ResetPassword = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
-    const [recaptchaSiteKey, setRecaptchaSiteKey] = useState('');
+    const [recaptchaSiteKey] = useState(App.recaptcha_key);
 
     const location = useLocation();
     const passwordRef = React.useRef(null);
@@ -27,7 +27,6 @@ const ResetPassword = () => {
         const emailParam = queryParams.get('email');
         const resetPasswordKeyParam = queryParams.get('key');
         const firstTimeParam = queryParams.get('first_time');
-        setRecaptchaSiteKey(process.env.RECAPTCHA_KEY);
 
         if (emailParam) {
             setEmail(emailParam);

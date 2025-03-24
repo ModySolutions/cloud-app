@@ -12,7 +12,7 @@ const SignUp = () => {
     const [signedUp, setSignedUp] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [uuid, setUuid] = useState('');
-    const [recaptchaSiteKey, setRecaptchaSiteKey] = useState('');
+    const [recaptchaSiteKey] = useState(App.recaptcha_key);
 
     const emailRef = React.useRef(null);
     const location = useLocation();
@@ -20,7 +20,6 @@ const SignUp = () => {
     const emailParam = queryParams.get('email');
 
     useEffect(() => {
-        setRecaptchaSiteKey(process.env.RECAPTCHA_KEY);
         if(!email) {
             emailRef.current.focus();
         }

@@ -71,6 +71,7 @@ class Theme {
                 'mc_api_key' => Config::get('APP_CHILD_SITES_TOKEN'),
                 'connection_string' => Config::get('APP_MAIN_API_USER') && Config::get('APP_MAIN_API_KEY') ?
                     base64_encode(Config::get('APP_MAIN_API_USER').':'.Config::get('APP_MAIN_API_KEY')) : false,
+                'recaptcha_key' => Config::get('RECAPTCHA_KEY') ?? false
             ]);
             wp_enqueue_script($script['handle']);
         }

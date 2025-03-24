@@ -11,7 +11,7 @@ const ForgotPassword = () => {
     const [sendingEmail, setSendingEmail] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
-    const [recaptchaSiteKey, setRecaptchaSiteKey] = useState('');
+    const [recaptchaSiteKey] = useState(App.recaptcha_key);
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search)
@@ -19,7 +19,6 @@ const ForgotPassword = () => {
     const emailRef = React.useRef(null);
 
     useEffect(() => {
-        setRecaptchaSiteKey(process.env.RECAPTCHA_KEY);
         if (emailParam) {
             setEmail(emailParam);
         }
