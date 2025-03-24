@@ -1,24 +1,25 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
-import {navigate, useAuth} from "@modycloud/auth/AuthContext";
+import {useAuth} from "@modycloud/auth/AuthContext";
 import {toast} from "react-toastify";
 import {useLocation} from "react-router-dom";
-import {useEffect} from "@wordpress/element";
 import AuthLinks from "@modycloud/auth/components/AuthLinks";
+import handleRecaptchaVerify from "../../tools/validateRecaptcha";
 
 const ForgotPassword = () => {
     const {email, setEmail, loading, error} = useAuth();
     const [sendingEmail, setSendingEmail] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
+    const [recaptchaSiteKey, setRecaptchaSiteKey] = useState('');
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search)
     const emailParam = queryParams.get('email');
-
     const emailRef = React.useRef(null);
 
     useEffect(() => {
+        setRecaptchaSiteKey(process.env.RECAPTCHA_KEY);
         if (emailParam) {
             setEmail(emailParam);
         }
@@ -37,13 +38,18 @@ const ForgotPassword = () => {
         rightText={__('Sign up', 'app')}
     />;
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const sendToRecaptcha = (event) => {
+        event.preventDefault();
+        handleRecaptchaVerify(event, handleSubmit, recaptchaSiteKey)
+    };
+
+    const handleSubmit = async (token) => {
         setSendingEmail(true);
 
         const userData = {
             email,
-            action: 'forgot_password'
+            action: 'forgot_password',
+            token: token,
         };
 
         const data = new URLSearchParams(userData);
@@ -102,7 +108,7 @@ const ForgotPassword = () => {
         <>
             {!emailSent ?
                 (
-                    <form className={'forgot-password'} onSubmit={handleSubmit}>
+                    <form className={'forgot-password'} onSubmit={sendToRecaptcha}>
                         <div className="form-group">
                             <label htmlFor="email">{__('Email', 'app')}</label>
                             <input

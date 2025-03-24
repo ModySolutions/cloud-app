@@ -1,11 +1,10 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {__} from '@wordpress/i18n';
 import {useAuth} from "@modycloud/auth/AuthContext";
-import apiFetch from '@wordpress/api-fetch';
 import {toast} from "react-toastify";
 import {useLocation} from "react-router-dom";
-import {useEffect} from "@wordpress/element";
 import AuthLinks from "./AuthLinks";
+import handleRecaptchaVerify from "../../tools/validateRecaptcha";
 
 const ResetPassword = () => {
     const {email, setEmail, loading, error} = useAuth();
@@ -18,9 +17,9 @@ const ResetPassword = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
+    const [recaptchaSiteKey, setRecaptchaSiteKey] = useState('');
 
     const location = useLocation();
-
     const passwordRef = React.useRef(null);
 
     useEffect(() => {
@@ -28,6 +27,7 @@ const ResetPassword = () => {
         const emailParam = queryParams.get('email');
         const resetPasswordKeyParam = queryParams.get('key');
         const firstTimeParam = queryParams.get('first_time');
+        setRecaptchaSiteKey(process.env.RECAPTCHA_KEY);
 
         if (emailParam) {
             setEmail(emailParam);
@@ -54,8 +54,12 @@ const ResetPassword = () => {
         rightText={__('Sign up', 'app')}
     />;
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const sendToRecaptcha = (event) => {
+        event.preventDefault();
+        handleRecaptchaVerify(event, handleSubmit, recaptchaSiteKey)
+    };
+
+    const handleSubmit = async (token) => {
         setResettingPassword(true);
 
         const userData = {
@@ -64,7 +68,8 @@ const ResetPassword = () => {
             key: resetPasswordKey,
             email: email,
             first_time: firstTime,
-            action: 'reset_password'
+            action: 'reset_password',
+            token: token
         };
 
         const data = new URLSearchParams(userData);
@@ -133,7 +138,7 @@ const ResetPassword = () => {
         <>
             {!passwordReset ?
                 (
-                    <form className={'reset-password'} onSubmit={handleSubmit}>
+                    <form className={'reset-password'} onSubmit={sendToRecaptcha}>
                         <div className='form-group'>
                             <label htmlFor='name'>{__('Password', 'app')}</label>
                             <input

@@ -2,7 +2,7 @@
 
 namespace App\Hooks\Migrations;
 
-use App\Traits\Migrate;
+use App\Features\Migrate;
 
 class Cron {
     use Migrate;

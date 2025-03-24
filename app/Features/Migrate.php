@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace App\Features;
 
 use Roots\WPConfig\Config;
 use function Env\env;

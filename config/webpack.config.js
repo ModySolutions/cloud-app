@@ -1,7 +1,15 @@
 const path = require('path');
 const defaults = require('@wordpress/scripts/config/webpack.config.js');
+const webpack = require('webpack')
+const dotenv = require('dotenv')
 
-module.exports = {
+const env = dotenv.config().parsed
+const envKeys = Object.keys(env).reduce((prev, next) => {
+    prev[`process.env.${next}`] = JSON.stringify(env[next])
+    return prev
+}, {})
+
+module.exports = (env) => ({
     ...defaults,
     entry: {
         'app': path.resolve(process.cwd(), 'resources/scripts', 'app.js'),
@@ -45,5 +53,9 @@ module.exports = {
                 },
             },
         ]
-    }
-};
+    },
+    plugins: [
+        ...defaults.plugins,
+        new webpack.DefinePlugin(envKeys)
+    ]
+});

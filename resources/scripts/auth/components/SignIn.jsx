@@ -1,9 +1,9 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
-import {navigate, useAuth} from "../AuthContext";
+import {useAuth} from "../AuthContext";
 import {toast} from "react-toastify";
 import AuthLinks from "./AuthLinks";
-import {useEffect} from "@wordpress/element";
+import handleRecaptchaVerify from "../../tools/validateRecaptcha";
 
 const SignIn = () => {
     const {email, setEmail, loading, error} = useAuth();
@@ -12,11 +12,13 @@ const SignIn = () => {
     const [rememberMe, setRememberMe] = useState('');
     const [signingIn, setSigningIn] = useState(false);
     const [initialRender, setInitialRender] = useState(true);
+    const [recaptchaSiteKey, setRecaptchaSiteKey] = useState('');
 
     const emailRef = React.useRef(null);
     const passwordRef = React.useRef(null);
 
     useEffect(() => {
+        setRecaptchaSiteKey(process.env.RECAPTCHA_KEY);
         if(initialRender) {
             if (!email) {
                 emailRef.current.focus();
@@ -38,14 +40,19 @@ const SignIn = () => {
         rightText={__('Sign up', 'app')}
     />;
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const sendToRecaptcha = (event) => {
+        event.preventDefault();
+        handleRecaptchaVerify(event, handleSubmit, recaptchaSiteKey)
+    };
+
+    const handleSubmit = async (token) => {
         setSigningIn(true);
 
         const userData = {
             email,
             password,
             remember_me: rememberMe,
+            token: token,
             action: 'sign_in'
         };
 
@@ -109,7 +116,7 @@ const SignIn = () => {
 
     return (
         <>
-            <form className={'sign-in'} onSubmit={handleSubmit}>
+            <form className={'sign-in'} onSubmit={sendToRecaptcha}>
                 <div className="form-group">
                     <label htmlFor="email">{__('Email', 'app')}</label>
                     <input

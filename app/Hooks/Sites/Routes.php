@@ -2,7 +2,7 @@
 
 namespace App\Hooks\Sites;
 
-use App\Traits\Migrate;
+use App\Features\Migrate;
 
 class Routes {
     use Migrate;

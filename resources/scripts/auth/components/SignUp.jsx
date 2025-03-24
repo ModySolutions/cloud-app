@@ -1,10 +1,10 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {__} from '@wordpress/i18n';
 import {navigate, useAuth} from "../AuthContext";
 import {toast} from "react-toastify";
 import {useLocation} from "react-router-dom";
-import {useEffect} from "@wordpress/element";
 import AuthLinks from "./AuthLinks";
+import handleRecaptchaVerify from "../../tools/validateRecaptcha";
 
 const SignUp = () => {
     const {email, setEmail, loading, error} = useAuth();
@@ -12,10 +12,15 @@ const SignUp = () => {
     const [signedUp, setSignedUp] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [uuid, setUuid] = useState('');
+    const [recaptchaSiteKey, setRecaptchaSiteKey] = useState('');
 
     const emailRef = React.useRef(null);
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search)
+    const emailParam = queryParams.get('email');
 
     useEffect(() => {
+        setRecaptchaSiteKey(process.env.RECAPTCHA_KEY);
         if(!email) {
             emailRef.current.focus();
         }
@@ -23,10 +28,6 @@ const SignUp = () => {
         localStorage.setItem('uuid', uuid);
         document.cookie = `uuid=${uuid}; path=/; domain=.modycloud.test; Secure`;
     }, [uuid]);
-
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search)
-    const emailParam = queryParams.get('email');
 
     useEffect(() => {
         if(emailParam) {
@@ -43,13 +44,18 @@ const SignUp = () => {
         rightText={__('Sign in', 'app')}
     />;
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const sendToRecaptcha = (event) => {
+        event.preventDefault();
+        handleRecaptchaVerify(event, handleSubmit, recaptchaSiteKey)
+    };
+
+    const handleSubmit = async (token) => {
         setSigningUp(true);
 
         const userData = {
             email,
-            action: 'sign_up'
+            action: 'sign_up',
+            token: token
         };
 
         const data = new URLSearchParams(userData);
@@ -114,7 +120,7 @@ const SignUp = () => {
         <>
             {!signedUp ?
                 (
-                    <form className={'sign-up'} onSubmit={handleSubmit}>
+                    <form className={'sign-up'} onSubmit={sendToRecaptcha}>
                         <div className="form-group">
                             <label htmlFor="email">{__('Email', 'app')}</label>
                             <input

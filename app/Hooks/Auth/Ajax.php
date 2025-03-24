@@ -2,6 +2,7 @@
 
 namespace App\Hooks\Auth;
 
+use App\Features\Recaptcha;
 use App\Hooks\Queue\Post;
 use Ramsey\Uuid\Uuid;
 use Roots\WPConfig\Config;
@@ -9,10 +10,13 @@ use Timber\Timber;
 use function Env\env;
 
 class Ajax {
+    use Recaptcha;
     public static function sign_in(): void {
         if (!defined('DOING_AJAX') || !DOING_AJAX) {
             wp_send_json_error(array('message' => __('Invalid request.', APP_THEME_LOCALE)));
         }
+
+        self::validate_recaptcha();
 
         $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
         $password = $_POST['password'] ?? '';
@@ -21,8 +25,6 @@ class Ajax {
         if (empty($email) || empty($password)) {
             wp_send_json_error(array('message' => __('Email and password are required.', APP_THEME_LOCALE)));
         }
-
-        app_log('sign_in: testing');
 
         $userdata = get_user_by('email', $email);
 
@@ -104,6 +106,8 @@ class Ajax {
                 'message' => __('Invalid request.', APP_THEME_LOCALE),
             ]);
         }
+
+        self::validate_recaptcha();
 
         $email = sanitize_email($_POST['email']);
 
@@ -203,6 +207,8 @@ class Ajax {
             ]);
         }
 
+        self::validate_recaptcha();
+
         $email = sanitize_email($_POST['email']);
 
         if (!is_email($email)) {
@@ -279,6 +285,8 @@ class Ajax {
                 'message' => __('All fields are required.', APP_THEME_LOCALE),
             ]);
         }
+
+        self::validate_recaptcha();
 
         $key = sanitize_text_field($_POST['key']);
         $email = sanitize_user($_POST['email']);

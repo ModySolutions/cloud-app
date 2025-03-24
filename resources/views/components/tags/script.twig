@@ -1,0 +1,3 @@
+<script id='google-recaptcha' src='{{ src }}' {% if type %}type='{{ type }}'{% endif %}{% if defer %} defer{% endif %}>
+    {% if content %} {{ content | raw }}{% endif %}
+</script>
