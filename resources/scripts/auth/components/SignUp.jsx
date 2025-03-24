@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {__} from '@wordpress/i18n';
-import {navigate, useAuth} from "../AuthContext";
+import {useAuth} from "../AuthContext";
 import {toast} from "react-toastify";
 import {useLocation} from "react-router-dom";
 import AuthLinks from "./AuthLinks";
