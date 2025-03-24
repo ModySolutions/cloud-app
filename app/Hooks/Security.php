@@ -2,6 +2,7 @@
 
 namespace App\Hooks;
 
+use GeoIp2\Database\Reader;
 use Roots\WPConfig\Config;
 use Timber\Timber;
 
@@ -9,6 +10,7 @@ class Security {
     public static function init(): void {
         add_action('rest_api_init', self::cors_headers(...));
         add_action('wp_head', array(Security::class, 'add_recaptcha'));
+        add_action('init', array(Security::class, 'limit_access_to_spain'));
 
         remove_action('wp_head', 'rest_output_link_wp_head', 10);
         remove_action('wp_head', 'wp_oembed_add_discovery_links', 10);
@@ -43,16 +45,16 @@ class Security {
     }
 
     public static function add_recaptcha(): void {
-        if ( is_singular() ) {
+        if (is_singular()) {
             global $post;
-            $blocks = parse_blocks( $post->post_content );
-            if( $blocks && is_array( $blocks ) ){
+            $blocks = parse_blocks($post->post_content);
+            if ($blocks && is_array($blocks)) {
 
-                $add_script = function() {
+                $add_script = function () {
                     $recaptcha_site_key = Config::get('RECAPTCHA_KEY');
                     $recaptcha_site_secret = Config::get('RECAPTCHA_SECRET');
 
-                    if(!$recaptcha_site_key || !$recaptcha_site_secret) {
+                    if (!$recaptcha_site_key || !$recaptcha_site_secret) {
                         return;
                     }
 
@@ -67,13 +69,37 @@ class Security {
                 $protected_pages = array(
                     'app/auth'
                 );
-                foreach( $blocks as $block ){
-                    if( in_array($block['blockName'], $protected_pages )){
+                foreach ($blocks as $block) {
+                    if (in_array($block['blockName'], $protected_pages)) {
                         $add_script();
                         return;
                     }
                 }
             }
+        }
+    }
+
+    public static function limit_access_to_spain(): void {
+        $ip = $_SERVER['REMOTE_ADDR'];
+
+        $dbPath = Config::get('SRC_PATH') . '/geodb/GeoLite2-Country.mmdb';
+        if (!file_exists($dbPath)) {
+            return;
+        }
+
+        try {
+            $reader = new Reader($dbPath);
+            $record = $reader->country($ip);
+
+            if ($record->country->isoCode !== 'ES') {
+                wp_die(
+                    __('Only Spain users allowed.', APP_THEME_LOCALE),
+                    __('Access denied', APP_THEME_LOCALE),
+                    array('response' => 403)
+                );
+            }
+        } catch (\Exception $e) {
+            return;
         }
     }
 }

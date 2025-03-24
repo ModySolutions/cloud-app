@@ -56,7 +56,8 @@
     "ramsey/uuid": "^4.7",
     "wpackagist-plugin/user-role-editor": "^4.64",
     "wpackagist-plugin/loco-translate": "^2.7",
-    "wpackagist-plugin/redirection": "^5.5"
+    "wpackagist-plugin/redirection": "^5.5",
+    "geoip2/geoip2": "^3.1"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
