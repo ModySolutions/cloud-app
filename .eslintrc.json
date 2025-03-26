@@ -5,6 +5,11 @@
     "window": "readonly",
     "location": "readonly"
   },
+  "rules": {
+    "unit-allowed-list": {
+      "line-height": ["px", "em", "rem", "unitless"]
+    }
+  },
   "settings": {
     "react": {
       "version": "18.3.1"
