@@ -33,19 +33,19 @@
 @each $label, $color in variables.$color_list {
 
 	@for $i from 1 to 5 {
-		.b-#{$label}-#{$i} {
+		.b-#{"" + $label}-#{$i} {
 			border: #{$i}#{"px"} solid var(--color-#{$color});
 		}
-		.b-top-#{$label}-#{$i} {
+		.b-top-#{"" + $label}-#{$i} {
 			border-top: #{$i}#{"px"} solid var(--color-#{$color});
 		}
-		.b-left-#{$label}-#{$i} {
+		.b-left-#{"" + $label}-#{$i} {
 			border-left: #{$i}#{"px"} solid var(--color-#{$color});
 		}
-		.b-bottom-#{$label}-#{$i} {
+		.b-bottom-#{"" + $label}-#{$i} {
 			border-bottom: #{$i}#{"px"} solid var(--color-#{$color});
 		}
-		.b-right-#{$label}-#{$i} {
+		.b-right-#{"" + $label}-#{$i} {
 			border-right: #{$i}#{"px"} solid var(--color-#{$color});
 		}
 	}
