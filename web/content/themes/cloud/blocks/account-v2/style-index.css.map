@@ -1,0 +1,1 @@
+{"version":3,"file":"account-v2/style-index.css","mappings":";;;AAAA;EACE;AACF,C","sources":["webpack://modycloud/./resources/blocks/account-v2/style.scss"],"sourcesContent":["body {\n  background-color: var(--color-white);\n}\n"],"names":[],"sourceRoot":""}

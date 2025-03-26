@@ -1,16 +1,17 @@
+// eslint-disable-next-line import/no-unresolved
 import { useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import { useUser } from '@modycloud/account/context/AccountContext';
+import { useUser } from '../context/AccountContext';
 import { toast } from 'react-toastify';
 
 const Account = () => {
 	const { user, setUser, loading, error } = useUser();
 	const [ userId, setUserId ] = useState( null );
-	const [ email, setEmail ] = useState( null );
-	const [ name, setName ] = useState( null );
-	const [ lastName, setLastName ] = useState( null );
-	const [ phone, setPhone ] = useState( null );
+	const [ email, setEmail ] = useState( '' );
+	const [ name, setName ] = useState( '' );
+	const [ lastName, setLastName ] = useState( '' );
+	const [ phone, setPhone ] = useState( '' );
 	const [ updating, setUpdating ] = useState( false );
 
 	if ( ! ( email && userId ) && null !== user ) {
@@ -75,8 +76,7 @@ const Account = () => {
 					);
 				}
 			} )
-			.catch( ( error ) => {
-				console.error( 'Error updating user data:', error );
+			.catch( () => {
 				toast.error( __( 'Error updating user data.', 'app' ), {
 					autoClose: 3000,
 				} );

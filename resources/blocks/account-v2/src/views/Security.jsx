@@ -1,23 +1,21 @@
+// eslint-disable-next-line import/no-unresolved
 import { useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import { useUser } from '@modycloud/account/context/AccountContext';
+import { useUser } from '../context/AccountContext';
 import { toast } from 'react-toastify';
-import { useLocation } from 'react-router-dom';
-import { useEffect } from '@wordpress/element';
 
 const Security = () => {
-	const { user, setUser, loading, error } = useUser();
+	const { user, loading, error } = useUser();
 	const [ userId, setUserId ] = useState();
 	const [ currentPassword, setCurrentPassword ] = useState( '' );
 	const [ newPassword, setNewPassword ] = useState( '' );
 	const [ confirmNewPassword, setConfirmNewPassword ] = useState( '' );
 	const [ updating, setUpdating ] = useState( false );
 	const [ showCurrentPassword, setShowCurrentPassword ] = useState( false );
-	const [ showNewPassword, setShowNewPassword ] = useState( false );
+	const [ showNewPassword ] = useState( false );
 	const [ showConfirmNewPassword, setShowConfirmNewPassword ] =
 		useState( false );
-	const [ code, setCode ] = useState( '' );
 
 	if ( ! userId && null !== user ) {
 		setUserId( user?.id );
@@ -69,8 +67,7 @@ const Security = () => {
 					);
 				}
 			} )
-			.catch( ( error ) => {
-				console.error( 'Error updating user password:', error );
+			.catch( () => {
 				toast.error( __( 'Error updating user password.', 'app' ), {
 					autoClose: 10000,
 				} );
@@ -110,7 +107,8 @@ const Security = () => {
 							disabled={ updating }
 							onChange={ handleCurrentPasswordChange }
 						/>
-						<span
+						<button
+							type="button"
 							className="toggle-password"
 							onClick={ () =>
 								setShowCurrentPassword( ! showCurrentPassword )
@@ -136,7 +134,7 @@ const Security = () => {
 									<path d="M480-312q70 0 119-49t49-119q0-70-49-119t-119-49q-70 0-119 49t-49 119q0 70 49 119t119 49Zm0-72q-40 0-68-28t-28-68q0-40 28-68t68-28q40 0 68 28t28 68q0 40-28 68t-68 28Zm0 192q-142.6 0-259.8-78.5Q103-349 48-480q55-131 172.2-209.5Q337.4-768 480-768q142.6 0 259.8 78.5Q857-611 912-480q-55 131-172.2 209.5Q622.6-192 480-192Zm0-288Zm0 216q112 0 207-58t146-158q-51-100-146-158t-207-58q-112 0-207 58T127-480q51 100 146 158t207 58Z" />
 								</svg>
 							) }
-						</span>
+						</button>
 					</div>
 					<hr className="my-3 col-12" />
 					<div className="form-group col-12">
@@ -151,11 +149,16 @@ const Security = () => {
 							disabled={ updating }
 							onChange={ handleNewPasswordChange }
 						/>
-						<span
+						<button
+							type="button"
+							tabIndex="-1"
 							className="toggle-password"
-							onClick={ () =>
-								setShowNewPassword( ! showNewPassword )
-							}
+							onClick={ ( event ) => {
+								event.preventDefault();
+								setShowConfirmNewPassword(
+									! showConfirmNewPassword
+								);
+							} }
 						>
 							{ ! showNewPassword && (
 								<svg
@@ -177,7 +180,7 @@ const Security = () => {
 									<path d="M480-312q70 0 119-49t49-119q0-70-49-119t-119-49q-70 0-119 49t-49 119q0 70 49 119t119 49Zm0-72q-40 0-68-28t-28-68q0-40 28-68t68-28q40 0 68 28t28 68q0 40-28 68t-68 28Zm0 192q-142.6 0-259.8-78.5Q103-349 48-480q55-131 172.2-209.5Q337.4-768 480-768q142.6 0 259.8 78.5Q857-611 912-480q-55 131-172.2 209.5Q622.6-192 480-192Zm0-288Zm0 216q112 0 207-58t146-158q-51-100-146-158t-207-58q-112 0-207 58T127-480q51 100 146 158t207 58Z" />
 								</svg>
 							) }
-						</span>
+						</button>
 					</div>
 					<div className="form-group col-12">
 						<label htmlFor="confirm-new-password">
@@ -193,13 +196,16 @@ const Security = () => {
 							disabled={ updating }
 							onChange={ handleConfirmNewPassword }
 						/>
-						<span
+						<button
+							type="button"
+							tabIndex="-1"
 							className="toggle-password"
-							onClick={ () =>
+							onClick={ ( event ) => {
+								event.preventDefault();
 								setShowConfirmNewPassword(
 									! showConfirmNewPassword
-								)
-							}
+								);
+							} }
 						>
 							{ ! showConfirmNewPassword && (
 								<svg
@@ -221,7 +227,7 @@ const Security = () => {
 									<path d="M480-312q70 0 119-49t49-119q0-70-49-119t-119-49q-70 0-119 49t-49 119q0 70 49 119t119 49Zm0-72q-40 0-68-28t-28-68q0-40 28-68t68-28q40 0 68 28t28 68q0 40-28 68t-68 28Zm0 192q-142.6 0-259.8-78.5Q103-349 48-480q55-131 172.2-209.5Q337.4-768 480-768q142.6 0 259.8 78.5Q857-611 912-480q-55 131-172.2 209.5Q622.6-192 480-192Zm0-288Zm0 216q112 0 207-58t146-158q-51-100-146-158t-207-58q-112 0-207 58T127-480q51 100 146 158t207 58Z" />
 								</svg>
 							) }
-						</span>
+						</button>
 					</div>
 
 					<div className="form-group col-12">

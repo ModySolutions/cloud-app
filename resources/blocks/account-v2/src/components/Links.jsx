@@ -1,20 +1,20 @@
-import { useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+// eslint-disable-next-line import/no-unresolved
+import { useState } from 'react';
 
 const Links = ( { routes } ) => {
-	if ( ! routes || Object.keys( routes ).length === 0 ) {
-		return '';
-	}
-
 	const [ currentPath, setCurrentPath ] = useState(
 		window.location.pathname
 	);
+	if ( ! routes || Object.keys( routes ).length === 0 ) {
+		return '';
+	}
 
 	const navigate = ( event ) => {
 		event.preventDefault();
 		const link = event.currentTarget.getAttribute( 'href' );
 		setCurrentPath( link );
 		window.history.pushState( {}, '', link );
+		// eslint-disable-next-line no-undef
 		window.dispatchEvent( new PopStateEvent( 'popstate' ) );
 	};
 
@@ -37,7 +37,7 @@ const Links = ( { routes } ) => {
 							currentPath === link ? ' active' : ''
 						}` }
 					>
-						{ __( title ) }
+						{ title }
 					</a>
 				);
 			} ) }

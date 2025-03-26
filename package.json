@@ -4,15 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "wp-scripts build --webpack-src-dir=resources --output-path=web/content/themes/cloud/dist --config config/webpack.config.js",
+    "build": "pnpm run build:app && pnpm run build:blocks",
+    "build:app": "wp-scripts build --webpack-src-dir=resources --output-path=web/content/themes/cloud/dist --config config/webpack.config.js",
+    "build:blocks": "wp-scripts build --webpack-src-dir=resources/blocks --webpack-copy-php --output-path=web/content/themes/cloud/blocks --config config/blocks.webpack.config.js",
     "dev": "wp-scripts start --webpack-src-dir=resources --output-path=web/content/themes/cloud/dist --config config/webpack.config.js",
+    "dev:blocks": "wp-scripts start --webpack-src-dir=resources/blocks --webpack-copy-php --output-path=web/content/themes/cloud/blocks --config config/blocks.webpack.config.js",
     "translate": "pnpm run translate:twig;pnpm run translate:react;pnpm run translate:js",
     "translate:twig": "wp i18n make-pot . $(pwd)/web/content/languages/twig.pot --include=\"$(pwd)resources/views/**/*.twig\"",
     "translate:react": "wp i18n make-pot . $(pwd)/web/content/languages/react.pot --include=\"resources/scripts/**/*.jsx\"",
     "translate:js": "wp i18n make-pot . $(pwd)/web/content/languages/app.pot --include=\"resources/**/*.js\"",
-    "lint": "pnpm lint:css && pnpm lint:js && composer run lint",
+    "lint": "pnpm lint:css && pnpm lint:js && pnpm lint:jsx && composer run lint",
     "lint:css": "wp-scripts lint-style 'resources/**/*.scss'",
-    "lint:js": "wp-scripts lint-js 'resources/**/*.js'"
+    "lint:js": "wp-scripts lint-js 'resources/**/*.js'",
+    "lint:jsx": "wp-scripts lint-js 'resources/**/*.jsx'"
   },
   "repository": {
     "type": "git",

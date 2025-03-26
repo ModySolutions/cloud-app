@@ -1,15 +1,16 @@
-import { useEffect, useState } from 'react';
+// eslint-disable-next-line import/no-unresolved
+import { useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import { useUser } from '@modycloud/account/context/AccountContext';
+import { useUser } from '../context/AccountContext';
 import { toast } from 'react-toastify';
 
 const Settings = () => {
 	const { user, setUser, loading, error } = useUser();
 	const [ userId, setUserId ] = useState( null );
-	const [ optInUpdates, setOptInUpdates ] = useState( null );
-	const [ optInCommercial, setOptInCommercial ] = useState( null );
-	const [ preferredLanguage, setPreferredLanguage ] = useState( null );
+	const [ optInUpdates, setOptInUpdates ] = useState( false );
+	const [ optInCommercial, setOptInCommercial ] = useState( false );
+	const [ preferredLanguage, setPreferredLanguage ] = useState( 'ES' );
 	const [ updating, setUpdating ] = useState( false );
 
 	if ( ! userId && null !== user ) {
@@ -63,8 +64,7 @@ const Settings = () => {
 					);
 				}
 			} )
-			.catch( ( error ) => {
-				console.error( 'Error updating user settings:', error );
+			.catch( () => {
 				toast.error( __( 'Error updating user settings.', 'app' ), {
 					autoClose: 10000,
 				} );
