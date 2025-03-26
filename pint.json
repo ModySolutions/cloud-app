@@ -1,8 +1,19 @@
 {
   "preset": "per",
   "exclude": [
+    "config/autologin-tokens",
+    "config/logout-info",
+    "config/sites",
+    "config/users",
+    "config/uuid",
+    "logs",
+    "node_modules",
+    "resources",
     "web/wp",
-    "web/app/mu-plugins/bedrock-disallow-indexing",
-    "web/app/plugins"
+    "web/content/mu-plugins",
+    "web/content/plugins",
+    "web/content/themes/cloud/acf-json",
+    "web/content/themes/cloud/dist",
+    "web/content/themes/cloud/images"
   ]
 }
