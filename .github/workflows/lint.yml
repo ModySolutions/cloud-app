@@ -1,0 +1,59 @@
+name: Verify Coding Standards
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  web-deploy:
+    name: 🎉 Verify Coding Standards
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v3
+
+      - name: Cache Vendor
+        id: cache-vendor
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-vendors
+        with:
+          path: vendor
+          key: vendor-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            vendor-${{ runner.os }}-
+
+      - name: Cache Node Modules
+        id: cache-node_modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node_modules
+        with:
+          path: node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            node_modules-${{ runner.os }}-
+
+      - name: Composer Install
+        run: composer install
+        if: steps.cache-vendor.outputs.cache-hit != 'true'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: nvm use ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: pnpm install
+        run: pnpm install
+        if: steps.cache-node_modules.outputs.cache-hit != 'true'
+
+      - name: lint
+        run: pnpm lint
