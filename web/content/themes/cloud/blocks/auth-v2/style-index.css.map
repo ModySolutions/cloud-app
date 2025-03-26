@@ -1,0 +1,1 @@
+{"version":3,"file":"auth-v2/style-index.css","mappings":";;;AAAA;EACE;AACF,C","sources":["webpack://modycloud/./resources/blocks/auth-v2/style.scss"],"sourcesContent":["body {\n  color: var(--color-text);\n}\n"],"names":[],"sourceRoot":""}

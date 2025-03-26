@@ -8,6 +8,9 @@ class Block
 {
     public static function app_before_render_block(array $context): array
     {
+        if(is_admin()) {
+            return $context;
+        }
         $action = get_query_var('action');
         if (empty($action)) {
             wp_redirect(wp_login_url());
@@ -28,6 +31,33 @@ class Block
         }
 
         return $context;
+    }
+
+    public static function app_render_block(string $block_content, array $block, \WP_Block $instance): string
+    {
+        if ( $block['blockName'] != 'app/auth-v2' || is_admin()) {
+            return $block_content;
+        }
+        $a = 1;
+
+        $action = get_query_var('action');
+        if (empty($action)) {
+            wp_redirect(wp_login_url());
+            exit;
+        }
+        $allowed_actions = ['sign-in', 'sign-up', 'forgot-passwd', 'reset-passwd', 'sign-out'];
+        $action = in_array($action, $allowed_actions) ? $action : 'sign-in';
+
+        self::_maybe_sign_out($action);
+        self::_redirect_if_logged_in($action);
+        self::_maybe_auto_login($action);
+
+        if (Config::get('CHILD_SITE')) {
+            wp_redirect(Config::get('APP_MAIN_SITE') . "/auth/{$action}");
+            exit;
+        }
+
+        return $block_content;
     }
 
     private static function _maybe_sign_out($action): void

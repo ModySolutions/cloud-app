@@ -1,0 +1,6 @@
+if(typeof AuthData === 'undefined') {
+  var AuthData = {Settings: {}}
+}
+AuthData.Settings.Email = '{{ email }}';
+AuthData.Settings.Key = '{{ key ?? '' }}';
+AuthData.Settings.FirstTime = '{{ first_time ?? '' }}';

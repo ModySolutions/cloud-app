@@ -63,6 +63,7 @@ class Security
                     }
 
                     echo Timber::compile('@app/components/tags/script.twig', [
+                        'id' => 'google-recaptcha',
                         'src' => add_query_arg([
                             'render' => $recaptcha_site_key,
                         ], 'https://www.google.com/recaptcha/api.js'),
@@ -72,6 +73,7 @@ class Security
 
                 $protected_pages = [
                     'app/auth',
+                    'app/auth-v2',
                 ];
                 foreach ($blocks as $block) {
                     if (in_array($block['blockName'], $protected_pages)) {

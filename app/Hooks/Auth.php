@@ -31,5 +31,6 @@ class Auth
         add_filter('lostpassword_url', Routes::lostpassword_url(...), 10, 3);
 
         add_filter('app_before_render_block_auth', Block::app_before_render_block(...));
+        add_filter('render_block', Block::app_render_block(...), 10, 3);
     }
 }

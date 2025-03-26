@@ -1,0 +1,1 @@
+{"version":3,"file":"auth-v2/index.css","mappings":";;;AAAA;EACC;AACD,C","sources":["webpack://modycloud/./resources/blocks/auth-v2/editor.scss"],"sourcesContent":[".wp-block-auth {\n\tbackground-color: var(--color-white);\n}"],"names":[],"sourceRoot":""}

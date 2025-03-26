@@ -2,20 +2,20 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./resources/blocks/account-v2/block.json":
-/*!************************************************!*\
-  !*** ./resources/blocks/account-v2/block.json ***!
-  \************************************************/
+/***/ "./resources/blocks/auth-v2/block.json":
+/*!*********************************************!*\
+  !*** ./resources/blocks/auth-v2/block.json ***!
+  \*********************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"app/account-v2","version":"0.1.0","title":"Account V2","category":"invoice","description":"Account module.","example":{},"supports":{"html":false},"textdomain":"app","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"app/auth-v2","version":"0.1.0","title":"Auth V2","category":"utilities","description":"Auth module.","example":{},"supports":{"html":false},"textdomain":"app","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js","render":"file:./render.php"}');
 
 /***/ }),
 
-/***/ "./resources/blocks/account-v2/edit.js":
-/*!*********************************************!*\
-  !*** ./resources/blocks/account-v2/edit.js ***!
-  \*********************************************/
+/***/ "./resources/blocks/auth-v2/edit.js":
+/*!******************************************!*\
+  !*** ./resources/blocks/auth-v2/edit.js ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -26,20 +26,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./editor.scss */ "./resources/blocks/account-v2/editor.scss");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./editor.scss */ "./resources/blocks/auth-v2/editor.scss");
 
 
 
 function Edit() {
-  return /*#__PURE__*/React.createElement("p", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)(), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Account Module for Mody Cloud', 'app'));
+  return /*#__PURE__*/React.createElement("p", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)(), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Auth Module for Mody Cloud', 'app'));
 }
 
 /***/ }),
 
-/***/ "./resources/blocks/account-v2/editor.scss":
-/*!*************************************************!*\
-  !*** ./resources/blocks/account-v2/editor.scss ***!
-  \*************************************************/
+/***/ "./resources/blocks/auth-v2/editor.scss":
+/*!**********************************************!*\
+  !*** ./resources/blocks/auth-v2/editor.scss ***!
+  \**********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -48,19 +48,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/blocks/account-v2/index.js":
-/*!**********************************************!*\
-  !*** ./resources/blocks/account-v2/index.js ***!
-  \**********************************************/
+/***/ "./resources/blocks/auth-v2/index.js":
+/*!*******************************************!*\
+  !*** ./resources/blocks/auth-v2/index.js ***!
+  \*******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./resources/blocks/account-v2/style.scss");
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./resources/blocks/account-v2/edit.js");
-/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./resources/blocks/account-v2/save.js");
-/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./resources/blocks/account-v2/block.json");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./resources/blocks/auth-v2/style.scss");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./resources/blocks/auth-v2/edit.js");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./resources/blocks/auth-v2/save.js");
+/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./resources/blocks/auth-v2/block.json");
 
 
 
@@ -69,12 +69,12 @@ __webpack_require__.r(__webpack_exports__);
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_4__.name, {
   icon: /*#__PURE__*/React.createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
-    height: "24px",
+    height: "20px",
     viewBox: "0 -960 960 960",
-    width: "24px",
-    fill: "#005f6b"
+    width: "20px",
+    fill: "#333333"
   }, /*#__PURE__*/React.createElement("path", {
-    d: "M280-280h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Zm-80 480q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"
+    d: "M263.72-96Q234-96 213-117.15T192-168v-384q0-29.7 21.15-50.85Q234.3-624 264-624h24v-96q0-79.68 56.23-135.84 56.22-56.16 136-56.16Q560-912 616-855.84q56 56.16 56 135.84v96h24q29.7 0 50.85 21.15Q768-581.7 768-552v384q0 29.7-21.16 50.85Q725.68-96 695.96-96H263.72Zm.28-72h432v-384H264v384Zm216.21-120Q510-288 531-309.21t21-51Q552-390 530.79-411t-51-21Q450-432 429-410.79t-21 51Q408-330 429.21-309t51 21ZM360-624h240v-96q0-50-35-85t-85-35q-50 0-85 35t-35 85v96Zm-96 456v-384 384Z"
   })),
   edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
   save: _save__WEBPACK_IMPORTED_MODULE_3__["default"]
@@ -82,10 +82,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/blocks/account-v2/save.js":
-/*!*********************************************!*\
-  !*** ./resources/blocks/account-v2/save.js ***!
-  \*********************************************/
+/***/ "./resources/blocks/auth-v2/save.js":
+/*!******************************************!*\
+  !*** ./resources/blocks/auth-v2/save.js ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -96,15 +96,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__);
 
 function save() {
-  return /*#__PURE__*/React.createElement("p", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.useBlockProps.save(), 'Account Module for Mody Cloud');
+  return /*#__PURE__*/React.createElement("p", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.useBlockProps.save(), 'Auth Module for Mody Cloud');
 }
 
 /***/ }),
 
-/***/ "./resources/blocks/account-v2/style.scss":
-/*!************************************************!*\
-  !*** ./resources/blocks/account-v2/style.scss ***!
-  \************************************************/
+/***/ "./resources/blocks/auth-v2/style.scss":
+/*!*********************************************!*\
+  !*** ./resources/blocks/auth-v2/style.scss ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -253,8 +253,8 @@ module.exports = window["wp"]["i18n"];
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
-/******/ 			"account-v2/index": 0,
-/******/ 			"account-v2/style-index": 0
+/******/ 			"auth-v2/index": 0,
+/******/ 			"auth-v2/style-index": 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -304,7 +304,7 @@ module.exports = window["wp"]["i18n"];
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["account-v2/style-index"], () => (__webpack_require__("./resources/blocks/account-v2/index.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["auth-v2/style-index"], () => (__webpack_require__("./resources/blocks/auth-v2/index.js")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
