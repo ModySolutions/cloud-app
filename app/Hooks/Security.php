@@ -6,11 +6,13 @@ use GeoIp2\Database\Reader;
 use Roots\WPConfig\Config;
 use Timber\Timber;
 
-class Security {
-    public static function init(): void {
+class Security
+{
+    public static function init(): void
+    {
         add_action('rest_api_init', self::cors_headers(...));
-        add_action('wp_head', array(Security::class, 'add_recaptcha'));
-        add_action('init', array(Security::class, 'limit_access_to_spain'));
+        add_action('wp_head', [Security::class, 'add_recaptcha']);
+        add_action('init', [Security::class, 'limit_access_to_spain']);
 
         remove_action('wp_head', 'rest_output_link_wp_head', 10);
         remove_action('wp_head', 'wp_oembed_add_discovery_links', 10);
@@ -37,14 +39,16 @@ class Security {
         remove_action('wp_delete_temp_updater_backups', 'wp_delete_all_temp_backups');
     }
 
-    public static function cors_headers(): void {
+    public static function cors_headers(): void
+    {
         header("Access-Control-Allow-Origin: https://*.modycloud.test");
         header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
         header("Access-Control-Allow-Headers: Authorization, Content-Type");
         header("Access-Control-Allow-Credentials: true");
     }
 
-    public static function add_recaptcha(): void {
+    public static function add_recaptcha(): void
+    {
         if (is_singular()) {
             global $post;
             $blocks = parse_blocks($post->post_content);
@@ -66,9 +70,9 @@ class Security {
                     ]);
                 };
 
-                $protected_pages = array(
-                    'app/auth'
-                );
+                $protected_pages = [
+                    'app/auth',
+                ];
                 foreach ($blocks as $block) {
                     if (in_array($block['blockName'], $protected_pages)) {
                         $add_script();
@@ -79,7 +83,8 @@ class Security {
         }
     }
 
-    public static function limit_access_to_spain(): void {
+    public static function limit_access_to_spain(): void
+    {
         $ip = $_SERVER['REMOTE_ADDR'];
 
         $dbPath = Config::get('SRC_PATH') . '/geodb/GeoLite2-Country.mmdb';
@@ -95,7 +100,7 @@ class Security {
                 wp_die(
                     __('Only Spain users allowed.', APP_THEME_LOCALE),
                     __('Access denied', APP_THEME_LOCALE),
-                    array('response' => 403)
+                    ['response' => 403],
                 );
             }
         } catch (\Exception $e) {

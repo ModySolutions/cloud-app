@@ -1,6 +1,7 @@
 {
   "extends": [ "plugin:@wordpress/eslint-plugin/recommended" ],
   "globals" : {
+    "App": "readonly",
     "window": "readonly",
     "location": "readonly"
   },

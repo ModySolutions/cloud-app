@@ -1,4 +1,4 @@
-name: Build application
+name: Build & Deploy to main
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   web-deploy:
-    name: 🎉 Deploy to Mody Cloud
+    name: 🎉 Deploy to Mody Cloud - Main branch
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Get latest code

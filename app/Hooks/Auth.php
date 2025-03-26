@@ -9,8 +9,10 @@ use App\Hooks\Auth\Logout;
 use App\Hooks\Auth\Routes;
 use App\Hooks\Auth\Scripts;
 
-class Auth {
-    public static function init(): void {
+class Auth
+{
+    public static function init(): void
+    {
         add_action('init', Routes::wp_init(...));
         add_action('admin_init', Routes::admin_init(...));
         add_action('template_redirect', Routes::template_redirect(...));

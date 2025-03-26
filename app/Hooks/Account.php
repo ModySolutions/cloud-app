@@ -9,8 +9,10 @@ use App\Hooks\Account\Routes;
 use App\Hooks\Account\Scripts;
 use App\Hooks\User\Service as UserService;
 
-class Account {
-    public static function init() : void {
+class Account
+{
+    public static function init(): void
+    {
         add_action('init', Routes::wp_init(...));
         add_action('wp_enqueue_scripts', Scripts::wp_enqueue_scripts(...), 100);
         add_action('rest_api_init', Api::register_rest_route(...));

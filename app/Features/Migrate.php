@@ -3,13 +3,14 @@
 namespace App\Features;
 
 use Roots\WPConfig\Config;
-use function Env\env;
 
-trait Migrate {
-    public static function migrate() : void {
+trait Migrate
+{
+    public static function migrate(): void
+    {
         $migration_files = glob(Config::get('MC_MIGRATIONS_PATH') . '/*.php');
 
-        app_log(print_r($migration_files,1));
+        app_log(print_r($migration_files, 1));
         if (!$migration_files) {
             return;
         }
@@ -22,7 +23,7 @@ trait Migrate {
 
         $site_name = get_bloginfo();
 
-        if(!Config::get('CHILD_SITE')) {
+        if (!Config::get('CHILD_SITE')) {
             return;
         }
 

@@ -1,7 +1,8 @@
 <?php
 
-if(!function_exists('parse_env_text')) {
-    function parse_env_text($env_text) : array {
+if (!function_exists('parse_env_text')) {
+    function parse_env_text($env_text): array
+    {
         $variables = [];
 
         $lines = explode("\n", $env_text);

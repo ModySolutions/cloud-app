@@ -4,12 +4,15 @@ namespace App\Hooks;
 
 use Roots\WPConfig\Config;
 
-class Language {
-    public static function init() : void {
+class Language
+{
+    public static function init(): void
+    {
         add_filter('locale', self::locale(...));
     }
 
-    public static function locale(string $locale) : string {
+    public static function locale(string $locale): string
+    {
         if (isset($_COOKIE['browser_language'])) {
             $browser_language = sanitize_text_field($_COOKIE['browser_language']);
             $lang_dir = Config::get('ROOT_DIR') . '/app/languages';

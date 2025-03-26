@@ -3,8 +3,9 @@
 use Roots\WPConfig\Config;
 
 if (!function_exists('app_get_last_migration_from_code')) {
-    function app_get_last_migration_from_code(): ?string {
-        $migration_files = glob(Config::get('MC_MIGRATIONS_PATH').'/*.php');
+    function app_get_last_migration_from_code(): ?string
+    {
+        $migration_files = glob(Config::get('MC_MIGRATIONS_PATH') . '/*.php');
 
         if (!$migration_files) {
             return null;
@@ -19,10 +20,11 @@ if (!function_exists('app_get_last_migration_from_code')) {
 }
 
 if (!function_exists('app_has_last_migration_run')) {
-    function app_has_last_migration_run($last_migration): bool {
+    function app_has_last_migration_run($last_migration): bool
+    {
         global $wpdb;
 
-        $table_name = $wpdb->prefix.'migrations';
+        $table_name = $wpdb->prefix . 'migrations';
         $applied_migrations = $wpdb->get_col("SELECT migration_name FROM $table_name");
 
         return in_array($last_migration, $applied_migrations);

@@ -12,6 +12,7 @@
     "web/wp",
     "web/content/mu-plugins",
     "web/content/plugins",
+    "web/content/languages",
     "web/content/themes/cloud/acf-json",
     "web/content/themes/cloud/dist",
     "web/content/themes/cloud/images"

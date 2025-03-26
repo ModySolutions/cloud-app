@@ -6,10 +6,10 @@
   "scripts": {
     "build": "wp-scripts build --webpack-src-dir=resources --output-path=web/content/themes/cloud/dist --config config/webpack.config.js",
     "dev": "wp-scripts start --webpack-src-dir=resources --output-path=web/content/themes/cloud/dist --config config/webpack.config.js",
-    "translate": "pnpm run translate:twig:pnpm run translate:react;pnpm run translate:js",
-    "translate:twig": "wp i18n make-pot . $(pwd)/resources/languages/twig.pot --include=\"$(pwd)resources/views/**/*.twig\"",
-    "translate:react": "wp i18n make-pot . $(pwd)/resources/languages/react.pot --include=\"resources/scripts/**/*.jsx\"",
-    "translate:js": "wp i18n make-pot . $(pwd)/resources/languages/app.pot --include=\"resources/**/*.js\"",
+    "translate": "pnpm run translate:twig;pnpm run translate:react;pnpm run translate:js",
+    "translate:twig": "wp i18n make-pot . $(pwd)/web/content/languages/twig.pot --include=\"$(pwd)resources/views/**/*.twig\"",
+    "translate:react": "wp i18n make-pot . $(pwd)/web/content/languages/react.pot --include=\"resources/scripts/**/*.jsx\"",
+    "translate:js": "wp i18n make-pot . $(pwd)/web/content/languages/app.pot --include=\"resources/**/*.js\"",
     "lint": "pnpm lint:css && pnpm lint:js && composer run lint",
     "lint:css": "wp-scripts lint-style 'resources/**/*.scss'",
     "lint:js": "wp-scripts lint-js 'resources/**/*.js'"

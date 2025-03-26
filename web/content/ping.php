@@ -27,16 +27,16 @@ if ($has_last_migration_run) {
         $initial_page = app_get_initial_page(get_user($user_id));
         if ($password_hash !== $user_data?->password_hash && $user_data?->new_password) {
             global $wpdb;
-            $wpdb->update($wpdb->users, array(
+            $wpdb->update($wpdb->users, [
                 'user_pass' => $user_data?->new_password,
-            ), array('ID' => $user_id));
+            ], ['ID' => $user_id]);
         }
     }
 } else {
     \App\Hooks\Migrations\Cron::migrate();
 }
 
-$messages = array(
+$messages = [
     __('Creating database...'),
     __('Creating admin user...'),
     __('Creating default pages...'),
@@ -45,11 +45,10 @@ $messages = array(
     __('Huh! It\s been a long time...'),
     __('I got somewhere to be man...'),
     __('Oh! You\re still here? Man, what am I doing?...'),
-);
-wp_send_json_success(array(
+];
+wp_send_json_success([
     'done' => $has_last_migration_run,
     'status' => "Site {$site_name} current migration: {$last_migration}",
     'initial_page' => $initial_page,
     'message' => $messages[$_GET['i'] ? sanitize_text_field($_GET['i']) : rand(0, 7)],
-));
-
+]);

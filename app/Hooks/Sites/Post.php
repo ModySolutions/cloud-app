@@ -2,10 +2,12 @@
 
 namespace App\Hooks\Sites;
 
-class Post {
-    public static function register_post_type() : void {
-        register_post_type( 'site', array(
-            'labels' => array(
+class Post
+{
+    public static function register_post_type(): void
+    {
+        register_post_type('site', [
+            'labels' => [
                 'name' => __('Sites', APP_THEME_LOCALE),
                 'singular_name' => __('Site', APP_THEME_LOCALE),
                 'menu_name' => __('Sites', APP_THEME_LOCALE),
@@ -35,22 +37,22 @@ class Post {
                 'item_updated' => __('Site updated.', APP_THEME_LOCALE),
                 'item_link' => __('Site Link', APP_THEME_LOCALE),
                 'item_link_description' => __('A link to a site.', APP_THEME_LOCALE),
-            ),
+            ],
             'public' => false,
             'show_ui' => true,
             'show_in_nav_menus' => true,
             'show_in_rest' => true,
             'menu_position' => 6,
             'menu_icon' => 'dashicons-admin-multisite',
-            'supports' => array(
+            'supports' => [
                 0 => 'title',
                 1 => 'author',
-            ),
-            'rewrite' => array(
+            ],
+            'rewrite' => [
                 'with_front' => false,
                 'pages' => false,
-            ),
+            ],
             'delete_with_user' => true,
-        ) );
+        ]);
     }
 }

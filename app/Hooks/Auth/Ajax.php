@@ -3,17 +3,15 @@
 namespace App\Hooks\Auth;
 
 use App\Features\Recaptcha;
-use App\Hooks\Queue\Post;
-use Ramsey\Uuid\Uuid;
-use Roots\WPConfig\Config;
 use Timber\Timber;
-use function Env\env;
 
-class Ajax {
+class Ajax
+{
     use Recaptcha;
-    public static function sign_in(): void {
+    public static function sign_in(): void
+    {
         if (!defined('DOING_AJAX') || !DOING_AJAX) {
-            wp_send_json_error(array('message' => __('Invalid request.', APP_THEME_LOCALE)));
+            wp_send_json_error(['message' => __('Invalid request.', APP_THEME_LOCALE)]);
         }
 
         self::validate_recaptcha();
@@ -23,40 +21,40 @@ class Ajax {
         $remember_me = !!$_POST['remember_me'];
 
         if (empty($email) || empty($password)) {
-            wp_send_json_error(array('message' => __('Email and password are required.', APP_THEME_LOCALE)));
+            wp_send_json_error(['message' => __('Email and password are required.', APP_THEME_LOCALE)]);
         }
 
         $userdata = get_user_by('email', $email);
 
         if (!$userdata) {
-            wp_send_json_error(array('message' => __('Incorrect email or password.', APP_THEME_LOCALE)));
+            wp_send_json_error(['message' => __('Incorrect email or password.', APP_THEME_LOCALE)]);
         }
 
         if ($userdata) {
             $user_is_active = get_user_meta($userdata->ID, '_user_is_active', true);
             if (!$user_is_active) {
-                wp_send_json_error(array(
+                wp_send_json_error([
                     'message' => sprintf(
                         __(implode('<br>', [
                             'Your account is not yet active, please check your email.',
-                            'Haven\'t get an email, <a href="%s">Reset your password</a> to get one'
+                            'Haven\'t get an email, <a href="%s">Reset your password</a> to get one',
                         ])),
                         add_query_arg([
                             'email' => urlencode($email),
-                        ], wp_lostpassword_url())
-                    )
-                ));
+                        ], wp_lostpassword_url()),
+                    ),
+                ]);
             }
 
             $lockout_time = get_user_meta($userdata->ID, '_failed_login_lockout', true);
             if ($lockout_time && $lockout_time > time()) {
                 $remaining_time = $lockout_time - time();
-                wp_send_json_error(array(
+                wp_send_json_error([
                     'message' => sprintf(
                         __('Account locked. Try again in %d minutes.', APP_THEME_LOCALE),
-                        round($remaining_time / 60)
-                    )
-                ));
+                        round($remaining_time / 60),
+                    ),
+                ]);
             }
         }
 
@@ -65,11 +63,11 @@ class Ajax {
             $failed_attempts = 0;
         }
 
-        $user = wp_signon(array(
+        $user = wp_signon([
             'user_login'    => $email,
             'user_password' => $password,
             'remember'      => $remember_me,
-        ));
+        ]);
 
         if (is_wp_error($user)) {
             $failed_attempts++;
@@ -77,14 +75,14 @@ class Ajax {
 
             if ($failed_attempts >= 3) {
                 update_user_meta($user->ID, '_failed_login_lockout', time() + (24 * 60 * 60));
-                wp_send_json_error(array(
-                    'message' => __('Incorrect email or password.', APP_THEME_LOCALE)
-                ));
+                wp_send_json_error([
+                    'message' => __('Incorrect email or password.', APP_THEME_LOCALE),
+                ]);
             }
 
-            wp_send_json_error(array(
-                'message' => __('Incorrect email or password.', APP_THEME_LOCALE)
-            ));
+            wp_send_json_error([
+                'message' => __('Incorrect email or password.', APP_THEME_LOCALE),
+            ]);
         }
 
         update_user_meta($user->ID, '_failed_login_attempts', 0);
@@ -93,14 +91,15 @@ class Ajax {
 
         $initial_page = app_get_initial_page($user);
 
-        wp_send_json_success(array(
+        wp_send_json_success([
             'message' => sprintf(__('Login successful, welcome %s', APP_THEME_LOCALE), $userdata->first_name),
             'initial_page' => $initial_page,
             'user' => $user,
-        ));
+        ]);
     }
 
-    public static function sign_up(): void {
+    public static function sign_up(): void
+    {
         if (!isset($_POST['email'])) {
             wp_send_json_error([
                 'message' => __('Invalid request.', APP_THEME_LOCALE),
@@ -153,11 +152,11 @@ class Ajax {
             $reset_pass_page .= 'reset-passwd';
         }
 
-        $reset_url = add_query_arg(array(
+        $reset_url = add_query_arg([
             'key' => $reset_key,
             'email' => urlencode($user->user_email),
             'first_time' => 'true',
-        ), $reset_pass_page);
+        ], $reset_pass_page);
 
         $button = Timber::compile('@app/mail/button.twig', [
             'link' => $reset_url,
@@ -169,13 +168,13 @@ class Ajax {
             __('To complete your registration, please set your password using the link below:%s %s %s', APP_THEME_LOCALE),
             '<br><br>',
             $button,
-            '<br><br>'
+            '<br><br>',
         );
 
         $message .= sprintf(
             __('If the button doesn\'t work, please copy the URL below in your browser: %s %s', APP_THEME_LOCALE),
             '<br><br>',
-            $reset_url
+            $reset_url,
         );
 
         $headers = ['Content-Type: text/html; charset=UTF-8'];
@@ -185,7 +184,7 @@ class Ajax {
             global $wpdb;
             $wpdb->delete(
                 $wpdb->usermeta,
-                array('user_id' => $user_id)
+                ['user_id' => $user_id],
             );
             wp_delete_user($user_id);
             wp_send_json_error([
@@ -196,11 +195,12 @@ class Ajax {
         wp_send_json_success([
             'message' => __('Registration successful! Please check your email to complete the process.', APP_THEME_LOCALE),
             'uuid' => app_get_user_uuid($user_id),
-            'callback' => 'hide_form'
+            'callback' => 'hide_form',
         ]);
     }
 
-    public static function forgot_password(): void {
+    public static function forgot_password(): void
+    {
         if (!isset($_POST['email'])) {
             wp_send_json_error([
                 'message' => __('Invalid request.', APP_THEME_LOCALE),
@@ -255,13 +255,13 @@ class Ajax {
             __('Someone asked for a password reset on your account, click on the button below to set a new one:%s %s %s', APP_THEME_LOCALE),
             '<br><br>',
             $button,
-            '<br><br>'
+            '<br><br>',
         );
 
         $message .= sprintf(
             __('If the button doesn\'t work, please copy the URL below in your browser: %s %s', APP_THEME_LOCALE),
             '<br><br>',
-            $reset_url
+            $reset_url,
         );
 
         $headers = ['Content-Type: text/html; charset=UTF-8'];
@@ -275,11 +275,12 @@ class Ajax {
 
         wp_send_json_success([
             'message' => sprintf(__('An email is coming to %s.', APP_THEME_LOCALE), $email),
-            'callback' => 'hide_form'
+            'callback' => 'hide_form',
         ]);
     }
 
-    public static function reset_password(): void {
+    public static function reset_password(): void
+    {
         if (empty($_POST['key']) ||  empty($_POST['email']) || empty($_POST['password'])) {
             wp_send_json_error([
                 'message' => __('All fields are required.', APP_THEME_LOCALE),
@@ -334,12 +335,14 @@ class Ajax {
         ]);
     }
 
-    private static function _is_secure_password(string $password): bool {
+    private static function _is_secure_password(string $password): bool
+    {
         $pattern = '/^(?=.*[A-Z])(?=.*[\W])(?=.*[a-zA-Z0-9]).{8,}$/';
         return preg_match($pattern, $password) === 1;
     }
 
-    private static function _authenticate_user($email, $password) : string {
+    private static function _authenticate_user($email, $password): string
+    {
         $user = wp_authenticate($email, $password);
         wp_set_auth_cookie($user->ID, true);
         return app_get_initial_page($user);
