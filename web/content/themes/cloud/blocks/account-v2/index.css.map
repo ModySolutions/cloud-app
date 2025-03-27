@@ -1,1 +1,0 @@
-{"version":3,"file":"account-v2/index.css","mappings":";;;AAAA;EACC;AACD,C","sources":["webpack://modycloud/./resources/blocks/account-v2/editor.scss"],"sourcesContent":[".wp-block-account {\n\tbackground-color: var(--color-white);\n}"],"names":[],"sourceRoot":""}
