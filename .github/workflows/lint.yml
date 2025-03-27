@@ -32,6 +32,11 @@ jobs:
           restore-keys: |
             app-lint-cache-vendor-${{ runner.os }}-
 
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
       - name: Cache Node Modules
         id: app-lint-cache-node_modules
         uses: actions/cache@v3
