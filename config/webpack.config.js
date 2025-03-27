@@ -6,7 +6,6 @@ module.exports = () => ( {
 	entry: {
 		app: path.resolve( process.cwd(), 'resources/scripts', 'app.js' ),
 		editor: path.resolve( process.cwd(), 'resources/scripts', 'editor.js' ),
-		site: path.resolve( process.cwd(), 'resources/scripts', 'site.js' ),
 	},
 	output: {
 		filename: '[name].js',
