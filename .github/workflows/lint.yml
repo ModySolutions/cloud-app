@@ -15,30 +15,30 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Cache Vendor
-        id: cache-vendor
+        id: app-lint-cache-vendor
         uses: actions/cache@v3
         env:
-          cache-name: cache-vendors
+          cache-name: app-lint-cache-vendor
         with:
           path: vendor
-          key: vendor-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          key: app-vendor-${{ runner.os }}-${{ hashFiles('composer.lock') }}
           restore-keys: |
-            vendor-${{ runner.os }}-
+            app-lint-cache-vendor-${{ runner.os }}-
 
       - name: Cache Node Modules
-        id: cache-node_modules
+        id: app-lint-cache-node_modules
         uses: actions/cache@v3
         env:
-          cache-name: cache-node_modules
+          cache-name: app-lint-cache-node_modules
         with:
           path: node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          key: app-lint-cache-node_modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            node_modules-${{ runner.os }}-
+            app-lint-cache-node_modules-${{ runner.os }}-
 
       - name: Composer Install
         run: composer install
-        if: steps.cache-vendor.outputs.cache-hit != 'true'
+        if: steps.app-lint-cache-vendor.outputs.cache-hit != 'true'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -53,7 +53,7 @@ jobs:
 
       - name: pnpm install
         run: pnpm install
-        if: steps.cache-node_modules.outputs.cache-hit != 'true'
+        if: steps.app-lint-cache-node_modules.outputs.cache-hit != 'true'
 
       - name: lint
         run: pnpm lint
