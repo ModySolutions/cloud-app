@@ -1,7 +1,8 @@
+// eslint-disable-next-line import/no-unresolved
 import { useState } from 'react';
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { toast } from 'react-toastify';
-import toKebabCase from '@modycloud/tools/kebabcase';
+import toKebabCase from '../../../../scripts/tools/kebabcase';
 
 const CreateSiteForm = () => {
 	const [ companyName, setCompanyName ] = useState( '' );
@@ -10,7 +11,6 @@ const CreateSiteForm = () => {
 	const [ loadingMessage, setLoadingMessage ] = useState(
 		'We are creating your space, please wait...'
 	);
-	const [ counter, setCounter ] = useState( 0 );
 
 	const maskSpaceNameInput = ( event ) => {
 		setSpaceName( toKebabCase( event.target.value ).substring( 0, 24 ) );
@@ -32,10 +32,10 @@ const CreateSiteForm = () => {
 		__( "Oh! You're still here? Man what am I doing…", 'app' ),
 	];
 
-	const checkInstallFinished = async ( queue_ui ) => {
+	const checkInstallFinished = async ( queueUi ) => {
 		const data = new URLSearchParams( {
 			action: 'check_setup_finished',
-			queue_id: queue_ui,
+			queue_id: queueUi,
 		} );
 
 		try {
@@ -82,18 +82,13 @@ const CreateSiteForm = () => {
 			toast.error( __( 'Error creating site.' ), {
 				autoClose: 3000,
 			} );
-			console.error(
-				sprintf(
-					__( 'Error creating site. Code: %s', 'app' ),
-					response.statusText
-				)
-			);
 			setIsCreating( false );
 		}
 
 		const {
 			success,
-			data: { initial_page, message, queue_id },
+			// eslint-disable-next-line camelcase
+			data: { message, queue_id },
 		} = await response.json();
 
 		if ( success ) {
@@ -117,6 +112,7 @@ const CreateSiteForm = () => {
 					isLoading: true,
 				} );
 				const {
+					// eslint-disable-next-line camelcase
 					data: { done, initial_page },
 				} = await checkInstallFinished( queue_id );
 
@@ -130,6 +126,7 @@ const CreateSiteForm = () => {
 						isLoading: false,
 					} );
 					setTimeout( () => {
+						// eslint-disable-next-line camelcase
 						location.href = initial_page;
 					}, 3000 );
 				}
@@ -158,6 +155,7 @@ const CreateSiteForm = () => {
 					) }
 					<span className="text-danger">*</span>
 				</label>
+				{ /* eslint-disable jsx-a11y/tabindex-no-positive */ }
 				<input
 					type="text"
 					tabIndex="1"

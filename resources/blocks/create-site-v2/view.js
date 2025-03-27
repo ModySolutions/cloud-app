@@ -3,8 +3,8 @@ import React from 'react';
 import domReady from '@wordpress/dom-ready';
 import { createRoot } from '@wordpress/element';
 import { ToastContainer } from 'react-toastify';
-import CreateSiteIntro from './site/components/CreateSiteIntro';
-import CreateSiteForm from './site/components/CreateSiteForm';
+import CreateSiteIntro from './src/components/CreateSiteIntro';
+import CreateSiteForm from './src/components/CreateSiteForm';
 
 const AccountContainer = () => {
 	return (
