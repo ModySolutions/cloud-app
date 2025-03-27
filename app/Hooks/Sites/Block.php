@@ -46,4 +46,38 @@ class Block
         }
         return $context;
     }
+
+    public static function app_render_block(string $block_content, array $block, \WP_Block $instance): string
+    {
+        if ($block['blockName'] != 'app/create-site-v2' || is_admin()) {
+            return $block_content;
+        }
+
+        if (!is_user_logged_in()) {
+            wp_redirect(wp_login_url());
+            exit;
+        }
+
+        if (current_user_can('administrator')) {
+            return $block_content;
+        }
+
+        $current_user_id = get_current_user_id();
+        $site_id = app_user_has_a_site($current_user_id);
+        $site_uri = get_field('site_uri', $site_id);
+        $site_is_active = $site_id && app_site_is_active($site_id);
+
+        if ($site_id && $site_is_active) {
+            wp_redirect($site_uri);
+            exit;
+        } elseif ($site_id && !$site_is_active) {
+            $space_install_setup = add_query_arg([
+                'key' => base64_encode(md5(rand(11111, 99999))),
+                'installing' => true,
+            ], "{$site_uri}/content/space-install-setup.php");
+            wp_redirect($space_install_setup);
+            exit;
+        }
+        return $block_content;
+    }
 }
