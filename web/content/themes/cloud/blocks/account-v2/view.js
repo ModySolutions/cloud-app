@@ -11876,6 +11876,7 @@ const Security = () => {
     disabled: updating,
     onChange: handleCurrentPasswordChange
   }), /*#__PURE__*/React.createElement("button", {
+    tabIndex: -1,
     type: "button",
     className: "toggle-password",
     onClick: () => setShowCurrentPassword(!showCurrentPassword)
@@ -11908,7 +11909,7 @@ const Security = () => {
     onChange: handleNewPasswordChange
   }), /*#__PURE__*/React.createElement("button", {
     type: "button",
-    tabIndex: "-1",
+    tabIndex: -1,
     className: "toggle-password",
     onClick: event => {
       event.preventDefault();

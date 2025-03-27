@@ -8,7 +8,7 @@ class Block
 {
     public static function app_before_render_block(array $context): array
     {
-        if(is_admin()) {
+        if (is_admin()) {
             return $context;
         }
         $action = get_query_var('action');
@@ -35,10 +35,9 @@ class Block
 
     public static function app_render_block(string $block_content, array $block, \WP_Block $instance): string
     {
-        if ( $block['blockName'] != 'app/auth-v2' || is_admin()) {
+        if ($block['blockName'] != 'app/auth-v2' || is_admin()) {
             return $block_content;
         }
-        $a = 1;
 
         $action = get_query_var('action');
         if (empty($action)) {

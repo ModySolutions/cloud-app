@@ -6,13 +6,7 @@ module.exports = () => ( {
 	entry: {
 		app: path.resolve( process.cwd(), 'resources/scripts', 'app.js' ),
 		editor: path.resolve( process.cwd(), 'resources/scripts', 'editor.js' ),
-		auth: path.resolve( process.cwd(), 'resources/scripts', 'auth.js' ),
 		site: path.resolve( process.cwd(), 'resources/scripts', 'site.js' ),
-		account: path.resolve(
-			process.cwd(),
-			'resources/scripts',
-			'account.js'
-		),
 	},
 	output: {
 		filename: '[name].js',

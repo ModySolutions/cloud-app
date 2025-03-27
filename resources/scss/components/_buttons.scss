@@ -77,7 +77,7 @@
 	}
 }
 
-button,
+button:not(.toggle-password),
 .btn {
 
 	@include button;

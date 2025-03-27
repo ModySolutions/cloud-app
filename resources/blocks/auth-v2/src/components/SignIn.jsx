@@ -138,6 +138,7 @@ const SignIn = () => {
 						onChange={ handlePasswordChange }
 					/>
 					<button
+						tabIndex={ -1 }
 						type="button"
 						className="toggle-password"
 						onClick={ () => setShowPassword( ! showPassword ) }

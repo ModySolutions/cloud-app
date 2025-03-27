@@ -11882,6 +11882,7 @@ const ResetPassword = () => {
     ref: passwordRef,
     onChange: handlePasswordChange
   }), /*#__PURE__*/React.createElement("button", {
+    tabIndex: -1,
     type: "button",
     className: "toggle-password",
     onClick: () => setShowPassword(!showPassword)
@@ -11911,6 +11912,7 @@ const ResetPassword = () => {
     disabled: resettingPassword,
     onChange: handleConfirmPasswordChange
   }), /*#__PURE__*/React.createElement("button", {
+    tabIndex: -1,
     type: "button",
     className: "toggle-password",
     onClick: () => setShowConfirmPassword(!showConfirmPassword)
@@ -12092,6 +12094,7 @@ const SignIn = () => {
     ref: passwordRef,
     onChange: handlePasswordChange
   }), /*#__PURE__*/React.createElement("button", {
+    tabIndex: -1,
     type: "button",
     className: "toggle-password",
     onClick: () => setShowPassword(!showPassword)

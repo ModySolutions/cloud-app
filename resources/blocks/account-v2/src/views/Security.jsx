@@ -108,6 +108,7 @@ const Security = () => {
 							onChange={ handleCurrentPasswordChange }
 						/>
 						<button
+							tabIndex={ -1 }
 							type="button"
 							className="toggle-password"
 							onClick={ () =>
@@ -151,7 +152,7 @@ const Security = () => {
 						/>
 						<button
 							type="button"
-							tabIndex="-1"
+							tabIndex={ -1 }
 							className="toggle-password"
 							onClick={ ( event ) => {
 								event.preventDefault();

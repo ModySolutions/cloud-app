@@ -156,6 +156,7 @@ const ResetPassword = () => {
 							onChange={ handlePasswordChange }
 						/>
 						<button
+							tabIndex={ -1 }
 							type="button"
 							className="toggle-password"
 							onClick={ () => setShowPassword( ! showPassword ) }
@@ -194,6 +195,7 @@ const ResetPassword = () => {
 							onChange={ handleConfirmPasswordChange }
 						/>
 						<button
+							tabIndex={ -1 }
 							type="button"
 							className="toggle-password"
 							onClick={ () =>

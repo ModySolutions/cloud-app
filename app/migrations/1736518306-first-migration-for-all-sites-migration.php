@@ -32,7 +32,15 @@ return function (\wpdb $wpdb) {
         'post_author' => 1,
         'post_name' => 'auth',
         'page_template' => 'auth-template.php',
-        'post_content' => '<!-- wp:app/auth {"name":"app/auth","data":array(),"mode":"edit"} /-->',
+        'post_content' => <<<EOF
+<!-- wp:image {"lightbox":{"enabled":false},"width":"250px","sizeSlug":"medium","linkDestination":"custom","align":"center"} -->
+<figure class="wp-block-image aligncenter size-medium is-resized"><a href="/"><img src="https://modycloud.test/content/uploads/2024/12/logo-mody-cloud-300x148.png" alt="" class="wp-image-51" style="width:250px"/></a></figure>
+<!-- /wp:image -->
+
+<!-- wp:app/auth-v2 -->
+<p class="wp-block-app-auth-v2">Auth Module for Mody Cloud</p>
+<!-- /wp:app/auth-v2 -->
+EOF,
     ]);
     update_option('authentication_page_id', $auth_page_id);
 
@@ -151,7 +159,11 @@ return function (\wpdb $wpdb) {
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'account',
-        'post_content' => '<!-- wp:app/account {"name":"app/account","data":array(),"mode":"edit"} /-->',
+        'post_content' => <<<EOF
+<!-- wp:app/account-v2 -->
+<p class="wp-block-app-account-v2">Example – hello from the saved content!</p>
+<!-- /wp:app/account-v2 -->
+EOF,
     ]);
 
     update_option('account_page_id', $account_page_id);
@@ -193,7 +205,9 @@ return function (\wpdb $wpdb) {
         'post_status' => 'publish',
         'post_author' => 1,
         'post_name' => 'invoices',
-        'post_content' => '<!-- wp:app/invoice {"name":"app/invoice","data":array(),"mode":"edit"} /-->',
+        'post_content' => <<<'EOF'
+<!-- wp:app/invoice-v2 --><p class="wp-block-app-invoice-v2">Example – hello from the saved content!</p><!-- /wp:app/invoice-v2 -->
+EOF,
     ]);
     update_option('invoice_page_id', $invoice_page_id);
 
