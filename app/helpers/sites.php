@@ -1,15 +1,15 @@
 <?php
 
 use Roots\WPConfig\Config;
-use function Env\env;
 
 if (!function_exists('app_user_has_a_site')) {
-    function app_user_has_a_site(int $user_id): ?int {
-        $user_has_a_site = get_posts(array(
+    function app_user_has_a_site(int $user_id): ?int
+    {
+        $user_has_a_site = get_posts([
             'post_type' => 'site',
             'author' => $user_id,
             'posts_per_page' => 1,
-        ));
+        ]);
 
         if (count($user_has_a_site) > 0) {
             $site = $user_has_a_site[0];
@@ -24,7 +24,8 @@ if (!function_exists('app_user_has_a_site')) {
 }
 
 if (!function_exists('app_site_is_active')) {
-    function app_site_is_active(int $site_id): bool {
+    function app_site_is_active(int $site_id): bool
+    {
         $site_conf = get_fields($site_id);
         if (!$site_conf) {
             return false;
@@ -48,12 +49,15 @@ if (!function_exists('app_site_is_active')) {
 }
 
 if (!function_exists('app_generate_env_file_info')) {
-    function app_generate_env_file_info(int $queue_id, string $space_name, string $company_name): array {
+    function app_generate_env_file_info(int $queue_id, string $space_name, string $company_name): array
+    {
         $user_data = get_user(get_current_user_id());
-        if (!$user_data) return array();
-        $domain_current_site = $space_name.'.'.Config::get('APP_DOMAIN');
-        $wp_home = Config::get('APP_PROTOCOL').$domain_current_site;
-        return array(
+        if (!$user_data) {
+            return [];
+        }
+        $domain_current_site = $space_name . '.' . Config::get('APP_DOMAIN');
+        $wp_home = Config::get('APP_PROTOCOL') . $domain_current_site;
+        return [
             'wp_home' => $wp_home,
             'domain_current_site' => $domain_current_site,
             'company_name' => $company_name,
@@ -72,19 +76,20 @@ if (!function_exists('app_generate_env_file_info')) {
             'logged_in_salt' => wp_generate_password(64),
             'nonce_salt' => wp_generate_password(64),
             'admin_email' => $user_data->user_email,
-            'space_path' => Config::get('MC_SITES_PATH').'/'.$space_name,
+            'space_path' => Config::get('MC_SITES_PATH') . '/' . $space_name,
             'app_company' => Config::get('APP_COMPANY'),
             'app_main_site' => Config::get('APP_MAIN_SITE'),
             'sendgrid_api_key' => Config::get('SENDGRID_API_KEY'),
             'sendgrid_api_url' => Config::get('SENDGRID_API_URL'),
             'email_from' => Config::get('EMAIL_FROM'),
             'email_from_name' => Config::get('EMAIL_FROM_NAME'),
-        );
+        ];
     }
 }
 
 if (!function_exists('app_generate_db_prefix')) {
-    function app_generate_db_prefix(int $length = 6): string {
+    function app_generate_db_prefix(int $length = 6): string
+    {
         $characters = 'abcdefghijklmnopqrstuvwxyz0123456789_';
         $prefix = '';
 
@@ -92,12 +97,13 @@ if (!function_exists('app_generate_db_prefix')) {
             $prefix .= $characters[random_int(0, strlen($characters) - 1)];
         }
 
-        return $prefix.'_';
+        return $prefix . '_';
     }
 }
 
 if (!function_exists('app_get_initial_page')) {
-    function app_get_initial_page(\WP_User $user): string {
+    function app_get_initial_page(\WP_User $user): string
+    {
         $dashboard_page_id = get_option('invoice_page_id');
         $dashboard_url = get_permalink($dashboard_page_id);
         $is_child_site = Config::get('CHILD_SITE');
@@ -114,16 +120,16 @@ if (!function_exists('app_get_initial_page')) {
 
                 if ($site_id && $site_is_active) {
                     $autologin_token = app_generate_autologin_token($user);
-                    $initial_page = add_query_arg(array(
+                    $initial_page = add_query_arg([
                         'email' => urlencode(base64_encode($user->user_email)),
                         'autologin_key' => urlencode($autologin_token),
-                    ), "{$site_uri}/auth/sign-in");
+                    ], "{$site_uri}/auth/sign-in");
                 } elseif ($site_id && !$site_is_active) {
                     $autologin_token = app_generate_autologin_token($user);
-                    $initial_page = add_query_arg(array(
+                    $initial_page = add_query_arg([
                         'autologin_key' => urlencode($autologin_token),
                         'installing' => true,
-                    ), "{$site_uri}/content/space-install-setup.php");
+                    ], "{$site_uri}/content/space-install-setup.php");
                 } else {
                     $create_page_id = get_option('create_page_id');
                     $initial_page = get_permalink($create_page_id);

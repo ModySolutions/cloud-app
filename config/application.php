@@ -236,6 +236,6 @@ if (!defined('ABSPATH')) {
     define('ABSPATH', $webroot_dir . '/wp/');
 }
 
-if(!defined('COOKIE_DOMAIN')) {
+if (!defined('COOKIE_DOMAIN')) {
     define('COOKIE_DOMAIN', env('COOKIE_DOMAIN') ?? null);
 }

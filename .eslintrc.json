@@ -1,0 +1,15 @@
+{
+  "extends": [ "plugin:@wordpress/eslint-plugin/recommended" ],
+  "globals" : {
+    "App": "readonly",
+    "AuthData": "readonly",
+    "localStorage": "readonly",
+    "window": "readonly",
+    "location": "readonly"
+  },
+  "settings": {
+    "react": {
+      "version": "18.3.1"
+    }
+  }
+}

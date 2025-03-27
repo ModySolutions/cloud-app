@@ -2,12 +2,14 @@
 
 namespace App\Hooks\Account;
 
-class Routes {
-    public static function wp_init(): void {
+class Routes
+{
+    public static function wp_init(): void
+    {
         add_rewrite_rule(
             'account/([^/]+)/?$',
             'index.php?pagename=account&account_page=$matches[1]',
-            'top'
+            'top',
         );
 
         $login_page = basename($_SERVER['PHP_SELF']);
@@ -19,7 +21,8 @@ class Routes {
         }
     }
 
-    public static function query_vars(array $vars): array {
+    public static function query_vars(array $vars): array
+    {
         $vars[] = 'account_page';
         return $vars;
     }

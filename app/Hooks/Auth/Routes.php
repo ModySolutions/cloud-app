@@ -3,10 +3,13 @@
 namespace App\Hooks\Auth;
 
 use Roots\WPConfig\Config;
+
 use function Env\env;
 
-class Routes {
-    public static function wp_init(): void {
+class Routes
+{
+    public static function wp_init(): void
+    {
         add_rewrite_rule('auth/([^/]+)/?$', 'index.php?pagename=auth&action=$matches[1]', 'top');
 
         $login_page = basename($_SERVER['PHP_SELF']);
@@ -18,7 +21,8 @@ class Routes {
         }
     }
 
-    public static function admin_init(): void {
+    public static function admin_init(): void
+    {
         if (env('WP_ENV') === 'local') {
             return;
         }
@@ -40,7 +44,8 @@ class Routes {
         }
     }
 
-    public static function template_redirect(): void {
+    public static function template_redirect(): void
+    {
         if (is_category() || is_tag() || is_date() || is_author() || is_tax() || is_attachment()) {
             global $wp_query;
             $wp_query->set_404();
@@ -51,7 +56,8 @@ class Routes {
         if (Config::get('CHILD_SITE')) {
             $is_allowed_page = app_is_page_allowed(
                 $current_page_id,
-                ['invoices', 'print-invoice', 'account', 'auth']);
+                ['invoices', 'print-invoice', 'account', 'auth'],
+            );
 
             if (!$is_allowed_page) {
                 wp_redirect(home_url('/invoices'));
@@ -65,35 +71,40 @@ class Routes {
                     wp_redirect(app_get_initial_page($current_user));
                     exit;
                 }
-            } elseif(!is_user_logged_in() && !$is_allowed_page) {
+            } elseif (!is_user_logged_in() && !$is_allowed_page) {
                 wp_redirect(wp_logout_url());
                 exit;
             }
         }
     }
 
-    public static function query_vars(array $vars): array {
+    public static function query_vars(array $vars): array
+    {
         $vars[] = 'action';
         return $vars;
     }
 
-    public static function login_url(string $login, string $redirect, bool $force_re_auth): string {
-        $login_page = Config::get('APP_MAIN_SITE').'/auth/sign-in';
+    public static function login_url(string $login, string $redirect, bool $force_re_auth): string
+    {
+        $login_page = Config::get('APP_MAIN_SITE') . '/auth/sign-in';
         return $redirect ? add_query_arg('initial_page', $redirect, $login_page) : $login_page;
     }
 
-    public static function logout_url(string $logout_url, string $redirect): string {
+    public static function logout_url(string $logout_url, string $redirect): string
+    {
         $auth_page = get_option('authentication_page_id');
         $page_permalink = get_permalink($auth_page);
         return trailingslashit("{$page_permalink}sign-out");
     }
 
-    public static function register_url(string $register_url): string {
-        return trailingslashit(Config::get('APP_MAIN_SITE').'/auth/sign-up');
+    public static function register_url(string $register_url): string
+    {
+        return trailingslashit(Config::get('APP_MAIN_SITE') . '/auth/sign-up');
     }
 
-    public static function lostpassword_url(string $lostpassword_url, string $redirect): string {
-        $lostpassword_url = Config::get('APP_MAIN_SITE').'/auth/forgot-passwd';
+    public static function lostpassword_url(string $lostpassword_url, string $redirect): string
+    {
+        $lostpassword_url = Config::get('APP_MAIN_SITE') . '/auth/forgot-passwd';
         return $redirect ? add_query_arg('initial_page', $redirect, $lostpassword_url) : $lostpassword_url;
     }
 }

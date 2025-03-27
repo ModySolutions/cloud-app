@@ -4,10 +4,12 @@ namespace App\Hooks\Queue;
 
 use function Env\env;
 
-class Post {
-    public static function register_post_type() : void {
-        register_post_type( 'queue', array(
-            'labels' => array(
+class Post
+{
+    public static function register_post_type(): void
+    {
+        register_post_type('queue', [
+            'labels' => [
                 'name' => __('Queues', APP_THEME_LOCALE),
                 'singular_name' => __('Queue', APP_THEME_LOCALE),
                 'menu_name' => __('Queues', APP_THEME_LOCALE),
@@ -37,7 +39,7 @@ class Post {
                 'item_updated' => __('Queue updated.', APP_THEME_LOCALE),
                 'item_link' => __('Queue Link', APP_THEME_LOCALE),
                 'item_link_description' => __('A link to a queue.', APP_THEME_LOCALE),
-            ),
+            ],
             'public' => false,
             'publicly_queryable' => true,
             'show_ui' => true,
@@ -45,21 +47,22 @@ class Post {
             'show_in_rest' => true,
             'menu_position' => 7,
             'menu_icon' => 'dashicons-editor-ul',
-            'supports' => array(
+            'supports' => [
                 0 => 'title',
                 1 => 'author',
                 2 => 'custom-fields',
-            ),
-            'rewrite' => array(
+            ],
+            'rewrite' => [
                 'with_front' => false,
                 'pages' => false,
-            ),
+            ],
             'can_export' => false,
             'delete_with_user' => true,
-        ) );
+        ]);
     }
 
-    public static function save_post_queue(int $queue_id, \WP_Post $post, bool $update): void {
+    public static function save_post_queue(int $queue_id, \WP_Post $post, bool $update): void
+    {
         if ($post->post_type !== 'queue') {
             return;
         }
@@ -82,8 +85,8 @@ class Post {
             app_log(
                 sprintf(
                     __('save_post_queue: variables not extracted from queue_info for %s.', APP_THEME_LOCALE),
-                    $queue_id
-                )
+                    $queue_id,
+                ),
             );
             return;
         }
@@ -96,8 +99,8 @@ class Post {
             app_log(
                 sprintf(
                     __('save_post_queue: required fields not present in queue_info variables for %s.', APP_THEME_LOCALE),
-                    $queue_id
-                )
+                    $queue_id,
+                ),
             );
             return;
         }
@@ -115,19 +118,19 @@ class Post {
                 sprintf(
                     __('save_post_queue: Database %s and user %s created.', APP_THEME_LOCALE),
                     $db_name,
-                    $db_user
-                )
+                    $db_user,
+                ),
             );
 
             $site_exists = get_page_by_path($space_name, OBJECT, 'site');
-            if(!$site_exists) {
-                $site_id = wp_insert_post(array(
+            if (!$site_exists) {
+                $site_id = wp_insert_post([
                     'post_type' => 'site',
                     'post_title' => esc_html($company_name),
                     'post_name' => $space_name,
                     'post_status' => 'publish',
                     'post_author' => $site_owner->ID,
-                ));
+                ]);
 
                 app_log("Site entry for {$company_name} created with ID {$site_id}");
             } else {
@@ -142,17 +145,18 @@ class Post {
             }
         } catch (\PDOException $e) {
             self::_un_publish_queue($queue_id);
-            app_log("save_post_queue: Error creating database: ".$e->getMessage());
+            app_log("save_post_queue: Error creating database: " . $e->getMessage());
             return;
         }
     }
 
-    private static function _un_publish_queue(int $post_id): void {
+    private static function _un_publish_queue(int $post_id): void
+    {
         remove_action('save_post_queue', self::save_post_queue(...));
-        wp_update_post(array(
+        wp_update_post([
             'ID' => $post_id,
             'post_status' => 'draft',
-        ));
+        ]);
         add_action('save_post_queue', self::save_post_queue(...));
     }
 }

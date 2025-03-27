@@ -1,7 +1,8 @@
 <?php
 
-if(!function_exists('app_validate_required')) {
-    function app_validate_required($required_fields, $fields) : array {
+if (!function_exists('app_validate_required')) {
+    function app_validate_required($required_fields, $fields): array
+    {
         $success = true;
         $message = '';
         foreach ($required_fields as $key => $label) {
@@ -14,9 +15,9 @@ if(!function_exists('app_validate_required')) {
                 $message = sprintf(__('The %s field is required.'), $label);
             }
         }
-        return array(
+        return [
             'success' => $success,
             'message' => $message,
-        );
+        ];
     }
 }

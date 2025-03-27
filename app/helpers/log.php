@@ -2,8 +2,9 @@
 
 use Roots\WPConfig\Config;
 
-if(!function_exists('app_log')) {
-    function app_log($message): void {
+if (!function_exists('app_log')) {
+    function app_log($message): void
+    {
         $log_file = Config::get('LOGS_PATH') . '/app.log';
 
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
@@ -18,7 +19,7 @@ if(!function_exists('app_log')) {
             if ($current_user->exists()) {
                 $user = $current_user->user_login;
             }
-        } else if (is_cli()) {
+        } elseif (is_cli()) {
             $user = __('Command Line Interface');
         }
 

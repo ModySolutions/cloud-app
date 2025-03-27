@@ -1,9 +1,5 @@
-import "@mcscss/app.scss";
+import '../scss/app.scss';
 
-window.addEventListener('load', () => {
+window.addEventListener( 'load', () => {} );
 
-})
-
-document.addEventListener('DOMContentLoaded', () => {
-
-});
+document.addEventListener( 'DOMContentLoaded', () => {} );

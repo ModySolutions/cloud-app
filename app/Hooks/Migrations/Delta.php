@@ -2,9 +2,13 @@
 
 namespace App\Hooks\Migrations;
 
-class Delta {
-    public static function create_table() : void {
-        if(get_option('migration_table_created')) return;
+class Delta
+{
+    public static function create_table(): void
+    {
+        if (get_option('migration_table_created')) {
+            return;
+        }
         global $wpdb;
 
         $table_name = $wpdb->prefix . 'migrations';
@@ -19,7 +23,7 @@ CREATE TABLE IF NOT EXISTS $table_name (
     PRIMARY KEY (id)
 ) $charset_collate;
 EOF;
-;
+        ;
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         dbDelta($sql);

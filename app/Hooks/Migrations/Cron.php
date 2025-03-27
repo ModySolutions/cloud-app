@@ -4,6 +4,7 @@ namespace App\Hooks\Migrations;
 
 use App\Features\Migrate;
 
-class Cron {
+class Cron
+{
     use Migrate;
 }

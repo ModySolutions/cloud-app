@@ -6,103 +6,110 @@
 // BUTTONS
 //==================================================================
 @mixin button {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    color: variables.$white;
-    line-height: 1.5rem;
-    padding: 0.5rem 1.25rem;
-    background-color: variables.$primary;
-    border-radius: variables.$border-radius-sm;
-    transition: background-color .3s ease;
-    cursor: pointer;
-    text-align: center;
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1rem;
+	color: variables.$white;
+	line-height: 1.5;
+	padding: 0.5rem 1.25rem;
+	background-color: variables.$primary;
+	border-radius: variables.$border-radius-sm;
+	transition: background-color 0.3s ease;
+	cursor: pointer;
+	text-align: center;
 
-    @each $size_key, $size in variables.$text-sizes {
-        &.btn-#{$size_key} {
-            @include mixins.text-size($size);
-            padding: calc(#{$size} * .4rem);
-        }
-    }
+	@each $size_key, $size in variables.$text-sizes {
+		&.btn-#{$size_key} {
 
-    @each $color_key, $color in variables.$color_list {
-        &.btn-#{'' + $color_key} {
-            background-color: $color;
+			@include mixins.text-size($size);
+			padding: calc(#{$size} * 0.4rem);
+		}
+	}
 
-            &[disabled],
-            &:hover,
-            &:focus {
-                background-color: color.adjust($color, $lightness: 5%);
-            }
-        }
+	@each $color_key, $color in variables.$color_list {
+		&.btn-#{'' + $color_key} {
+			background-color: $color;
 
-        &.btn-text-#{'' + $color_key} {
-            color: #{$color};
-        }
-    }
+			&[disabled],
+			&:hover,
+			&:focus {
+				background-color: color.adjust($color, $lightness: 5%);
+			}
+		}
 
-    &.btn-outline {
-        background-color: transparent;
-        color: variables.$primary;
-        border-color: variables.$primary;
+		&.btn-text-#{'' + $color_key} {
+			color: #{$color};
+		}
+	}
 
-        @each $color_key, $color in variables.$color_list {
-            &.btn-#{'' + $color_key} {
-                border-color: $color;
-                color: $color;
-            }
-        }
+	&.btn-outline {
+		background-color: transparent;
+		color: variables.$primary;
+		border-color: variables.$primary;
 
-        &.green {
-            border-color: variables.$secondary;
-        }
-    }
+		@each $color_key, $color in variables.$color_list {
+			&.btn-#{'' + $color_key} {
+				border-color: $color;
+				color: $color;
+			}
+		}
 
-    &.btn-wide {
-        width: 100%;
-    }
+		&.green {
+			border-color: variables.$secondary;
+		}
+	}
 
-    &:hover, &:focus, &[disabled] {
-        //background-color: color.adjust(variables.$primary, $lightness: 10%);
-    }
+	&.btn-wide {
+		width: 100%;
+	}
 
-    > svg {
-        fill: variables.$white;
-        margin-right: .2rem;
-    }
+	&:hover,
+	&:focus,
+	&[disabled] {
+		//background-color: color.adjust(variables.$primary, $lightness: 10%);
+	}
+
+	> svg {
+		fill: variables.$white;
+		margin-right: 0.2rem;
+	}
 }
-button, .btn {
-    @include button;
+
+.btn {
+
+	@include button;
 }
 
 .dropdown {
-    .button, .btn {
-        display: grid;
-        grid-template-columns: 2fr .5fr;
-        padding-right: 0;
-    }
 
-    .dropdown-menu {
-        position: absolute;
-        z-index: 9;
-        background-color: var(--color-white);
-        width: 20%;
-        margin: 0 .5rem 0;
+	.button,
+	.btn {
+		display: grid;
+		grid-template-columns: 2fr 0.5fr;
+		padding-right: 0;
+	}
 
-        li {
-            list-style: none;
-            cursor: pointer;
+	.dropdown-menu {
+		position: absolute;
+		z-index: 9;
+		background-color: var(--color-white);
+		width: 20%;
+		margin: 0 0.5rem 0;
 
-            &:hover {
-                background-color: var(--color-primary-light);
-                color: var(--color-white);
-            }
+		li {
+			list-style: none;
+			cursor: pointer;
 
-            &:before {
-                content: '';
-            }
-        }
-    }
+			&:hover {
+				background-color: var(--color-primary-light);
+				color: var(--color-white);
+			}
+
+			&::before {
+				content: "";
+			}
+		}
+	}
 }
