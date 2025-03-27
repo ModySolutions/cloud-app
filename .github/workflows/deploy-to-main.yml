@@ -20,41 +20,41 @@ jobs:
           cat auth.json
 
       - name: Cache Vendor
-        id: cache-vendor
+        id: app-deploy-cache-vendor
         uses: actions/cache@v3
         env:
-          cache-name: cache-vendors
+          cache-name: app-deploy-cache-vendor
         with:
           path: vendor
-          key: vendor-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          key: app-deploy-vendor-${{ runner.os }}-${{ hashFiles('composer.lock') }}
           restore-keys: |
-            vendor-${{ runner.os }}-
+            app-deploy-vendor-${{ runner.os }}-
 
       - name: Cache Plugins
-        id: cache-plugins
+        id: app-deploy-cache-plugins
         uses: actions/cache@v3
         env:
-          cache-name: cache-plugins
+          cache-name: app-deploy-cache-plugins
         with:
           path: web/content/plugins/
-          key: plugins-${{ runner.os }}-${{ hashFiles('web/content/plugins/**') }}
+          key: app-deploy-plugins-${{ runner.os }}-${{ hashFiles('web/content/plugins/**') }}
           restore-keys: |
-            plugins-${{ runner.os }}-
+            app-deploy-plugins-${{ runner.os }}-
 
       - name: Cache Node Modules
-        id: cache-node_modules
+        id: app-deploy-cache-node_modules
         uses: actions/cache@v3
         env:
-          cache-name: cache-node_modules
+          cache-name: app-deploy-cache-node_modules
         with:
           path: node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          key: app-deploy-node_modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            node_modules-${{ runner.os }}-
+            app-deploy-node_modules-${{ runner.os }}-
 
       - name: Composer Install
         run: composer install --no-dev -o
-        if: steps.cache-vendor.outputs.cache-hit != 'true'
+        if: steps.app-deploy-cache-vendor.outputs.cache-hit != 'true'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -68,8 +68,8 @@ jobs:
           cache: 'pnpm'
 
       - name: pnpm install
-        run: pnpm install
-        if: steps.cache-node_modules.outputs.cache-hit != 'true'
+        run: pnpm install --prod
+        if: steps.app-deploy-cache-node_modules.outputs.cache-hit != 'true'
 
       - name: pnpm build
         run: pnpm build

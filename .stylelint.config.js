@@ -1,5 +1,6 @@
 /** @type {import('stylelint').Config} */
 export default {
+  root: true,
   extends: "@wordpress/stylelint-config/scss",
   rules: {
     "unit-allowed-list": {
